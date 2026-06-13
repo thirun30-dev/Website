@@ -1,8 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
-import { ChevronLeft, ChevronRight } from "lucide-react";
-import { motion, AnimatePresence, useScroll, useTransform, useMotionValueEvent } from "framer-motion";
+import { motion, AnimatePresence, useScroll, useMotionValueEvent } from "framer-motion";
 import Image from "next/image";
 
 const LinkedinIcon = ({ size = 24, ...props }: { size?: number } & React.SVGProps<SVGSVGElement>) => (
@@ -104,78 +103,48 @@ const advisors: Advisor[] = [
 
 const coreTeam: CoreMember[] = [
   {
-    name: "Sanjay Kumar S",
-    role: "Student President & Lead",
+    name: "Prathakshanaa",
+    role: "Captain",
     department: "Information Technology",
-    bio: "Sanjay coordinates all student builder operations, manages events scheduling, drafts hackathon tracks, and liaises directly with AWS developer support groups to expand the club's regional outreach.",
+    bio: "Prathakshanaa leads the AWS Students Builder Group as Captain, driving strategic direction, team coordination, and community growth initiatives for AWS Community Day 2026 at REC.",
     linkedin: "https://www.linkedin.com/",
     github: "https://github.com/",
-    email: "sanjay@example.com",
-    image: "/sanjay.png",
+    email: "prathakshanaa@example.com",
+    image: "/prathakshanaa.jpeg",
     responsibilities: [
-      "Event Scheduling & Operations",
-      "Developer Relations Liaison",
-      "Hackathon Track Management"
+      "Team Leadership & Strategy",
+      "Community Growth Initiatives",
+      "Event Coordination"
     ]
   },
   {
-    name: "Monica R",
-    role: "Vice President & Operations",
-    department: "Computer Science",
-    bio: "Monica manages student memberships, workshop logistics, campus outreach tracks, and budget tracking for all REC AWS Student Builder Group sessions and tech conferences.",
-    linkedin: "https://www.linkedin.com/",
-    github: "https://github.com/",
-    email: "monica@example.com",
-    image: "/monica.png",
-    responsibilities: [
-      "Workshop Logistics & Catering",
-      "Membership Management",
-      "Budget Allocation & Audits"
-    ]
-  },
-  {
-    name: "Madan G",
-    role: "Technical Web Lead",
+    name: "Pranav Ranjan",
+    role: "Tech Lead",
     department: "Information Technology",
-    bio: "Madan is responsible for collegiate web portals, managing online registration pipelines, and designing cloud-native serverless systems to deploy active builder dashboards on AWS.",
+    bio: "Pranav drives all technical initiatives, architecting cloud-native solutions, managing AWS infrastructure, and guiding the technical roadmap for the AWS Students Builder Group.",
     linkedin: "https://www.linkedin.com/",
     github: "https://github.com/",
-    email: "madan@example.com",
-    image: "/madan.png",
+    email: "pranav@example.com",
+    image: "/pranav-ranjan.jpeg",
     responsibilities: [
-      "Collegiate Web Platforms",
-      "Serverless Architecture Design",
-      "Registration Pipeline Flow"
+      "Cloud Architecture Design",
+      "AWS Infrastructure Management",
+      "Technical Roadmap Planning"
     ]
   },
   {
-    name: "Dharshini K",
-    role: "Design & Media Coordinator",
+    name: "Thirunavukkarasu",
+    role: "Social Media Lead",
     department: "Computer Science",
-    bio: "Dharshini leads the visual branding, poster layouts, merchandise designs, social media posters, and keynote video curation teams for REC cloud community events.",
+    bio: "Thirunavukkarasu manages the group's digital presence, crafting engaging content, running live event coverage, and growing the AWS community across LinkedIn, Instagram, and Twitter.",
     linkedin: "https://www.linkedin.com/",
     github: "https://github.com/",
-    email: "dharshini@example.com",
-    image: "/dharshini.png",
+    email: "thirunavukkarasu@example.com",
+    image: "/thirunavukkarasu.png",
     responsibilities: [
-      "Visual Brand Consistency",
-      "Merchandise Design",
-      "Social Media Visuals & Assets"
-    ]
-  },
-  {
-    name: "Abhishek V",
-    role: "Public Relations Lead",
-    department: "Artificial Intelligence",
-    bio: "Abhishek handles communications, college announcements, social media newsletters, PR briefings, and partner sponsor networking paths to expand AWS builder presence.",
-    linkedin: "https://www.linkedin.com/",
-    github: "https://github.com/",
-    email: "abhishek@example.com",
-    image: "/abhishek.png",
-    responsibilities: [
-      "Public Relations Strategy",
-      "Sponsor Network Engagement",
-      "Newsletter & Announcements"
+      "Social Media Strategy",
+      "Live Event Coverage",
+      "Digital Community Growth"
     ]
   }
 ];
@@ -327,40 +296,7 @@ const crewTeam: CrewMember[] = [
 ];
 
 export default function Organizers() {
-  const [[page, direction], setPage] = useState([0, 0]);
-  const [isHovered, setIsHovered] = useState(false);
   const [selectedCrew, setSelectedCrew] = useState<CrewMember | null>(null);
-
-  const activeSliderIdx = (page % coreTeam.length + coreTeam.length) % coreTeam.length;
-
-  const triggerSlideChange = (newIndex: number, newDirection: number) => {
-    setPage([newIndex, newDirection]);
-  };
-
-  const handleManualNext = () => {
-    triggerSlideChange(page + 1, 1);
-  };
-
-  const handleManualPrev = () => {
-    triggerSlideChange(page - 1, -1);
-  };
-
-  const handleSelectDot = (idx: number) => {
-    const currentIdx = (page % coreTeam.length + coreTeam.length) % coreTeam.length;
-    if (idx === currentIdx) return;
-    const diff = idx - currentIdx;
-    triggerSlideChange(page + diff, diff > 0 ? 1 : -1);
-  };
-
-  useEffect(() => {
-    if (isHovered) return;
-    const interval = setInterval(() => {
-      handleManualNext();
-    }, 5000); // Autoplay every 5 seconds
-    return () => clearInterval(interval);
-  }, [isHovered, page]);
-
-  const activeMember = coreTeam[activeSliderIdx];
 
   return (
     <section id="organizers" className="py-24 relative overflow-hidden bg-black/20">
@@ -393,220 +329,96 @@ export default function Organizers() {
           <FeaturedCoordinatorCard member={advisors[0]} />
         </div>
 
-        {/* 2. Core Team Showcase Section */}
+        {/* 2. Core Team Showcase Section — Compact Grid Cards */}
         <div className="space-y-8 pt-4">
           <h3 className="text-lg font-bold text-[#00f0ff] border-b border-slate-900 pb-3 flex items-center gap-2">
             <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse" />
             Core Team
           </h3>
 
-          {/* Premium Glassmorphic Content Box Container */}
-          <div 
-            onMouseEnter={() => setIsHovered(true)}
-            onMouseLeave={() => setIsHovered(false)}
-            className="glass-panel text-white rounded-[32px] p-6 md:p-10 border border-cyan-500/10 hover:border-cyan-500/30 shadow-[0_0_40px_rgba(0,240,255,0.05)] hover:shadow-[0_0_50px_rgba(0,240,255,0.15)] overflow-hidden relative transition-all duration-500"
-          >
-            <div className="flex flex-col lg:flex-row gap-8 lg:gap-12 items-stretch">
-              
-              {/* Left Section (Image Showcase – 60%) */}
-              <div className="w-full lg:w-[60%] flex-shrink-0 relative rounded-[24px] overflow-hidden bg-gradient-to-br from-[#0c1a30] to-[#050b14] border border-blue-900/30 shadow-2xl flex items-center justify-center min-h-[300px] sm:min-h-[400px] lg:min-h-[500px]">
-                
-                {/* Large Portrait Image Container with slide transitions */}
-                <div className="absolute inset-0 w-full h-full">
-                  <AnimatePresence initial={false} custom={direction} mode="popLayout">
-                    <motion.div
-                      key={page}
-                      custom={direction}
-                      variants={{
-                        enter: (dir: number) => ({
-                          x: dir > 0 ? "100%" : "-100%",
-                          opacity: 0
-                        }),
-                        center: {
-                          x: 0,
-                          opacity: 1
-                        },
-                        exit: (dir: number) => ({
-                          x: dir < 0 ? "100%" : "-100%",
-                          opacity: 0
-                        })
-                      }}
-                      initial="enter"
-                      animate="center"
-                      exit="exit"
-                      transition={{
-                        x: { type: "tween", duration: 0.8, ease: [0.25, 0.1, 0.25, 1.0] },
-                        opacity: { duration: 0.8, ease: "easeInOut" }
-                      }}
-                      className="absolute inset-0 w-full h-full"
-                    >
-                      <Image
-                        src={activeMember.image}
-                        alt={activeMember.name}
-                        fill
-                        priority
-                        className="object-cover object-top"
-                      />
-                    </motion.div>
-                  </AnimatePresence>
-                </div>
-
-                {/* Subtle dark gradient overlay at the bottom for readability */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent pointer-events-none z-10" />
-
-                {/* Member Name and Role - Bottom Left, Soft Shadow, Premium Glassmorphism */}
-                <div className="absolute bottom-6 left-6 right-6 z-20 p-5 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 shadow-[0_8px_32px_rgba(0,0,0,0.37)] text-white">
-                  <h4 className="text-xl sm:text-2xl font-bold tracking-wide drop-shadow-md">
-                    {activeMember.name}
-                  </h4>
-                  <p className="text-sm text-cyan-300 font-semibold tracking-wider uppercase drop-shadow-sm mt-1">
-                    {activeMember.role}
-                  </p>
-                </div>
-              </div>
-
-              {/* Right Section (Details Panel – 40%) */}
-              <div className="w-full lg:w-[40%] flex flex-col justify-between relative min-h-[450px] lg:min-h-[500px] z-10 pt-4 lg:pt-0">
-                
-                {/* Large Background Number (01-05) */}
-                <div className="absolute -top-6 -right-4 text-[120px] sm:text-[180px] font-black text-blue-950/20 select-none opacity-40 pointer-events-none font-mono tracking-tighter leading-none z-0">
-                  {String(activeSliderIdx + 1).padStart(2, '0')}
-                </div>
-
-                {/* Section Header Info */}
-                <div className="relative z-10">
-                  <h2 className="text-3xl font-extrabold text-white tracking-tight">
-                    Meet Our Core Team
-                  </h2>
-                  <p className="text-slate-400 text-sm mt-2 leading-relaxed">
-                    The passionate organizers behind AWS Community Day, working together to build an impactful community experience.
-                  </p>
-                </div>
-
-                {/* Sync Animated Details */}
-                <div className="relative z-10 flex-grow flex flex-col justify-center mt-6 lg:mt-0">
-                  <AnimatePresence mode="wait">
-                    <motion.div
-                      key={activeSliderIdx}
-                      variants={{
-                        initial: { opacity: 0, y: 15 },
-                        animate: { opacity: 1, y: 0 },
-                        exit: { opacity: 0, y: -15 }
-                      }}
-                      initial="initial"
-                      animate="animate"
-                      exit="exit"
-                      transition={{ duration: 0.5, ease: "easeInOut" }}
-                      className="space-y-6"
-                    >
-                      {/* Name & Designation */}
-                      <div>
-                        <h3 className="text-2xl font-bold text-white leading-tight">
-                          {activeMember.name}
-                        </h3>
-                        <p className="text-sm font-semibold text-cyan-400 tracking-wider uppercase mt-1 text-glow">
-                          {activeMember.role}
-                        </p>
-                      </div>
-
-                      {/* Bio */}
-                      <div>
-                        <p className="text-slate-300 text-sm leading-relaxed min-h-[4.5rem]">
-                          {activeMember.bio}
-                        </p>
-                      </div>
-
-                      {/* Responsibilities */}
-                      <div>
-                        <h5 className="text-xs font-bold text-[#00f0ff]/70 uppercase tracking-widest mb-3">
-                          Responsibilities
-                        </h5>
-                        <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-                          {activeMember.responsibilities.map((resp, i) => (
-                            <li key={i} className="flex items-center gap-2 text-slate-300 text-xs font-semibold">
-                              <span className="w-1.5 h-1.5 rounded-full bg-[#00f0ff] flex-shrink-0 animate-pulse" />
-                              <span>{resp}</span>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-
-                      {/* Action Social Icons */}
-                      <div className="flex items-center gap-4 pt-5 border-t border-slate-800">
-                        <a
-                          href={activeMember.linkedin}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="w-10 h-10 rounded-full bg-slate-900/40 border border-slate-800 flex items-center justify-center text-slate-400 hover:text-[#00f0ff] hover:border-[#00f0ff]/50 hover:bg-[#00f0ff]/10 hover:shadow-[0_0_15px_rgba(0,240,255,0.2)] transition-all duration-300 active:scale-95 shadow-sm"
-                          title="LinkedIn Profile"
-                        >
-                          <LinkedinIcon size={18} />
-                        </a>
-                        <a
-                          href={activeMember.github}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="w-10 h-10 rounded-full bg-slate-900/40 border border-slate-800 flex items-center justify-center text-slate-400 hover:text-white hover:border-white/50 hover:bg-white/10 hover:shadow-[0_0_15px_rgba(255,255,255,0.2)] transition-all duration-300 active:scale-95 shadow-sm"
-                          title="GitHub Profile"
-                        >
-                          <GithubIcon size={18} />
-                        </a>
-                        <a
-                          href={`mailto:${activeMember.email}`}
-                          className="w-10 h-10 rounded-full bg-slate-900/40 border border-slate-800 flex items-center justify-center text-slate-400 hover:text-[#ea4335] hover:border-[#ea4335]/50 hover:bg-[#ea4335]/10 hover:shadow-[0_0_15px_rgba(234,67,53,0.2)] transition-all duration-300 active:scale-95 shadow-sm"
-                          title="Email"
-                        >
-                          <MailIcon size={18} />
-                        </a>
-                      </div>
-
-                    </motion.div>
-                  </AnimatePresence>
-                </div>
-
-                {/* Nav dots and arrows */}
-                <div className="relative z-10 flex items-center justify-between mt-8 pt-4 border-t border-slate-800">
-                  {/* Pagination Dots */}
-                  <div className="flex items-center gap-2">
-                    {coreTeam.map((_, idx) => {
-                      const isActive = activeSliderIdx === idx;
-                      return (
-                        <button
-                          key={idx}
-                          onClick={() => handleSelectDot(idx)}
-                          className={`h-2 rounded-full transition-all duration-300 cursor-pointer ${
-                            isActive 
-                              ? "w-6 bg-[#00f0ff] shadow-[0_0_8px_rgba(0,240,255,0.6)]" 
-                              : "w-2 bg-slate-800 hover:bg-slate-700"
-                          }`}
-                          aria-label={`Go to slide ${idx + 1}`}
-                        />
-                      );
-                    })}
-                  </div>
-
-                  {/* Chevrons Navigation */}
-                  <div className="flex items-center gap-3">
-                    <button
-                      onClick={handleManualPrev}
-                      className="w-10 h-10 rounded-full border border-slate-800 bg-slate-900/40 text-slate-400 hover:text-[#00f0ff] hover:border-[#00f0ff]/50 hover:bg-[#00f0ff]/10 hover:shadow-[0_0_15px_rgba(0,240,255,0.3)] flex items-center justify-center transition-all duration-300 active:scale-95 cursor-pointer"
-                      aria-label="Previous slide"
-                    >
-                      <ChevronLeft size={20} />
-                    </button>
-                    <button
-                      onClick={handleManualNext}
-                      className="w-10 h-10 rounded-full border border-slate-800 bg-slate-900/40 text-slate-400 hover:text-[#00f0ff] hover:border-[#00f0ff]/50 hover:bg-[#00f0ff]/10 hover:shadow-[0_0_15px_rgba(0,240,255,0.3)] flex items-center justify-center transition-all duration-300 active:scale-95 cursor-pointer"
-                      aria-label="Next slide"
-                    >
-                      <ChevronRight size={20} />
-                    </button>
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
+            {coreTeam.map((member, idx) => (
+              <motion.div
+                key={member.name}
+                className="group glass-panel rounded-2xl border border-cyan-500/10 hover:border-cyan-500/40 overflow-hidden flex flex-col transition-all duration-300 hover:shadow-[0_0_25px_rgba(0,240,255,0.12)] cursor-pointer"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.2 }}
+                transition={{ duration: 0.45, delay: idx * 0.08 }}
+                whileHover={{ y: -6, scale: 1.02 }}
+              >
+                {/* Portrait Image - compact size */}
+                <div className="relative w-full aspect-[3/4] overflow-hidden bg-gradient-to-br from-[#0c1a30] to-[#050b14]">
+                  <Image
+                    src={member.image}
+                    alt={member.name}
+                    fill
+                    sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 20vw"
+                    className="object-cover object-top transition-transform duration-500 group-hover:scale-105"
+                  />
+                  {/* Gradient overlay */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+                  {/* Index badge */}
+                  <div className="absolute top-2 left-2 w-6 h-6 rounded-full bg-cyan-500/20 border border-cyan-500/30 flex items-center justify-center text-[9px] font-black text-cyan-400">
+                    {String(idx + 1).padStart(2, "0")}
                   </div>
                 </div>
 
-              </div>
+                {/* Card details */}
+                <div className="p-3 space-y-2 flex-1 flex flex-col">
+                  <div>
+                    <h4 className="text-sm font-bold text-white leading-tight truncate">
+                      {member.name}
+                    </h4>
+                    <p className="text-[10px] font-semibold text-cyan-400 uppercase tracking-wider leading-tight text-glow mt-0.5 truncate">
+                      {member.role}
+                    </p>
+                    <p className="text-[9px] text-slate-500 font-bold uppercase tracking-wider truncate">
+                      {member.department}
+                    </p>
+                  </div>
 
-            </div>
+                  {/* Responsibilities — shown compactly */}
+                  <div className="flex-1 space-y-1">
+                    {member.responsibilities.slice(0, 2).map((resp, i) => (
+                      <div key={i} className="flex items-start gap-1">
+                        <span className="w-1 h-1 rounded-full bg-cyan-500/70 flex-shrink-0 mt-1.5" />
+                        <span className="text-[9px] text-slate-400 leading-tight">{resp}</span>
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* Social icons */}
+                  <div className="flex items-center gap-2 pt-2 border-t border-slate-800/60">
+                    <a
+                      href={member.linkedin}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="w-6 h-6 rounded-full bg-slate-900/60 border border-slate-800 flex items-center justify-center text-slate-500 hover:text-[#00f0ff] hover:border-[#00f0ff]/40 transition-all"
+                      title="LinkedIn"
+                    >
+                      <LinkedinIcon size={11} />
+                    </a>
+                    <a
+                      href={member.github}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="w-6 h-6 rounded-full bg-slate-900/60 border border-slate-800 flex items-center justify-center text-slate-500 hover:text-white hover:border-white/40 transition-all"
+                      title="GitHub"
+                    >
+                      <GithubIcon size={11} />
+                    </a>
+                    <a
+                      href={`mailto:${member.email}`}
+                      className="w-6 h-6 rounded-full bg-slate-900/60 border border-slate-800 flex items-center justify-center text-slate-500 hover:text-[#ea4335] hover:border-[#ea4335]/40 transition-all"
+                      title="Email"
+                    >
+                      <MailIcon size={11} />
+                    </a>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
           </div>
         </div>
 
@@ -788,47 +600,9 @@ export default function Organizers() {
   );
 }
 
-// 1. Standard Advisor Card Component
-function StandardAdvisorCard({ member }: { member: Advisor }) {
-  const initials = member.name
-    .replace("Dr. ", "")
-    .replace("Mr. ", "")
-    .split(" ")
-    .slice(0, 2)
-    .map((n) => n[0])
-    .join("");
-
-  return (
-    <div className="glass-panel p-6 rounded-2xl border border-slate-800 flex items-center gap-4 bg-[#070712]/90 h-28">
-      {/* Avatar */}
-      <div className="relative w-12 h-12 rounded-full bg-gradient-to-br from-cyan-950 to-slate-950 border border-cyan-500/20 flex items-center justify-center text-[#00f0ff] font-extrabold text-sm select-none">
-        {initials}
-      </div>
-
-      <div className="flex-1 min-w-0">
-        <h4 className="text-sm font-bold text-white truncate">{member.name}</h4>
-        <p className="text-[11px] text-cyan-400 font-semibold truncate leading-tight mt-0.5 animate-pulse">
-          {member.role}
-        </p>
-        <p className="text-[9px] text-slate-500 font-bold uppercase tracking-wider truncate">
-          {member.department}
-        </p>
-      </div>
-
-      <a
-        href={member.linkedin}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="text-slate-500 hover:text-[#00f0ff] transition-colors p-1"
-        title="LinkedIn Profile"
-      >
-        <LinkedinIcon size={16} />
-      </a>
-    </div>
-  );
-}
 
 // 3. Featured Coordinator Card Component (Mr. B. Bhuvaneshwaran)
+
 function FeaturedCoordinatorCard({ member }: { member: Advisor }) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [isMobile, setIsMobile] = useState(false);

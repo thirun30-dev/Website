@@ -74,8 +74,19 @@ export default function Footer() {
     }
   };
 
+  const scrollToRegistrationForm = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault();
+    const el = document.getElementById("register-form");
+    if (el) {
+      window.scrollTo({
+        top: el.offsetTop - 80,
+        behavior: "smooth",
+      });
+    }
+  };
+
   return (
-    <footer className="relative bg-[#020205] border-t border-slate-900 pt-16 pb-8 overflow-hidden">
+    <footer id="contact" className="relative bg-[#020205] border-t border-slate-900 pt-16 pb-8 overflow-hidden">
       {/* Decorative Glow */}
       <div className="absolute bottom-0 right-10 w-64 h-64 rounded-full bg-cyan-600/5 blur-[100px] pointer-events-none" />
 
@@ -128,13 +139,6 @@ export default function Footer() {
                 About Club
               </a>
               <a
-                href="#countdown"
-                onClick={(e) => handleLinkClick(e, "#countdown")}
-                className="text-slate-400 hover:text-[#00f0ff] transition-colors"
-              >
-                Countdown
-              </a>
-              <a
                 href="#speakers"
                 onClick={(e) => handleLinkClick(e, "#speakers")}
                 className="text-slate-400 hover:text-[#00f0ff] transition-colors"
@@ -149,18 +153,32 @@ export default function Footer() {
                 Schedule
               </a>
               <a
-                href="#registration"
-                onClick={(e) => handleLinkClick(e, "#registration")}
-                className="text-slate-400 hover:text-[#00f0ff] transition-colors"
-              >
-                Registration
-              </a>
-              <a
                 href="#organizers"
                 onClick={(e) => handleLinkClick(e, "#organizers")}
                 className="text-slate-400 hover:text-[#00f0ff] transition-colors"
               >
                 Organizers
+              </a>
+              <a
+                href="#sponsors"
+                onClick={(e) => handleLinkClick(e, "#sponsors")}
+                className="text-slate-400 hover:text-[#00f0ff] transition-colors"
+              >
+                Sponsors
+              </a>
+              <a
+                href="#register-form"
+                onClick={scrollToRegistrationForm}
+                className="text-[#00f0ff] hover:text-cyan-300 transition-colors font-semibold"
+              >
+                Register (Free)
+              </a>
+              <a
+                href="#contact"
+                onClick={(e) => handleLinkClick(e, "#contact")}
+                className="text-slate-400 hover:text-[#00f0ff] transition-colors"
+              >
+                Contact
               </a>
             </div>
           </div>

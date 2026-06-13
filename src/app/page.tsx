@@ -7,9 +7,9 @@ import About from "@/components/About";
 import CallForSpeakers from "@/components/CallForSpeakers";
 import Speakers from "@/components/Speakers";
 import Schedule from "@/components/Schedule";
-import Registration from "@/components/Registration";
 import Organizers from "@/components/Organizers";
 import Sponsors from "@/components/Sponsors";
+import RegistrationForm from "@/components/RegistrationForm";
 import Footer from "@/components/Footer";
 
 export default function Home() {
@@ -41,14 +41,14 @@ export default function Home() {
         {/* Interactive Event Schedule Timeline */}
         <Schedule />
 
-        {/* Tiered Ticket Pricing Passes */}
-        <Registration />
-
         {/* Organizers Committee Profile Gallery */}
         <Organizers />
 
         {/* Event Sponsors & Community Partners */}
         <Sponsors />
+
+        {/* Registration Form (above footer) */}
+        <RegistrationForm />
       </main>
 
       {/* Page Footer Credentials & Links */}

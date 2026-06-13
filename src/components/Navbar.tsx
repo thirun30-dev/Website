@@ -7,11 +7,11 @@ import { Menu, X, ArrowRight } from "lucide-react";
 const navItems = [
   { label: "Home", href: "#home" },
   { label: "About", href: "#about" },
-  { label: "Countdown", href: "#countdown" },
   { label: "Speakers", href: "#speakers" },
   { label: "Schedule", href: "#schedule" },
-  { label: "Registration", href: "#registration" },
   { label: "Organizers", href: "#organizers" },
+  { label: "Sponsors", href: "#sponsors" },
+  { label: "Contact", href: "#contact" },
 ];
 
 export default function Navbar() {
@@ -62,6 +62,17 @@ export default function Navbar() {
     }
   };
 
+  const scrollToRegistrationForm = () => {
+    setIsOpen(false);
+    const el = document.getElementById("register-form");
+    if (el) {
+      window.scrollTo({
+        top: el.offsetTop - 80,
+        behavior: "smooth",
+      });
+    }
+  };
+
   return (
     <nav
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
@@ -103,7 +114,7 @@ export default function Navbar() {
 
           {/* Centered Navigation Links (Desktop) */}
           <div className="hidden md:flex flex-grow justify-center">
-            <ul className="flex items-center gap-8 glass-panel px-6 py-2 rounded-full border border-slate-800/80 bg-slate-950/20">
+            <ul className="flex items-center gap-6 glass-panel px-6 py-2 rounded-full border border-slate-800/80 bg-slate-950/20">
               {navItems.map((item) => {
                 const isActive = activeSection === item.href.slice(1);
                 return (
@@ -125,13 +136,12 @@ export default function Navbar() {
 
           {/* Registration CTA (Right Desktop) */}
           <div className="hidden md:flex justify-end w-1/4">
-            <a
-              href="#registration"
-              onClick={(e) => handleClick(e, "#registration")}
+            <button
+              onClick={scrollToRegistrationForm}
               className="neon-btn px-6 py-2.5 rounded-full text-xs font-black uppercase tracking-wider text-white flex items-center gap-2"
             >
               Register Now <ArrowRight size={14} />
-            </a>
+            </button>
           </div>
 
           {/* Mobile Menu Toggle */}
@@ -172,13 +182,12 @@ export default function Navbar() {
             );
           })}
           <div className="pt-4 px-4">
-            <a
-              href="#registration"
-              onClick={(e) => handleClick(e, "#registration")}
+            <button
+              onClick={scrollToRegistrationForm}
               className="neon-btn w-full py-3 rounded-full text-center text-sm font-bold text-white flex items-center justify-center gap-2"
             >
               Register Now <ArrowRight size={15} />
-            </a>
+            </button>
           </div>
         </div>
       </div>
