@@ -1,26 +1,233 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+@theme {
+  --color-brand-blue: #0070f3;
+  --color-neon-blue: #00f0ff;
+  --color-cyan-glowing: #06b6d4;
+  --color-deep-blue: #0f172a;
+  --color-dark-bg: #020205;
+  --color-card-bg: #070712;
+  --color-panel-bg: rgba(7, 7, 18, 0.65);
+  
+  --animate-float: float 6s ease-in-out infinite;
+  --animate-float-delayed: float-delayed 8s ease-in-out infinite;
+  --animate-pulse-glow: pulse-glow 3s infinite alternate;
+  --animate-grid-move: grid-move 20s linear infinite;
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+  @keyframes float {
+    0%, 100% { transform: translateY(0px) rotate(0deg); }
+    50% { transform: translateY(-15px) rotate(2deg); }
+  }
+  @keyframes float-delayed {
+    0%, 100% { transform: translateY(0px) rotate(0deg); }
+    50% { transform: translateY(15px) rotate(-2deg); }
+  }
+  @keyframes pulse-glow {
+    0% { opacity: 0.3; filter: drop-shadow(0 0 5px rgba(0, 240, 255, 0.4)); }
+    100% { opacity: 0.8; filter: drop-shadow(0 0 20px rgba(0, 112, 243, 0.8)); }
+  }
+  @keyframes grid-move {
+    0% { background-position: 0 0; }
+    100% { background-position: 0 40px; }
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+:root {
+  --background: #020205;
+  --foreground: #f8fafc;
 }
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #020205;
+}
+::-webkit-scrollbar-thumb {
+  background: #1e293b;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #00f0ff;
+  box-shadow: 0 0 10px rgba(0, 240, 255, 0.5);
+}
+
+/* Glassmorphism panel styling */
+.glass-panel {
+  background: rgba(7, 7, 18, 0.65);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(0, 240, 255, 0.1);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+}
+
+.glass-panel:hover {
+  border-color: rgba(0, 240, 255, 0.25);
+  box-shadow: 0 8px 32px 0 rgba(0, 240, 255, 0.05);
+}
+
+/* Glowing text */
+.text-glow {
+  text-shadow: 0 0 10px rgba(0, 240, 255, 0.5), 0 0 20px rgba(0, 112, 243, 0.3);
+}
+
+/* Card Glow Hover */
+.card-glow-hover {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.card-glow-hover:hover {
+  transform: translateY(-5px);
+  border-color: rgba(0, 240, 255, 0.4);
+  box-shadow: 0 10px 30px -10px rgba(0, 240, 255, 0.15), 0 1px 1px rgba(0, 240, 255, 0.1);
+}
+
+/* Cyber grid background */
+.cyber-grid {
+  background-size: 40px 40px;
+  background-image: 
+    linear-gradient(to right, rgba(0, 240, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(0, 240, 255, 0.03) 1px, transparent 1px);
+}
+
+/* Neon ring button */
+.neon-btn {
+  position: relative;
+  background: linear-gradient(90deg, #0070f3, #00f0ff);
+  transition: all 0.3s ease;
+  box-shadow: 0 0 15px rgba(0, 112, 243, 0.4);
+}
+.neon-btn:hover {
+  box-shadow: 0 0 25px rgba(0, 240, 255, 0.8);
+  transform: scale(1.03);
+}
+
+.neon-btn-secondary {
+  position: relative;
+  background: transparent;
+  border: 1px solid rgba(0, 240, 255, 0.4);
+  color: #00f0ff;
+  transition: all 0.3s ease;
+}
+.neon-btn-secondary:hover {
+  background: rgba(0, 240, 255, 0.1);
+  box-shadow: 0 0 15px rgba(0, 240, 255, 0.3);
+  border-color: #00f0ff;
+}
+
+/* Custom Cursor styling (desktop only) */
+@media (any-hover: hover) {
+  html, body, a, button, [role="button"], input, select, textarea, .cursor-pointer {
+    cursor: none !important;
+  }
+
+  #custom-cursor {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 24px;
+    height: 24px;
+    pointer-events: none;
+    z-index: 99999;
+    background-image: url('/cursor.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    transform: translate(0, 0);
+  }
+
+  #custom-cursor-ring {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 38px;
+    height: 38px;
+    border: 2px solid rgba(0, 240, 255, 0.5);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 99998;
+    transform: translate(-50%, -50%);
+    box-shadow: 0 0 10px rgba(0, 240, 255, 0.2);
+    animation: cursor-ring-spin 6s linear infinite;
+  }
+
+  @keyframes cursor-ring-spin {
+    from { transform: translate(-50%, -50%) rotate(0deg); }
+    to { transform: translate(-50%, -50%) rotate(360deg); }
+  }
+
+  /* Custom cursor states active on body classes */
+  body.cursor-hover #custom-cursor {
+    transform: scale(1.1);
+  }
+
+  body.cursor-hover #custom-cursor-ring {
+    width: 50px;
+    height: 50px;
+    border-color: rgba(0, 240, 255, 0.95);
+    border-style: dashed;
+    background-color: rgba(0, 240, 255, 0.08);
+    box-shadow: 0 0 20px rgba(0, 240, 255, 0.45);
+    animation: cursor-ring-spin 3s linear infinite;
+  }
+
+  body.cursor-click #custom-cursor-ring {
+    width: 28px;
+    height: 28px;
+    border-color: rgba(0, 240, 255, 1);
+    background-color: rgba(0, 240, 255, 0.25);
+    box-shadow: 0 0 15px rgba(0, 240, 255, 0.6);
+    animation: none;
+  }
+}
+
+/* Event Crew continuous left-to-right marquee sliding styling */
+@keyframes marquee-ltr {
+  0% {
+    transform: translateX(-50%);
+  }
+  100% {
+    transform: translateX(0%);
+  }
+}
+
+.animate-marquee-ltr {
+  display: flex;
+  width: max-content;
+  animation: marquee-ltr 40s linear infinite;
+}
+
+.marquee-container:hover .animate-marquee-ltr {
+  animation-play-state: paused;
+}
+
+/* Stacked Overlapping Crew Cards */
+.crew-card-stacked {
+  margin-left: -2.5rem; /* Causes cards to overlap like a stack */
+  transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+  z-index: 10;
+}
+
+.crew-card-stacked:first-child {
+  margin-left: 0;
+}
+
+.crew-card-stacked:hover {
+  transform: translateY(-16px) scale(1.1);
+  z-index: 50;
+  box-shadow: 0 20px 40px rgba(0, 240, 255, 0.25), 0 0 25px rgba(0, 240, 255, 0.15);
+  border-color: rgba(0, 240, 255, 0.5) !important;
+}
+
+/* Hovering shifts next card over slightly */
+.crew-card-stacked:hover + .crew-card-stacked {
+  transform: translate(1.25rem, 0);
+}
+
