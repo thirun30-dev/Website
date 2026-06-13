@@ -1,7 +1,8 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 import { ExternalLink } from "lucide-react";
+import Image from "next/image";
 
 const LinkedinIcon = ({ size = 24, ...props }: { size?: number } & React.SVGProps<SVGSVGElement>) => (
   <svg
@@ -29,6 +30,7 @@ interface Speaker {
   bio: string;
   linkedin: string;
   tag?: string;
+  image?: string;
 }
 
 const speakers: Speaker[] = [
@@ -40,6 +42,7 @@ const speakers: Speaker[] = [
     bio: "Developer Advocate at AWS, specializing in DevOps, developer tooling, and modern container architectures.",
     linkedin: "https://www.linkedin.com/in/shubhamlondhe1996/",
     tag: "Keynote Speaker",
+    image: "/madan.png",
   },
   {
     name: "Arkodyuti Saha",
@@ -49,6 +52,7 @@ const speakers: Speaker[] = [
     bio: "Community Manager at AWS, developer evangelist, and mentor helping students scale their tech expertise.",
     linkedin: "https://www.linkedin.com/in/arkodyutisaha",
     tag: "Keynote Speaker",
+    image: "/sanjay.png",
   },
   {
     name: "Abishek Subramanian",
@@ -57,6 +61,7 @@ const speakers: Speaker[] = [
     topic: "Agentic AI on AWS - The Next Era of Cloud Intelligence",
     bio: "Senior Solutions Engineer at Databricks with expertise in scalable data platforms and cloud integration architectures.",
     linkedin: "https://www.linkedin.com/in/abishek-subramanian",
+    image: "/abhishek.png",
   },
   {
     name: "Aadhityaa SB",
@@ -65,6 +70,7 @@ const speakers: Speaker[] = [
     topic: "Build Structured AI Agent Systems with AWS Strands SDK",
     bio: "AI Developer specializing in deploying and structuring Agentic systems inside secure cloud infrastructures.",
     linkedin: "https://www.linkedin.com/in/aadhi0612/",
+    image: "/crew_1.png",
   },
   {
     name: "Ashok Kumar J",
@@ -73,6 +79,7 @@ const speakers: Speaker[] = [
     topic: "Cloud Compliance and Zero Trust Security",
     bio: "CTO and compliance auditor specializing in security controls, GDPR, and enterprise cloud policies.",
     linkedin: "https://www.linkedin.com/in/ashok-kumar-jeyachandran-290a15a5/",
+    image: "/crew_2.png",
   },
   {
     name: "A.V. Karthik",
@@ -81,6 +88,7 @@ const speakers: Speaker[] = [
     topic: "Architecting Resilient Applications with AWS CloudFront and S3",
     bio: "Solutions Architect focusing on microservices, serverless migrations, and content delivery networking.",
     linkedin: "https://www.linkedin.com/in/karthikav93/",
+    image: "/crew_3.png",
   },
   {
     name: "Jeevitha M",
@@ -89,6 +97,7 @@ const speakers: Speaker[] = [
     topic: "Deploying Foundation Models at Scale with Amazon Bedrock",
     bio: "AWS Community Builder and developer advocate focusing on AI pipelines and scalable foundation model hosting.",
     linkedin: "https://www.linkedin.com/in/jeevitha-m-357979223/",
+    image: "/monica.png",
   },
 ];
 
@@ -109,14 +118,14 @@ export default function Speakers() {
             Featured Speakers
           </h2>
           <p className="text-slate-400 text-sm max-w-md mx-auto">
-            Click on a card to reveal session details, abstracts, and professional backgrounds.
+            Hover over a card to reveal session details, abstracts, and professional backgrounds.
           </p>
         </div>
 
         {/* 3D Cards Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {speakers.map((speaker, idx) => (
-            <SpeakerCard key={idx} speaker={speaker} />
+            <SpeakerCard key={idx} speaker={speaker} idx={idx} />
           ))}
         </div>
 
@@ -125,63 +134,84 @@ export default function Speakers() {
   );
 }
 
-function SpeakerCard({ speaker }: { speaker: Speaker }) {
-  const [isFlipped, setIsFlipped] = useState(false);
-
-  const initials = speaker.name
-    .split(" ")
-    .map((n) => n[0])
-    .join("");
+function SpeakerCard({ speaker, idx }: { speaker: Speaker; idx: number }) {
+  const bgGradients = [
+    "from-[#11291f] to-[#091711] border-emerald-500/20 shadow-[0_15px_35px_rgba(16,185,129,0.15)]", // green
+    "from-[#122332] to-[#0a151f] border-cyan-500/20 shadow-[0_15px_35px_rgba(6,182,212,0.15)]",      // blue
+    "from-[#221813] to-[#140e0c] border-orange-500/20 shadow-[0_15px_35px_rgba(249,115,22,0.15)]",   // clay
+    "from-[#1d1730] to-[#110e1d] border-purple-500/20 shadow-[0_15px_35px_rgba(139,92,246,0.15)]",   // purple
+  ];
+  const bgGradient = bgGradients[idx % bgGradients.length];
+  const speakerImage = speaker.image || "/abhishek.png";
 
   return (
     <div
-      onClick={() => setIsFlipped(!isFlipped)}
-      className="relative h-[380px] w-full cursor-pointer [perspective:1000px] group select-none"
+      className="relative h-[420px] w-full cursor-pointer [perspective:1000px] group select-none"
     >
       {/* Inner Flipping Card Wrapper */}
       <div
-        className={`relative w-full h-full duration-700 [transform-style:preserve-3d] transition-transform ${
-          isFlipped ? "[transform:rotateY(180deg)]" : ""
-        }`}
+        style={{ transitionDuration: "1100ms" }}
+        className="relative w-full h-full [transform-style:preserve-3d] transition-transform group-hover:[transform:rotateY(180deg)]"
       >
         
         {/* FRONT FACE */}
-        <div className="absolute inset-0 w-full h-full [backface-visibility:hidden] glass-panel border border-slate-800 rounded-3xl p-8 flex flex-col items-center justify-center text-center bg-[#070712]/95 shadow-[0_0_15px_rgba(0,240,255,0.02)]">
-          {speaker.tag && (
-            <span className="absolute top-5 left-5 px-3 py-1 rounded-full bg-cyan-950/40 border border-cyan-500/30 text-cyan-400 text-[10px] font-bold uppercase tracking-wider">
-              ★ {speaker.tag}
-            </span>
-          )}
-
-          {/* Avatar Container */}
-          <div className="relative w-28 h-28 rounded-full bg-gradient-to-br from-blue-900 to-slate-950 border border-blue-500/30 flex items-center justify-center text-[#00f0ff] font-black text-3xl shadow-[0_0_20px_rgba(0,112,243,0.3)] mb-6 group-hover:scale-105 transition-transform duration-300">
-            {initials}
-            <div className="absolute inset-1 rounded-full border border-dashed border-cyan-500/20" />
+        <div className={`absolute inset-0 w-full h-full [backface-visibility:hidden] bg-gradient-to-b ${bgGradient} border border-white/5 rounded-[28px] flex flex-col justify-end shadow-2xl relative overflow-hidden`}>
+          
+          {/* Full bleed image background */}
+          <div className="absolute inset-0 z-0">
+            <Image
+              src={speakerImage}
+              alt={speaker.name}
+              fill
+              sizes="(max-width: 640px) 100vw, 33vw"
+              className="object-cover object-top transition-transform duration-700 group-hover:scale-105"
+            />
+            {/* Blending overlay gradient to make text readable */}
+            <div className="absolute inset-0 bg-gradient-to-t from-black via-black/45 to-transparent pointer-events-none" />
           </div>
 
-          <div className="space-y-2">
-            <h3 className="text-xl font-extrabold text-white group-hover:text-[#00f0ff] transition-colors leading-tight">
+          {/* Title & Bio Info */}
+          <div className="space-y-1 text-center w-full px-6 pt-3 select-none relative z-20">
+            <h3 className="text-xl font-black text-white tracking-wide leading-tight drop-shadow-md truncate">
               {speaker.name}
             </h3>
-            <p className="text-xs text-cyan-400 font-bold tracking-wide">
+            <p className="text-xs font-bold text-cyan-400 tracking-wide uppercase leading-none text-glow">
               {speaker.role}
             </p>
-            <p className="text-[10px] text-slate-500 font-bold uppercase tracking-widest">
+            <p className="text-[10px] text-slate-300 font-bold uppercase tracking-widest leading-none mt-1 drop-shadow">
               {speaker.company}
             </p>
           </div>
 
-          <p className="text-[9px] text-slate-500 mt-10 uppercase tracking-widest font-black flex items-center gap-1 group-hover:text-cyan-400 transition-colors">
-            Click to view session details
-          </p>
+          {/* Stats & CTA bottom bar */}
+          <div className="mt-6 w-full px-6 pb-6 flex items-center justify-between border-t border-white/10 pt-4 relative z-20">
+            <div className="text-left">
+              <span className="text-[8px] text-slate-300 font-bold uppercase tracking-wider block leading-none">Session</span>
+              <span className="text-xs font-black text-white mt-1.5 block leading-none">Track 0{idx + 1}</span>
+            </div>
+            <button className="px-5 py-2.5 bg-white hover:bg-[#00f0ff] hover:text-slate-950 text-slate-950 font-bold rounded-full text-[10px] uppercase tracking-wider transition-all duration-300 shadow-md active:scale-95">
+              View Topic
+            </button>
+          </div>
+
         </div>
 
         {/* BACK FACE */}
-        <div className="absolute inset-0 w-full h-full [backface-visibility:hidden] [transform:rotateY(180deg)] glass-panel border border-cyan-500/20 rounded-3xl p-8 flex flex-col justify-between bg-[#070712] shadow-[0_0_25px_rgba(0,240,255,0.04)]">
-          <div className="space-y-4">
+        <div className={`absolute inset-0 w-full h-full [backface-visibility:hidden] [transform:rotateY(180deg)] bg-gradient-to-b ${bgGradient} border border-white/5 rounded-[28px] p-6 sm:p-8 flex flex-col justify-between shadow-2xl overflow-hidden`}>
+          {/* Subtle blurred speaker photo in the background for depth */}
+          <div className="absolute inset-0 opacity-15 blur-xl scale-110 pointer-events-none z-0">
+            <Image
+              src={speakerImage}
+              alt=""
+              fill
+              className="object-cover object-top"
+            />
+          </div>
+
+          <div className="space-y-4 relative z-10">
             
             {/* Header */}
-            <div className="flex items-center justify-between border-b border-slate-900 pb-3">
+            <div className="flex items-center justify-between border-b border-white/10 pb-3">
               <span className="text-[10px] text-cyan-400 font-extrabold uppercase tracking-widest">
                 Topic & Abstract
               </span>
@@ -190,7 +220,7 @@ function SpeakerCard({ speaker }: { speaker: Speaker }) {
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={(e) => e.stopPropagation()} // Stop flip on click
-                className="text-slate-400 hover:text-[#00f0ff] transition-colors p-1"
+                className="text-slate-300 hover:text-[#00f0ff] transition-colors p-1"
                 title="LinkedIn Profile"
               >
                 <LinkedinIcon size={18} />
@@ -199,20 +229,20 @@ function SpeakerCard({ speaker }: { speaker: Speaker }) {
 
             {/* Session Title */}
             <div className="space-y-1">
-              <h4 className="text-[9px] text-slate-500 font-bold uppercase tracking-wider">
+              <h4 className="text-[8px] text-slate-400 font-bold uppercase tracking-wider">
                 Presentation Topic
               </h4>
-              <p className="text-xs font-bold text-white tracking-wide leading-snug">
+              <p className="text-xs sm:text-sm font-bold text-white tracking-wide leading-snug">
                 {speaker.topic}
               </p>
             </div>
 
             {/* Abstract */}
             <div className="space-y-1">
-              <h4 className="text-[9px] text-slate-500 font-bold uppercase tracking-wider">
+              <h4 className="text-[8px] text-slate-400 font-bold uppercase tracking-wider">
                 Abstract
               </h4>
-              <p className="text-[11px] text-slate-400 leading-relaxed line-clamp-4">
+              <p className="text-[10.5px] text-slate-300 leading-relaxed line-clamp-6">
                 {speaker.bio}
               </p>
             </div>
@@ -220,8 +250,8 @@ function SpeakerCard({ speaker }: { speaker: Speaker }) {
           </div>
 
           {/* Footer controls */}
-          <div className="border-t border-slate-900 pt-4 flex items-center justify-between text-xs">
-            <span className="text-slate-500 font-bold uppercase text-[9px] tracking-widest">
+          <div className="border-t border-white/10 pt-4 flex items-center justify-between text-xs relative z-10">
+            <span className="text-slate-400 font-bold uppercase text-[8px] tracking-widest">
               Click to flip back
             </span>
             <a

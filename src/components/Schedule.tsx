@@ -114,7 +114,7 @@ export default function Schedule() {
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
         {/* Section Heading */}
-        <div className="text-center space-y-4 mb-20">
+        <div className="text-center space-y-4 mb-12">
           <div className="text-cyan-400 font-semibold uppercase tracking-wider text-xs">
             Event Agenda
           </div>
@@ -150,7 +150,7 @@ export default function Schedule() {
           <div className="absolute left-4 md:left-1/2 top-0 bottom-0 w-[2px] bg-slate-800/80 -translate-x-1/2 pointer-events-none" />
 
           {/* Timeline Items list */}
-          <div className="space-y-16">
+          <div className="space-y-8">
             {filteredAgenda.map((item, idx) => {
               const isEven = idx % 2 === 0;
               return (
@@ -254,7 +254,7 @@ function TimelineRevealItem({ item, isEven }: { item: AgendaItem; isEven: boolea
         
         {/* Soft-edged Speech-cloud / speech-bubble Container */}
         <div
-          className={`relative glass-panel rounded-3xl p-6 md:p-8 bg-[#070712]/90 border border-slate-800 hover:border-cyan-500/20 hover:shadow-[0_8px_30px_rgba(0,240,255,0.04)] transition-all duration-300 ${
+          className={`relative glass-panel rounded-3xl p-5 md:p-6 bg-[#070712]/90 border border-slate-800 hover:border-cyan-500/20 hover:shadow-[0_8px_30px_rgba(0,240,255,0.04)] transition-all duration-300 ${
             isEven
               ? "before:absolute before:top-4 before:left-[-8px] before:w-4 before:h-4 before:bg-[#070712] before:border-l before:border-b before:border-slate-800 before:rotate-45 before:rounded-bl-[4px] md:before:left-auto md:before:right-[-8px] md:before:border-l-0 md:before:border-b-0 md:before:border-r md:before:border-t"
               : "before:absolute before:top-4 before:left-[-8px] before:w-4 before:h-4 before:bg-[#070712] before:border-l before:border-b before:border-slate-800 before:rotate-45 before:rounded-bl-[4px]"
@@ -266,7 +266,7 @@ function TimelineRevealItem({ item, isEven }: { item: AgendaItem; isEven: boolea
           </span>
 
           <div className="space-y-2">
-            <div className="flex flex-wrap items-center gap-2 md:justify-end justify-start">
+            <div className={`flex flex-wrap items-center gap-2 justify-start ${isEven ? "md:justify-end" : "md:justify-start"}`}>
               <span className={`px-2 py-0.5 rounded text-[8px] font-black uppercase tracking-wider border ${getTypeStyle(item.type)}`}>
                 {item.type}
               </span>
@@ -277,7 +277,7 @@ function TimelineRevealItem({ item, isEven }: { item: AgendaItem; isEven: boolea
             <h3 className="text-base sm:text-lg font-extrabold text-white leading-tight">
               {item.title}
             </h3>
-            <p className="text-xs text-slate-400 leading-relaxed max-w-xl md:ml-auto">
+            <p className={`text-xs text-slate-400 leading-relaxed max-w-xl ${isEven ? "md:ml-auto" : "md:mr-auto md:ml-0"}`}>
               {item.description}
             </p>
           </div>

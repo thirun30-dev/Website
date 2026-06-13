@@ -297,6 +297,24 @@ const crewTeam: CrewMember[] = [
 
 export default function Organizers() {
   const [selectedCrew, setSelectedCrew] = useState<CrewMember | null>(null);
+  const [activeCoreIdx, setActiveCoreIdx] = useState(0);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth < 1024);
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  // Auto-scroll Core Team carousel every 7 seconds
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setActiveCoreIdx((prev) => (prev + 1) % coreTeam.length);
+    }, 7000);
+    return () => clearInterval(timer);
+  }, [activeCoreIdx]);
+
 
   return (
     <section id="organizers" className="py-24 relative overflow-hidden bg-black/20">
@@ -329,96 +347,166 @@ export default function Organizers() {
           <FeaturedCoordinatorCard member={advisors[0]} />
         </div>
 
-        {/* 2. Core Team Showcase Section — Compact Grid Cards */}
+        {/* 2. Core Team Showcase Section — Coverflow Slider + About Us */}
         <div className="space-y-8 pt-4">
           <h3 className="text-lg font-bold text-[#00f0ff] border-b border-slate-900 pb-3 flex items-center gap-2">
             <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse" />
             Core Team
           </h3>
 
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
-            {coreTeam.map((member, idx) => (
-              <motion.div
-                key={member.name}
-                className="group glass-panel rounded-2xl border border-cyan-500/10 hover:border-cyan-500/40 overflow-hidden flex flex-col transition-all duration-300 hover:shadow-[0_0_25px_rgba(0,240,255,0.12)] cursor-pointer"
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.2 }}
-                transition={{ duration: 0.45, delay: idx * 0.08 }}
-                whileHover={{ y: -6, scale: 1.02 }}
+          <div className="flex flex-col lg:flex-row gap-12 items-center justify-between min-h-[480px]">
+            {/* Left Side: Coverflow Slider */}
+            <div className="w-full lg:w-1/2 flex items-center justify-center relative h-[360px] sm:h-[400px]">
+              <div 
+                style={{ perspective: 1000 }}
+                className="relative w-full max-w-[420px] h-full flex items-center justify-center overflow-visible"
               >
-                {/* Portrait Image - compact size */}
-                <div className="relative w-full aspect-[3/4] overflow-hidden bg-gradient-to-br from-[#0c1a30] to-[#050b14]">
-                  <Image
-                    src={member.image}
-                    alt={member.name}
-                    fill
-                    sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 20vw"
-                    className="object-cover object-top transition-transform duration-500 group-hover:scale-105"
-                  />
-                  {/* Gradient overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
-                  {/* Index badge */}
-                  <div className="absolute top-2 left-2 w-6 h-6 rounded-full bg-cyan-500/20 border border-cyan-500/30 flex items-center justify-center text-[9px] font-black text-cyan-400">
-                    {String(idx + 1).padStart(2, "0")}
-                  </div>
-                </div>
+                {coreTeam.map((member, idx) => {
+                  // Wrapping logic for 3 elements: left, center, right
+                  let offset = idx - activeCoreIdx;
+                  if (offset < -1) offset += 3;
+                  if (offset > 1) offset -= 3;
 
-                {/* Card details */}
-                <div className="p-3 space-y-2 flex-1 flex flex-col">
-                  <div>
-                    <h4 className="text-sm font-bold text-white leading-tight truncate">
-                      {member.name}
-                    </h4>
-                    <p className="text-[10px] font-semibold text-cyan-400 uppercase tracking-wider leading-tight text-glow mt-0.5 truncate">
-                      {member.role}
-                    </p>
-                    <p className="text-[9px] text-slate-500 font-bold uppercase tracking-wider truncate">
-                      {member.department}
-                    </p>
-                  </div>
+                  const isActive = offset === 0;
+                  const cardXOffset = isMobile ? 80 : 100;
 
-                  {/* Responsibilities — shown compactly */}
-                  <div className="flex-1 space-y-1">
-                    {member.responsibilities.slice(0, 2).map((resp, i) => (
-                      <div key={i} className="flex items-start gap-1">
-                        <span className="w-1 h-1 rounded-full bg-cyan-500/70 flex-shrink-0 mt-1.5" />
-                        <span className="text-[9px] text-slate-400 leading-tight">{resp}</span>
+                  return (
+                    <motion.div
+                      key={member.name}
+                      onClick={() => setActiveCoreIdx(idx)}
+                      style={{
+                        zIndex: isActive ? 10 : 5,
+                        pointerEvents: "auto",
+                      }}
+                      animate={{
+                        x: offset === 0 ? 0 : offset === -1 ? -cardXOffset : cardXOffset,
+                        scale: offset === 0 ? 1 : 0.8,
+                        rotateY: offset === 0 ? 0 : offset === -1 ? 25 : -25,
+                        opacity: offset === 0 ? 1 : 0.55,
+                      }}
+                      transition={{
+                        type: "spring",
+                        stiffness: 220,
+                        damping: 22,
+                      }}
+                      className="absolute w-[240px] sm:w-[280px] aspect-[3/4] rounded-3xl overflow-hidden bg-gradient-to-br from-[#0c1a30] to-[#050b14] border border-cyan-500/20 shadow-[0_0_35px_rgba(0,240,255,0.15)] hover:border-cyan-500/40 hover:shadow-[0_0_40px_rgba(0,240,255,0.25)] cursor-pointer group/core flex-shrink-0 origin-center"
+                    >
+                      {/* Portrait Image */}
+                      <Image
+                        src={member.image}
+                        alt={member.name}
+                        fill
+                        sizes="(max-width: 640px) 240px, 280px"
+                        className="object-cover object-top transition-transform duration-500 group-hover/core:scale-105"
+                      />
+                      {/* Gradient overlay */}
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent pointer-events-none z-10" />
+
+                      {/* Floating name badge overlay inside card */}
+                      <div className="absolute bottom-5 left-4 right-4 z-20 text-center select-none">
+                        <h4 className="text-base sm:text-lg font-bold tracking-wide text-white drop-shadow-md truncate">
+                          {member.name}
+                        </h4>
+                        <p className="text-[10px] sm:text-xs text-cyan-400 font-semibold uppercase tracking-wider mt-0.5 truncate leading-none">
+                          {member.role}
+                        </p>
                       </div>
-                    ))}
+
+                      {/* Coverflow card focus effect border */}
+                      {isActive && (
+                        <div className="absolute inset-0 border-2 border-cyan-400/60 rounded-3xl pointer-events-none z-30" />
+                      )}
+                    </motion.div>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* Right Side: About Us Panel */}
+            <div className="w-full lg:w-1/2">
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={activeCoreIdx}
+                  initial={{ opacity: 0, x: 20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -20 }}
+                  transition={{ duration: 0.3 }}
+                  className="glass-panel text-white rounded-3xl p-6 sm:p-8 border border-cyan-500/10 shadow-[0_0_40px_rgba(0,240,255,0.08)] bg-[#070712]/90 space-y-6"
+                >
+                  <div>
+                    <span className="inline-block px-2.5 py-0.5 rounded bg-cyan-950/40 border border-cyan-500/15 text-cyan-400 text-[10px] font-bold uppercase tracking-widest">
+                      Core Team Profile
+                    </span>
+                    <h3 className="text-2xl sm:text-3xl font-black mt-2 text-white leading-tight">
+                      {coreTeam[activeCoreIdx].name}
+                    </h3>
+                    <div className="flex flex-wrap items-center gap-2 mt-1">
+                      <p className="text-xs sm:text-sm font-semibold text-cyan-400 uppercase tracking-wider text-glow leading-none">
+                        {coreTeam[activeCoreIdx].role}
+                      </p>
+                      <span className="text-slate-600 text-xs">•</span>
+                      <p className="text-[10px] sm:text-xs text-slate-500 font-bold uppercase tracking-widest leading-none">
+                        {coreTeam[activeCoreIdx].department}
+                      </p>
+                    </div>
                   </div>
 
-                  {/* Social icons */}
-                  <div className="flex items-center gap-2 pt-2 border-t border-slate-800/60">
+                  <div className="space-y-4">
+                    <div>
+                      <h5 className="text-[9px] sm:text-[10px] text-[#00f0ff]/65 font-bold uppercase tracking-wider mb-1">
+                        Biography & Leadership
+                      </h5>
+                      <p className="text-xs sm:text-sm text-slate-300 leading-relaxed font-medium">
+                        {coreTeam[activeCoreIdx].bio}
+                      </p>
+                    </div>
+
+                    <div>
+                      <h5 className="text-[9px] sm:text-[10px] text-[#00f0ff]/65 font-bold uppercase tracking-wider mb-2">
+                        Key Responsibilities & Focus
+                      </h5>
+                      <ul className="grid grid-cols-1 gap-2">
+                        {coreTeam[activeCoreIdx].responsibilities.map((resp, i) => (
+                          <li key={i} className="flex items-center gap-3 text-slate-300 text-xs sm:text-sm font-medium">
+                            <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse flex-shrink-0" />
+                            <span>{resp}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  </div>
+
+                  {/* Social links */}
+                  <div className="flex items-center gap-3 pt-4 border-t border-slate-800/80">
                     <a
-                      href={member.linkedin}
+                      href={coreTeam[activeCoreIdx].linkedin}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="w-6 h-6 rounded-full bg-slate-900/60 border border-slate-800 flex items-center justify-center text-slate-500 hover:text-[#00f0ff] hover:border-[#00f0ff]/40 transition-all"
-                      title="LinkedIn"
+                      className="w-10 h-10 rounded-full bg-slate-950 border border-slate-800 flex items-center justify-center text-slate-400 hover:text-[#00f0ff] hover:border-[#00f0ff]/50 hover:bg-[#00f0ff]/10 transition-all active:scale-95 cursor-pointer"
+                      title="LinkedIn Profile"
                     >
-                      <LinkedinIcon size={11} />
+                      <LinkedinIcon size={16} />
                     </a>
                     <a
-                      href={member.github}
+                      href={coreTeam[activeCoreIdx].github}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="w-6 h-6 rounded-full bg-slate-900/60 border border-slate-800 flex items-center justify-center text-slate-500 hover:text-white hover:border-white/40 transition-all"
-                      title="GitHub"
+                      className="w-10 h-10 rounded-full bg-slate-950 border border-slate-800 flex items-center justify-center text-slate-400 hover:text-white hover:border-white/50 hover:bg-white/10 transition-all active:scale-95 cursor-pointer"
+                      title="GitHub Profile"
                     >
-                      <GithubIcon size={11} />
+                      <GithubIcon size={16} />
                     </a>
                     <a
-                      href={`mailto:${member.email}`}
-                      className="w-6 h-6 rounded-full bg-slate-900/60 border border-slate-800 flex items-center justify-center text-slate-500 hover:text-[#ea4335] hover:border-[#ea4335]/40 transition-all"
+                      href={`mailto:${coreTeam[activeCoreIdx].email}`}
+                      className="w-10 h-10 rounded-full bg-slate-950 border border-slate-800 flex items-center justify-center text-slate-400 hover:text-[#ea4335] hover:border-[#ea4335]/50 hover:bg-[#ea4335]/10 transition-all active:scale-95 cursor-pointer"
                       title="Email"
                     >
-                      <MailIcon size={11} />
+                      <MailIcon size={16} />
                     </a>
                   </div>
-                </div>
-              </motion.div>
-            ))}
+                </motion.div>
+              </AnimatePresence>
+            </div>
           </div>
         </div>
 
@@ -628,10 +716,10 @@ function FeaturedCoordinatorCard({ member }: { member: Advisor }) {
   });
 
   // Transform values based on click state
-  const imageX = isExpanded && !isMobile ? "-180px" : "0px";
+  const imageX = isExpanded && !isMobile ? "-226px" : "0px";
   const imageWidth = isExpanded && !isMobile ? "420px" : (isMobile ? "260px" : "320px");
   const textOpacity = isExpanded ? 1 : 0;
-  const textX = isExpanded && !isMobile ? "0px" : "40px";
+  const textX = isExpanded && !isMobile ? "226px" : (isMobile ? "0px" : "40px");
   const pointerEvents = isExpanded ? ("auto" as const) : ("none" as const);
 
   return (
@@ -682,7 +770,7 @@ function FeaturedCoordinatorCard({ member }: { member: Advisor }) {
           }}
           transition={{ duration: 0.4, ease: "easeInOut" }}
           style={{ pointerEvents }}
-          className="w-full lg:w-[420px] text-left space-y-5 z-10 p-6 rounded-2xl glass-panel border border-cyan-500/10 text-white lg:absolute lg:right-[80px] xl:right-[120px]"
+          className="w-full lg:w-[420px] text-left space-y-5 z-10 p-6 rounded-2xl glass-panel border border-cyan-500/10 text-white lg:absolute lg:left-[calc(50%-210px)]"
         >
           <div>
             <span className="inline-block px-2.5 py-0.5 rounded bg-cyan-950/40 border border-cyan-500/15 text-cyan-400 text-[10px] font-bold uppercase tracking-widest">
