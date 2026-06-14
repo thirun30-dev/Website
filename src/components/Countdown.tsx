@@ -95,78 +95,122 @@ export default function Countdown() {
         </div>
 
         {/* Large Typographic Time Grid */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 w-full max-w-5xl">
-          {timeUnits.map((unit, idx) => (
-            <div
-              key={idx}
-              className="relative group rounded-3xl p-[1px] bg-gradient-to-b from-cyan-500/10 to-transparent hover:from-cyan-400/40 transition-all duration-500 hover:shadow-[0_0_35px_rgba(0,240,255,0.12)]"
-            >
-              {/* Sleek, Glassmorphic Card */}
-              <div className="glass-panel rounded-3xl p-6 md:p-8 flex flex-col items-center justify-center bg-slate-950/70 border border-slate-800/60 transition-transform duration-500 hover:-translate-y-1">
-                
-                {/* Ambient Internal Glow */}
-                <div className="absolute inset-0 rounded-3xl bg-gradient-to-br from-blue-600/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+        <div className="w-full max-w-5xl space-y-10 flex flex-col items-center">
+          
+          {/* Days Unit (Top Center Capsule) */}
+          <div className="w-full flex justify-center">
+            {/* Capsule shape for Days */}
+            <div className="relative w-44 h-22 sm:w-52 sm:h-26 flex items-center justify-center">
+              <svg className="absolute inset-0 w-full h-full" viewBox="0 0 200 100">
+                <defs>
+                  <linearGradient id="timer-gradient-days" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stopColor="#2563eb" />
+                    <stop offset="100%" stopColor="#00f0ff" />
+                  </linearGradient>
+                </defs>
+                {/* Static capsule border */}
+                <rect
+                  x="5"
+                  y="5"
+                  width="190"
+                  height="90"
+                  rx="45"
+                  ry="45"
+                  stroke="url(#timer-gradient-days)"
+                  strokeWidth="5"
+                  fill="transparent"
+                  className="drop-shadow-[0_0_8px_rgba(6,182,212,0.4)] opacity-85"
+                />
+              </svg>
 
-                {/* Circular Progress Indicator showing Time Flow */}
-                <div className="relative w-36 h-36 sm:w-40 sm:h-40 flex items-center justify-center">
-                  <svg className="absolute inset-0 w-full h-full transform -rotate-90" viewBox="0 0 160 160">
-                    <defs>
-                      <linearGradient id={`timer-gradient-${idx}`} x1="0%" y1="0%" x2="100%" y2="100%">
-                        <stop offset="0%" stopColor="#2563eb" /> {/* Blue */}
-                        <stop offset="100%" stopColor="#00f0ff" /> {/* Cyan */}
-                      </linearGradient>
-                    </defs>
-                    {/* Base circle track */}
-                    <circle
-                      cx="80"
-                      cy="80"
-                      r="70"
-                      className="stroke-slate-900/50"
-                      strokeWidth="5"
-                      fill="transparent"
-                    />
-                    {/* Shadow glow track */}
-                    <circle
-                      cx="80"
-                      cy="80"
-                      r="70"
-                      className="stroke-cyan-500/5"
-                      strokeWidth="10"
-                      fill="transparent"
-                    />
-                    {/* Dynamic flow timer arc */}
-                    <motion.circle
-                      cx="80"
-                      cy="80"
-                      r="70"
-                      stroke={`url(#timer-gradient-${idx})`}
-                      strokeWidth="6"
-                      fill="transparent"
-                      strokeDasharray={2 * Math.PI * 70}
-                      initial={{ strokeDashoffset: 2 * Math.PI * 70 }}
-                      animate={{ strokeDashoffset: 2 * Math.PI * 70 * (1 - unit.value / unit.max) }}
-                      transition={{ duration: 0.5, ease: "easeInOut" }}
-                      strokeLinecap="round"
-                      className="drop-shadow-[0_0_8px_rgba(6,182,212,0.4)]"
-                    />
-                  </svg>
-                  
-                  {/* Central Text Panel */}
-                  <div className="text-center z-10 flex flex-col items-center">
-                    <span className="text-4xl sm:text-5xl font-black tracking-tight bg-gradient-to-r from-blue-500 via-cyan-400 to-[#00f0ff] bg-clip-text text-transparent text-glow select-none">
-                      {String(unit.value).padStart(2, "0")}
-                    </span>
-                    <span className="text-[10px] sm:text-xs text-slate-500 font-bold uppercase tracking-widest mt-1">
-                      {unit.label}
-                    </span>
-                  </div>
-                </div>
-
-                {/* Micro Border Glow Segment */}
-                <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-1/3 h-[2px] bg-cyan-400 opacity-20 group-hover:opacity-100 group-hover:w-1/2 transition-all duration-500" />
+              {/* Central Text Panel */}
+              <div className="text-center z-10 flex flex-col items-center">
+                <span className="text-4xl sm:text-5xl font-black tracking-tight bg-gradient-to-r from-blue-500 via-cyan-400 to-[#00f0ff] bg-clip-text text-transparent text-glow select-none">
+                  {String(timeLeft.days).padStart(2, "0")}
+                </span>
+                <span className="text-[10px] sm:text-xs text-slate-500 font-bold uppercase tracking-widest mt-1">
+                  Days
+                </span>
               </div>
             </div>
-          ))}
+          </div>
+
+          {/* Hours, Minutes, Seconds Grid (Bottom Row) */}
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 w-full max-w-4xl justify-items-center">
+            {timeUnits.slice(1).map((unit, idx) => {
+              const actualIdx = idx + 1;
+              return (
+                <div
+                  key={idx}
+                  className="relative group rounded-3xl p-[1px] bg-gradient-to-b from-cyan-500/10 to-transparent hover:from-cyan-400/40 transition-all duration-500 hover:shadow-[0_0_35px_rgba(0,240,255,0.12)] w-full max-w-[280px]"
+                >
+                  {/* Sleek, Glassmorphic Card */}
+                  <div className="glass-panel rounded-3xl p-6 md:p-8 flex flex-col items-center justify-center bg-slate-950/70 border border-slate-800/60 transition-transform duration-500 hover:-translate-y-1 w-full h-full">
+                    {/* Ambient Internal Glow */}
+                    <div className="absolute inset-0 rounded-3xl bg-gradient-to-br from-blue-600/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+
+                    {/* Circular progress for others */}
+                    <div className="relative w-36 h-36 sm:w-40 sm:h-40 flex items-center justify-center">
+                      <svg className="absolute inset-0 w-full h-full transform -rotate-90" viewBox="0 0 160 160">
+                        <defs>
+                          <linearGradient id={`timer-gradient-${actualIdx}`} x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stopColor="#2563eb" />
+                            <stop offset="100%" stopColor="#00f0ff" />
+                          </linearGradient>
+                        </defs>
+                        {/* Base circle track */}
+                        <circle
+                          cx="80"
+                          cy="80"
+                          r="70"
+                          className="stroke-slate-900/50"
+                          strokeWidth="5"
+                          fill="transparent"
+                        />
+                        {/* Shadow glow track */}
+                        <circle
+                          cx="80"
+                          cy="80"
+                          r="70"
+                          className="stroke-cyan-500/5"
+                          strokeWidth="10"
+                          fill="transparent"
+                        />
+                        {/* Dynamic flow timer arc */}
+                        <motion.circle
+                          cx="80"
+                          cy="80"
+                          r="70"
+                          stroke={`url(#timer-gradient-${actualIdx})`}
+                          strokeWidth="6"
+                          fill="transparent"
+                          strokeDasharray={2 * Math.PI * 70}
+                          initial={{ strokeDashoffset: 2 * Math.PI * 70 }}
+                          animate={{ strokeDashoffset: 2 * Math.PI * 70 * (1 - unit.value / unit.max) }}
+                          transition={{ duration: 0.5, ease: "easeInOut" }}
+                          strokeLinecap="round"
+                          className="drop-shadow-[0_0_8px_rgba(6,182,212,0.45)]"
+                        />
+                      </svg>
+
+                      {/* Central Text Panel */}
+                      <div className="text-center z-10 flex flex-col items-center">
+                        <span className="text-4xl sm:text-5xl font-black tracking-tight bg-gradient-to-r from-blue-500 via-cyan-400 to-[#00f0ff] bg-clip-text text-transparent text-glow select-none">
+                          {String(unit.value).padStart(2, "0")}
+                        </span>
+                        <span className="text-[10px] sm:text-xs text-slate-500 font-bold uppercase tracking-widest mt-1">
+                          {unit.label}
+                        </span>
+                      </div>
+                    </div>
+
+                    {/* Micro Border Glow Segment */}
+                    <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-1/3 h-[2px] bg-cyan-400 opacity-20 group-hover:opacity-100 group-hover:w-1/2 transition-all duration-500" />
+                  </div>
+                </div>
+              );
+            })}
+          </div>
         </div>
 
         {/* Action and Venue Prompt */}

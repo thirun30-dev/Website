@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { Terminal, Users, Coffee, Mic } from "lucide-react";
 
 interface AgendaItem {
@@ -160,6 +160,7 @@ function SnakeCard({ item, number }: { item: AgendaItem; number: number }) {
     <div className="flex flex-col items-center group">
       {/* Numbered node */}
       <div
+        data-timeline-node={number}
         className={`relative z-10 mb-3 w-9 h-9 rounded-full flex items-center justify-center
           ${cfg.dotBg} ${cfg.dotGlow} ring-4 ${cfg.dotRing}
           transition-all duration-300 group-hover:scale-110`}
@@ -191,12 +192,61 @@ function SnakeCard({ item, number }: { item: AgendaItem; number: number }) {
   );
 }
 
+/** 3D Futuristic Toy Component */
+function ThreeDToy({ x, y, angle }: { x: number; y: number; angle: number }) {
+  return (
+    <div
+      style={{
+        position: "absolute",
+        left: 0,
+        top: 0,
+        transform: `translate3d(${x}px, ${y}px, 0) translate(-50%, -50%)`,
+        pointerEvents: "none",
+        zIndex: 50,
+        transition: "transform 0.2s cubic-bezier(0.2, 0.8, 0.2, 1)",
+      }}
+      className="perspective-container flex items-center justify-center w-16 h-16"
+    >
+      {/* Floating animation */}
+      <div className="animate-float-toy w-full h-full flex items-center justify-center">
+        {/* Tilt in movement direction */}
+        <div
+          style={{
+            transform: `rotate(${angle}deg)`,
+            transition: "transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1)",
+          }}
+          className="preserve-3d w-full h-full relative flex items-center justify-center"
+        >
+          {/* Particle tail / Jet glow */}
+          <div className="absolute -left-6 top-1/2 -translate-y-1/2 w-7 h-3 bg-gradient-to-r from-cyan-400 to-transparent rounded-full blur-[3px] shadow-[0_0_12px_rgba(0,240,255,0.7)]" style={{ transform: 'rotateY(45deg)' }} />
+          
+          {/* Reactor core */}
+          <div className="absolute w-7 h-7 rounded-full bg-gradient-to-tr from-cyan-400 to-blue-600 shadow-[0_0_15px_rgba(0,240,255,0.8)] border border-cyan-300/45 flex items-center justify-center">
+            <div className="w-2.5 h-2.5 rounded-full bg-white shadow-[0_0_8px_#fff]" />
+          </div>
+
+          {/* Orbiting Ring 1 */}
+          <div className="absolute w-11 h-11 rounded-full border border-cyan-400/50 preserve-3d animate-spin-ring-1" />
+          
+          {/* Orbiting Ring 2 */}
+          <div className="absolute w-13 h-13 rounded-full border border-blue-500/40 preserve-3d animate-spin-ring-2" />
+        </div>
+      </div>
+    </div>
+  );
+}
+
 const COLS = 3;
 const FILTERS = ["all", "keynote", "technical", "break", "general"] as const;
 
 export default function Schedule() {
   const [filter, setFilter] = useState<string>("all");
   const filtered = agenda.filter((item) => filter === "all" || item.type === filter);
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const [toyPos, setToyPos] = useState<{ x: number; y: number; angle: number } | null>(null);
+
+
+  const [nodeCoords, setNodeCoords] = useState<{ x: number; y: number }[]>([]);
 
   // Group into rows of COLS
   const rows: AgendaItem[][] = [];
@@ -204,8 +254,182 @@ export default function Schedule() {
     rows.push(filtered.slice(i, i + COLS));
   }
 
+  // Effect to measure static layout node coordinates
+  useEffect(() => {
+    const measureCoords = () => {
+      if (!sectionRef.current) return;
+      const isMobile = window.innerWidth < 768;
+      const nodes = Array.from(document.querySelectorAll("[data-timeline-node]"))
+        .filter((el) => {
+          const inMobile = el.closest(".md\\:hidden") !== null;
+          return isMobile ? inMobile : !inMobile;
+        })
+        .map((el) => {
+          const num = parseInt(el.getAttribute("data-timeline-node") || "0", 10);
+          return { el, num };
+        })
+        .sort((a, b) => a.num - b.num);
+
+      if (nodes.length === 0) return;
+
+      const sectionRect = sectionRef.current.getBoundingClientRect();
+      const coords = nodes.map(({ el }) => {
+        const rect = el.getBoundingClientRect();
+        return {
+          x: rect.left - sectionRect.left + rect.width / 2,
+          y: rect.top - sectionRect.top + rect.height / 2,
+        };
+      });
+      setNodeCoords(coords);
+    };
+
+    window.addEventListener("resize", measureCoords, { passive: true });
+    // Execute after mount and font loading stabilizes layout
+    const timer = setTimeout(measureCoords, 200);
+
+    return () => {
+      window.removeEventListener("resize", measureCoords);
+      clearTimeout(timer);
+    };
+  }, [filter, filtered.length]);
+
+  // Effect to track scroll and translate toy along the continuous path
+  useEffect(() => {
+    const handleScroll = () => {
+      requestAnimationFrame(() => {
+        if (!sectionRef.current || nodeCoords.length === 0) return;
+
+        const isMobile = window.innerWidth < 768;
+        const sectionRect = sectionRef.current.getBoundingClientRect();
+        const centerY = window.innerHeight / 2;
+        const progress = Math.max(0, Math.min(1, (centerY - sectionRect.top) / sectionRect.height));
+
+        const N = nodeCoords.length;
+        if (N <= 1) {
+          if (N === 1) {
+            setToyPos({ x: nodeCoords[0].x, y: nodeCoords[0].y, angle: 0 });
+          }
+          return;
+        }
+
+        const floatIdx = progress * (N - 1);
+        const idx = Math.floor(floatIdx);
+        const segProgress = floatIdx - idx;
+
+        if (idx >= N - 1) {
+          const last = nodeCoords[N - 1];
+          const secondLast = nodeCoords[N - 2];
+          const dx = last.x - secondLast.x;
+          const dy = last.y - secondLast.y;
+          const angle = Math.atan2(dy, dx) * (180 / Math.PI);
+          setToyPos({ x: last.x, y: last.y, angle });
+        } else {
+          const start = nodeCoords[idx];
+          const end = nodeCoords[idx + 1];
+
+          const isRowTransition = !isMobile && Math.abs(start.y - end.y) > 40 && Math.abs(start.x - end.x) < 40;
+
+          if (isRowTransition) {
+            const isRightBend = start.x > sectionRect.width / 2;
+            const maxOffset = sectionRect.width * 0.0833;
+            const horizontalOffset = isRightBend ? maxOffset * 1.33 : -maxOffset * 1.33;
+
+            const cp1 = { x: start.x + horizontalOffset, y: start.y };
+            const cp2 = { x: end.x + horizontalOffset, y: end.y };
+
+            const t = segProgress;
+            const mt = 1 - t;
+            const w0 = mt * mt * mt;
+            const w1 = 3 * mt * mt * t;
+            const w2 = 3 * mt * t * t;
+            const w3 = t * t * t;
+
+            const x = w0 * start.x + w1 * cp1.x + w2 * cp2.x + w3 * end.x;
+            const y = w0 * start.y + w1 * cp1.y + w2 * cp2.y + w3 * end.y;
+
+            const dx = 3 * mt * mt * (cp1.x - start.x) + 6 * mt * t * (cp2.x - cp1.x) + 3 * t * t * (end.x - cp2.x);
+            const dy = 3 * mt * mt * (cp1.y - start.y) + 6 * mt * t * (cp2.y - cp1.y) + 3 * t * t * (end.y - cp2.y);
+
+            const angle = Math.atan2(dy, dx) * (180 / Math.PI);
+            setToyPos({ x, y, angle });
+          } else {
+            const x = start.x + (end.x - start.x) * segProgress;
+            const y = start.y + (end.y - start.y) * segProgress;
+            const dx = end.x - start.x;
+            const dy = end.y - start.y;
+            const angle = Math.atan2(dy, dx) * (180 / Math.PI);
+            setToyPos({ x, y, angle });
+          }
+        }
+      });
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    const timer = setTimeout(handleScroll, 250);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      clearTimeout(timer);
+    };
+  }, [nodeCoords]);
+
+  // Compute continuous path string
+  const pathD = (() => {
+    if (nodeCoords.length === 0 || !sectionRef.current) return "";
+    const isMobile = typeof window !== "undefined" ? window.innerWidth < 768 : false;
+    const sectionWidth = sectionRef.current.clientWidth;
+
+    let d = `M ${nodeCoords[0].x} ${nodeCoords[0].y}`;
+
+    for (let i = 0; i < nodeCoords.length - 1; i++) {
+      const start = nodeCoords[i];
+      const end = nodeCoords[i + 1];
+
+      const isRowTransition = !isMobile && Math.abs(start.y - end.y) > 40 && Math.abs(start.x - end.x) < 40;
+
+      if (isRowTransition) {
+        const isRightBend = start.x > sectionWidth / 2;
+        const maxOffset = sectionWidth * 0.0833;
+        const horizontalOffset = isRightBend ? maxOffset * 1.33 : -maxOffset * 1.33;
+
+        const cp1x = start.x + horizontalOffset;
+        const cp1y = start.y;
+        const cp2x = end.x + horizontalOffset;
+        const cp2y = end.y;
+
+        d += ` C ${cp1x} ${cp1y}, ${cp2x} ${cp2y}, ${end.x} ${end.y}`;
+      } else {
+        d += ` L ${end.x} ${end.y}`;
+      }
+    }
+    return d;
+  })();
+
   return (
-    <section id="schedule" className="py-20 relative overflow-hidden">
+    <section ref={sectionRef} id="schedule" className="py-20 relative overflow-hidden">
+      {/* Continuous Timeline Overlay Path SVG */}
+      {pathD && (
+        <svg className="absolute inset-0 w-full h-full pointer-events-none z-0">
+          {/* Background track path */}
+          <path
+            d={pathD}
+            fill="none"
+            className="stroke-slate-800/40"
+            strokeWidth="2"
+          />
+          {/* Glowing foreground path */}
+          <path
+            d={pathD}
+            fill="none"
+            className="stroke-cyan-400/80 timeline-dash-flow"
+            strokeWidth="2"
+            strokeLinecap="round"
+          />
+        </svg>
+      )}
+
+      {toyPos && <ThreeDToy x={toyPos.x} y={toyPos.y} angle={toyPos.angle} />}
+
       {/* Ambient glows */}
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute bottom-10 left-1/4 w-96 h-96 rounded-full bg-cyan-600/5 blur-[150px]" />
@@ -248,11 +472,6 @@ export default function Schedule() {
         {/* ─── Snake Timeline — Desktop ────────────────────────── */}
         <div className="hidden md:block">
           {rows.map((row, rowIdx) => {
-            /**
-             * Even rows  (0, 2, …) → items flow Left → Right
-             * Odd rows   (1, 3, …) → items flow Right → Left
-             *   so we reverse the visual order, keeping seq-numbers in flow order
-             */
             const isReversed = rowIdx % 2 === 1;
             const visualItems = isReversed ? [...row].reverse() : row;
             const globalStart = rowIdx * COLS;
@@ -261,77 +480,8 @@ export default function Schedule() {
               <React.Fragment key={rowIdx}>
                 {/* ── 3-column row ── */}
                 <div className="relative">
-                  {/* Row animated timeline line */}
-                  <svg className="absolute inset-0 w-full h-full pointer-events-none">
-                    {/* Horizontal Background track */}
-                    <line
-                      x1="16.67%"
-                      y1="18"
-                      x2="83.33%"
-                      y2="18"
-                      className="stroke-slate-800/40"
-                      strokeWidth="2"
-                    />
-                    {/* Horizontal Animated path */}
-                    <line
-                      x1={isReversed ? "83.33%" : "16.67%"}
-                      y1="18"
-                      x2={isReversed ? "16.67%" : "83.33%"}
-                      y2="18"
-                      className="stroke-cyan-400/80 timeline-dash-flow"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                    />
-
-                    {/* Vertical connector to next row (goes from dot center to bottom of row) */}
-                    {rowIdx < rows.length - 1 && (
-                      <>
-                        <line
-                          x1={isReversed ? "16.67%" : "83.33%"}
-                          y1="18"
-                          x2={isReversed ? "16.67%" : "83.33%"}
-                          y2="100%"
-                          className="stroke-slate-800/40"
-                          strokeWidth="2"
-                        />
-                        <line
-                          x1={isReversed ? "16.67%" : "83.33%"}
-                          y1="18"
-                          x2={isReversed ? "16.67%" : "83.33%"}
-                          y2="100%"
-                          className="stroke-cyan-400/80 timeline-dash-flow"
-                          strokeWidth="2"
-                          strokeLinecap="round"
-                        />
-                      </>
-                    )}
-
-                    {/* Vertical connector from previous row (goes from top of row to dot center) */}
-                    {rowIdx > 0 && (
-                      <>
-                        <line
-                          x1={isReversed ? "83.33%" : "16.67%"}
-                          y1="0"
-                          x2={isReversed ? "83.33%" : "16.67%"}
-                          y2="18"
-                          className="stroke-slate-800/40"
-                          strokeWidth="2"
-                        />
-                        <line
-                          x1={isReversed ? "83.33%" : "16.67%"}
-                          y1="0"
-                          x2={isReversed ? "83.33%" : "16.67%"}
-                          y2="18"
-                          className="stroke-cyan-400/80 timeline-dash-flow"
-                          strokeWidth="2"
-                          strokeLinecap="round"
-                        />
-                      </>
-                    )}
-                  </svg>
                   <div className="grid grid-cols-3 gap-5">
                     {visualItems.map((item, colIdx) => {
-                      // Sequential number in the snake flow
                       const seqNum = isReversed
                         ? globalStart + (row.length - 1 - colIdx) + 1
                         : globalStart + colIdx + 1;
@@ -340,59 +490,9 @@ export default function Schedule() {
                   </div>
                 </div>
 
-                {/* ── U-curve connector between rows ── */}
+                {/* ── U-curve spacing spacer ── */}
                 {rowIdx < rows.length - 1 && (
-                  <div
-                    className="relative h-10"
-                    style={{
-                      width: "calc(100% / 6)",
-                      marginLeft: isReversed ? "0" : "auto",
-                    }}
-                  >
-                    <svg
-                      className="absolute inset-0 w-full h-full pointer-events-none"
-                      viewBox="0 0 100 40"
-                      preserveAspectRatio="none"
-                    >
-                      {isReversed ? (
-                        <>
-                          {/* Left-bending path background */}
-                          <path
-                            d="M 100,0 C 100,15 0,5 0,20 C 0,35 100,25 100,40"
-                            fill="none"
-                            className="stroke-slate-800/40"
-                            strokeWidth="2"
-                          />
-                          {/* Left-bending path animated */}
-                          <path
-                            d="M 100,0 C 100,15 0,5 0,20 C 0,35 100,25 100,40"
-                            fill="none"
-                            className="stroke-cyan-400/80 timeline-dash-flow"
-                            strokeWidth="2"
-                            strokeLinecap="round"
-                          />
-                        </>
-                      ) : (
-                        <>
-                          {/* Right-bending path background */}
-                          <path
-                            d="M 0,0 C 0,15 100,5 100,20 C 100,35 0,25 0,40"
-                            fill="none"
-                            className="stroke-slate-800/40"
-                            strokeWidth="2"
-                          />
-                          {/* Right-bending path animated */}
-                          <path
-                            d="M 0,0 C 0,15 100,5 100,20 C 100,35 0,25 0,40"
-                            fill="none"
-                            className="stroke-cyan-400/80 timeline-dash-flow"
-                            strokeWidth="2"
-                            strokeLinecap="round"
-                          />
-                        </>
-                      )}
-                    </svg>
-                  </div>
+                  <div className="h-10" />
                 )}
               </React.Fragment>
             );
@@ -401,31 +501,6 @@ export default function Schedule() {
 
         {/* ─── Vertical list — Mobile ──────────────────────────── */}
         <div className="md:hidden relative">
-          {/* Left rail animated */}
-          <div className="absolute left-[18px] top-0 bottom-0 w-0.5 pointer-events-none">
-            <svg className="w-full h-full" preserveAspectRatio="none">
-              {/* Background track */}
-              <line
-                x1="1"
-                y1="0"
-                x2="1"
-                y2="100%"
-                className="stroke-slate-800/40"
-                strokeWidth="2"
-              />
-              {/* Animated path */}
-              <line
-                x1="1"
-                y1="0"
-                x2="1"
-                y2="100%"
-                className="stroke-cyan-400/80 timeline-dash-flow"
-                strokeWidth="2"
-                strokeLinecap="round"
-              />
-            </svg>
-          </div>
-
           <div className="space-y-3 pl-2">
             {filtered.map((item, idx) => {
               const cfg = TYPE_CONFIG[item.type];
@@ -433,6 +508,7 @@ export default function Schedule() {
                 <div key={idx} className="flex items-start gap-4 group">
                   {/* Mobile dot */}
                   <div
+                    data-timeline-node={idx + 1}
                     className={`relative z-10 flex-shrink-0 mt-3 w-5 h-5 rounded-full
                       flex items-center justify-center ${cfg.dotBg} ${cfg.dotGlow}`}
                   >
