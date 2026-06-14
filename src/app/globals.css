@@ -231,3 +231,18 @@ body {
   transform: translate(1.25rem, 0);
 }
 
+/* Schedule Timeline Animated Line */
+@keyframes timeline-dash {
+  to {
+    stroke-dashoffset: -60;
+  }
+}
+
+.timeline-dash-flow {
+  stroke-dasharray: 15 45;
+  stroke-dashoffset: 0;
+  animation: timeline-dash 1.5s linear infinite;
+  filter: drop-shadow(0 0 3px rgba(34, 211, 238, 0.8));
+}
+
+

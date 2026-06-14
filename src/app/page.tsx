@@ -4,11 +4,12 @@ import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import Countdown from "@/components/Countdown";
 import About from "@/components/About";
-import CallForSpeakers from "@/components/CallForSpeakers";
+import CallFor from "@/components/CallFor";
 import Speakers from "@/components/Speakers";
 import Schedule from "@/components/Schedule";
 import Organizers from "@/components/Organizers";
 import Sponsors from "@/components/Sponsors";
+import Hackathons from "@/components/Hackathons";
 import RegistrationForm from "@/components/RegistrationForm";
 import Footer from "@/components/Footer";
 
@@ -32,8 +33,8 @@ export default function Home() {
         {/* Informative About Section */}
         <About />
 
-        {/* Call For Speakers Invitations */}
-        <CallForSpeakers />
+        {/* Call For Speakers & Sponsors — Split Section */}
+        <CallFor />
 
         {/* Featured Speakers Grid Section */}
         <Speakers />
@@ -46,6 +47,9 @@ export default function Home() {
 
         {/* Event Sponsors & Community Partners */}
         <Sponsors />
+
+        {/* Hackathons — Cards + Modal */}
+        <Hackathons />
 
         {/* Registration Form (above footer) */}
         <RegistrationForm />

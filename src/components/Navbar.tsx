@@ -11,6 +11,7 @@ const navItems = [
   { label: "Schedule", href: "#schedule" },
   { label: "Organizers", href: "#organizers" },
   { label: "Sponsors", href: "#sponsors" },
+  { label: "Hackathons", href: "#hackathons" },
   { label: "Contact", href: "#contact" },
 ];
 
