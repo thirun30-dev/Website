@@ -146,6 +146,21 @@ const coreTeam: CoreMember[] = [
       "Live Event Coverage",
       "Digital Community Growth"
     ]
+  },
+  {
+    name: "Giiridharan",
+    role: "IT and Support Lead",
+    department: "Information Technology",
+    bio: "Giiridharan manages the network infrastructure, hardware coordination, and overall technical support operations to ensure seamless event execution for AWS Community Day 2026.",
+    linkedin: "https://www.linkedin.com/",
+    github: "https://github.com/",
+    email: "giiridharan@example.com",
+    image: "/giridharan.png",
+    responsibilities: [
+      "IT Infrastructure Management",
+      "Technical Support Operations",
+      "Network & Connectivity Setup"
+    ]
   }
 ];
 
@@ -362,10 +377,11 @@ export default function Organizers() {
                 className="relative w-full max-w-[420px] h-full flex items-center justify-center overflow-visible"
               >
                 {coreTeam.map((member, idx) => {
-                  // Wrapping logic for 3 elements: left, center, right
+                  // Wrapping logic for a circular list
                   let offset = idx - activeCoreIdx;
-                  if (offset < -1) offset += 3;
-                  if (offset > 1) offset -= 3;
+                  const N = coreTeam.length;
+                  if (offset < -Math.floor(N / 2)) offset += N;
+                  if (offset > Math.floor((N - 1) / 2)) offset -= N;
 
                   const isActive = offset === 0;
                   const cardXOffset = isMobile ? 80 : 100;
@@ -375,14 +391,14 @@ export default function Organizers() {
                       key={member.name}
                       onClick={() => setActiveCoreIdx(idx)}
                       style={{
-                        zIndex: isActive ? 10 : 5,
+                        zIndex: 10 - Math.abs(offset),
                         pointerEvents: "auto",
                       }}
                       animate={{
-                        x: offset === 0 ? 0 : offset === -1 ? -cardXOffset : cardXOffset,
+                        x: offset * cardXOffset,
                         scale: offset === 0 ? 1 : 0.8,
-                        rotateY: offset === 0 ? 0 : offset === -1 ? 25 : -25,
-                        opacity: offset === 0 ? 1 : 0.55,
+                        rotateY: offset === 0 ? 0 : offset < 0 ? 25 : -25,
+                        opacity: offset === 0 ? 1 : Math.max(0.2, 0.7 - Math.abs(offset) * 0.15),
                       }}
                       transition={{
                         type: "spring",
