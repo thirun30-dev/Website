@@ -210,13 +210,8 @@ body {
 
 /* Stacked Overlapping Crew Cards */
 .crew-card-stacked {
-  margin-left: -2.5rem; /* Causes cards to overlap like a stack */
   transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
   z-index: 10;
-}
-
-.crew-card-stacked:first-child {
-  margin-left: 0;
 }
 
 .crew-card-stacked:hover {
@@ -226,10 +221,6 @@ body {
   border-color: rgba(0, 240, 255, 0.5) !important;
 }
 
-/* Hovering shifts next card over slightly */
-.crew-card-stacked:hover + .crew-card-stacked {
-  transform: translate(1.25rem, 0);
-}
 
 /* Schedule Timeline Animated Line */
 @keyframes timeline-dash {

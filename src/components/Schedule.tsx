@@ -261,12 +261,9 @@ export default function Schedule() {
               <React.Fragment key={rowIdx}>
                 {/* ── 3-column row ── */}
                 <div className="relative">
-                  {/* Horizontal animated line through all three dots */}
-                  <svg
-                    className="absolute h-9 pointer-events-none w-full"
-                    style={{ top: 0, left: 0, right: 0 }}
-                  >
-                    {/* Background track */}
+                  {/* Row animated timeline line */}
+                  <svg className="absolute inset-0 w-full h-full pointer-events-none">
+                    {/* Horizontal Background track */}
                     <line
                       x1="16.67%"
                       y1="18"
@@ -275,7 +272,7 @@ export default function Schedule() {
                       className="stroke-slate-800/40"
                       strokeWidth="2"
                     />
-                    {/* Animated path */}
+                    {/* Horizontal Animated path */}
                     <line
                       x1={isReversed ? "83.33%" : "16.67%"}
                       y1="18"
@@ -285,6 +282,52 @@ export default function Schedule() {
                       strokeWidth="2"
                       strokeLinecap="round"
                     />
+
+                    {/* Vertical connector to next row (goes from dot center to bottom of row) */}
+                    {rowIdx < rows.length - 1 && (
+                      <>
+                        <line
+                          x1={isReversed ? "16.67%" : "83.33%"}
+                          y1="18"
+                          x2={isReversed ? "16.67%" : "83.33%"}
+                          y2="100%"
+                          className="stroke-slate-800/40"
+                          strokeWidth="2"
+                        />
+                        <line
+                          x1={isReversed ? "16.67%" : "83.33%"}
+                          y1="18"
+                          x2={isReversed ? "16.67%" : "83.33%"}
+                          y2="100%"
+                          className="stroke-cyan-400/80 timeline-dash-flow"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                        />
+                      </>
+                    )}
+
+                    {/* Vertical connector from previous row (goes from top of row to dot center) */}
+                    {rowIdx > 0 && (
+                      <>
+                        <line
+                          x1={isReversed ? "83.33%" : "16.67%"}
+                          y1="0"
+                          x2={isReversed ? "83.33%" : "16.67%"}
+                          y2="18"
+                          className="stroke-slate-800/40"
+                          strokeWidth="2"
+                        />
+                        <line
+                          x1={isReversed ? "83.33%" : "16.67%"}
+                          y1="0"
+                          x2={isReversed ? "83.33%" : "16.67%"}
+                          y2="18"
+                          className="stroke-cyan-400/80 timeline-dash-flow"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                        />
+                      </>
+                    )}
                   </svg>
                   <div className="grid grid-cols-3 gap-5">
                     {visualItems.map((item, colIdx) => {
@@ -315,14 +358,14 @@ export default function Schedule() {
                         <>
                           {/* Left-bending path background */}
                           <path
-                            d="M 100,0 C 30,0 0,10 0,20 C 0,30 30,40 100,40"
+                            d="M 100,0 C 100,15 0,5 0,20 C 0,35 100,25 100,40"
                             fill="none"
                             className="stroke-slate-800/40"
                             strokeWidth="2"
                           />
                           {/* Left-bending path animated */}
                           <path
-                            d="M 100,0 C 30,0 0,10 0,20 C 0,30 30,40 100,40"
+                            d="M 100,0 C 100,15 0,5 0,20 C 0,35 100,25 100,40"
                             fill="none"
                             className="stroke-cyan-400/80 timeline-dash-flow"
                             strokeWidth="2"
@@ -333,14 +376,14 @@ export default function Schedule() {
                         <>
                           {/* Right-bending path background */}
                           <path
-                            d="M 0,0 C 70,0 100,10 100,20 C 100,30 70,40 0,40"
+                            d="M 0,0 C 0,15 100,5 100,20 C 100,35 0,25 0,40"
                             fill="none"
                             className="stroke-slate-800/40"
                             strokeWidth="2"
                           />
                           {/* Right-bending path animated */}
                           <path
-                            d="M 0,0 C 70,0 100,10 100,20 C 100,30 70,40 0,40"
+                            d="M 0,0 C 0,15 100,5 100,20 C 100,35 0,25 0,40"
                             fill="none"
                             className="stroke-cyan-400/80 timeline-dash-flow"
                             strokeWidth="2"
