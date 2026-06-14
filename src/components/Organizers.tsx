@@ -533,7 +533,7 @@ export default function Organizers() {
                 <div
                   key={idx}
                   onClick={() => setSelectedCrew(member)}
-                  className="crew-card-stacked relative flex-shrink-0 w-44 sm:w-52 glass-panel rounded-[24px] border border-cyan-500/10 bg-[#070712]/90 overflow-hidden flex flex-col p-4 cursor-pointer"
+                  className="crew-card-stacked group relative flex-shrink-0 w-44 sm:w-52 glass-panel rounded-[24px] border border-cyan-500/10 bg-[#070712]/90 overflow-hidden flex flex-col p-4 cursor-pointer"
                 >
                   {/* Card Glow Highlight Effect */}
                   <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/0 via-transparent to-cyan-500/5 opacity-0 hover:opacity-100 transition-opacity duration-300" />
@@ -561,6 +561,74 @@ export default function Organizers() {
                     <p className="text-[9px] text-slate-500 font-bold uppercase tracking-wider">
                       {member.department}
                     </p>
+                  </div>
+
+                  {/* Hover details overlay */}
+                  <div className="absolute inset-0 bg-[#070712]/95 backdrop-blur-sm p-4 flex flex-col justify-between translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out z-30 rounded-[24px] border border-cyan-500/30">
+                    <div className="space-y-3 overflow-hidden">
+                      <div>
+                        <h4 className="text-xs sm:text-sm font-extrabold text-white truncate">{member.name}</h4>
+                        <p className="text-[9px] font-semibold text-cyan-400 uppercase tracking-widest truncate">{member.role}</p>
+                      </div>
+                      
+                      <div className="space-y-2">
+                        <div>
+                          <span className="text-[8px] text-slate-500 font-bold uppercase tracking-wider block mb-0.5">Bio</span>
+                          <p className="text-[10px] text-slate-300 leading-normal line-clamp-3 font-medium">
+                            {member.bio}
+                          </p>
+                        </div>
+                        
+                        <div>
+                          <span className="text-[8px] text-slate-500 font-bold uppercase tracking-wider block mb-1">Focus</span>
+                          <div className="flex flex-wrap gap-1">
+                            {member.responsibilities.slice(0, 2).map((resp, i) => (
+                              <span key={i} className="text-[8px] bg-cyan-950/40 border border-cyan-500/20 text-cyan-300 px-1.5 py-0.5 rounded font-medium">
+                                {resp}
+                              </span>
+                            ))}
+                            {member.responsibilities.length > 2 && (
+                              <span className="text-[8px] text-slate-500 px-1 py-0.5 font-bold">
+                                +{member.responsibilities.length - 2} more
+                              </span>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center justify-between pt-2 border-t border-slate-800/80">
+                      <div className="flex items-center gap-2" onClick={(e) => e.stopPropagation()}>
+                        <a
+                          href={member.linkedin}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="w-6 h-6 rounded-full bg-slate-900 border border-slate-800 flex items-center justify-center text-slate-400 hover:text-[#00f0ff] hover:border-[#00f0ff]/50 hover:bg-[#00f0ff]/10 transition-all active:scale-90"
+                          title="LinkedIn"
+                        >
+                          <LinkedinIcon size={10} />
+                        </a>
+                        <a
+                          href={member.github}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="w-6 h-6 rounded-full bg-slate-900 border border-slate-800 flex items-center justify-center text-slate-400 hover:text-white hover:border-white/50 hover:bg-white/10 transition-all active:scale-90"
+                          title="GitHub"
+                        >
+                          <GithubIcon size={10} />
+                        </a>
+                        <a
+                          href={`mailto:${member.email}`}
+                          className="w-6 h-6 rounded-full bg-slate-900 border border-slate-800 flex items-center justify-center text-slate-400 hover:text-[#ea4335] hover:border-[#ea4335]/50 hover:bg-[#ea4335]/10 transition-all active:scale-90"
+                          title="Email"
+                        >
+                          <MailIcon size={10} />
+                        </a>
+                      </div>
+                      <span className="text-[8px] text-[#00f0ff]/70 font-bold uppercase tracking-wider">
+                        More ➔
+                      </span>
+                    </div>
                   </div>
                 </div>
               ))}
@@ -693,6 +761,7 @@ export default function Organizers() {
 
 function FeaturedCoordinatorCard({ member }: { member: Advisor }) {
   const containerRef = useRef<HTMLDivElement>(null);
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
   const [isMobile, setIsMobile] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
 
@@ -700,7 +769,10 @@ function FeaturedCoordinatorCard({ member }: { member: Advisor }) {
     const handleResize = () => setIsMobile(window.innerWidth < 1024);
     handleResize();
     window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    };
   }, []);
 
   const { scrollYProgress } = useScroll({
@@ -714,6 +786,19 @@ function FeaturedCoordinatorCard({ member }: { member: Advisor }) {
       setIsExpanded(false);
     }
   });
+
+  const handleMouseEnter = () => {
+    if (isMobile) return;
+    if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    setIsExpanded(true);
+  };
+
+  const handleMouseLeave = () => {
+    if (isMobile) return;
+    timeoutRef.current = setTimeout(() => {
+      setIsExpanded(false);
+    }, 150);
+  };
 
   // Transform values based on click state
   const imageX = isExpanded && !isMobile ? "-226px" : "0px";
@@ -732,6 +817,8 @@ function FeaturedCoordinatorCard({ member }: { member: Advisor }) {
         {/* Animated Coordinator Square Photo (moves left & expands wider on click) */}
         <motion.div
           onClick={() => setIsExpanded(!isExpanded)}
+          onMouseEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}
           animate={{
             x: imageX,
             width: imageWidth,
@@ -751,7 +838,9 @@ function FeaturedCoordinatorCard({ member }: { member: Advisor }) {
           
           {/* Subtle click indicator hint */}
           <div className="absolute top-4 right-4 z-20 bg-slate-950/80 backdrop-blur-sm border border-cyan-500/20 rounded-full px-3 py-1 text-[9px] font-bold text-cyan-300 uppercase tracking-wider pointer-events-none group-hover/spotlight:border-cyan-400 group-hover/spotlight:text-cyan-200 transition-colors">
-            {isExpanded ? "Click to collapse" : "Click to view bio"}
+            {isMobile 
+              ? (isExpanded ? "Tap to collapse" : "Tap to view bio")
+              : (isExpanded ? "Click to lock open" : "Hover to view bio")}
           </div>
 
           {/* Floating name badge overlay inside card */}
@@ -763,6 +852,8 @@ function FeaturedCoordinatorCard({ member }: { member: Advisor }) {
 
         {/* Animated Professional Description Panel (slides/fades in on the right on click) */}
         <motion.div
+          onMouseEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}
           animate={{
             opacity: textOpacity,
             x: textX,
