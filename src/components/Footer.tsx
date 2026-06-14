@@ -2,7 +2,25 @@
 
 import React from "react";
 import Image from "next/image";
-import { Mail, ArrowUp } from "lucide-react";
+import { Mail, ArrowUp, Phone } from "lucide-react";
+
+const InstagramIcon = ({ size = 24, ...props }: { size?: number } & React.SVGProps<SVGSVGElement>) => (
+  <svg
+    viewBox="0 0 24 24"
+    width={size}
+    height={size}
+    stroke="currentColor"
+    strokeWidth="2"
+    fill="none"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    {...props}
+  >
+    <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
+    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+    <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
+  </svg>
+);
 
 const LinkedinIcon = ({ size = 24, ...props }: { size?: number } & React.SVGProps<SVGSVGElement>) => (
   <svg
@@ -94,7 +112,7 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-12 gap-8">
           
           {/* Logo & Info */}
-          <div className="md:col-span-5 space-y-4">
+          <div className="md:col-span-4 space-y-4">
             <div className="flex items-center gap-3">
               <div className="relative w-10 h-10">
                 <Image
@@ -119,7 +137,7 @@ export default function Footer() {
           </div>
 
           {/* Quick Links */}
-          <div className="md:col-span-4 space-y-4">
+          <div className="md:col-span-3 space-y-4">
             <h4 className="text-xs text-white font-extrabold uppercase tracking-widest border-b border-slate-900 pb-2">
               Quick Navigation
             </h4>
@@ -136,14 +154,7 @@ export default function Footer() {
                 onClick={(e) => handleLinkClick(e, "#about")}
                 className="text-slate-400 hover:text-[#00f0ff] transition-colors"
               >
-                About Club
-              </a>
-              <a
-                href="#speakers"
-                onClick={(e) => handleLinkClick(e, "#speakers")}
-                className="text-slate-400 hover:text-[#00f0ff] transition-colors"
-              >
-                Speakers
+                About
               </a>
               <a
                 href="#schedule"
@@ -153,11 +164,18 @@ export default function Footer() {
                 Schedule
               </a>
               <a
-                href="#organizers"
-                onClick={(e) => handleLinkClick(e, "#organizers")}
+                href="#hackathons"
+                onClick={(e) => handleLinkClick(e, "#hackathons")}
                 className="text-slate-400 hover:text-[#00f0ff] transition-colors"
               >
-                Organizers
+                Hackathons
+              </a>
+              <a
+                href="#speakers"
+                onClick={(e) => handleLinkClick(e, "#speakers")}
+                className="text-slate-400 hover:text-[#00f0ff] transition-colors"
+              >
+                Speakers
               </a>
               <a
                 href="#sponsors"
@@ -167,11 +185,11 @@ export default function Footer() {
                 Sponsors
               </a>
               <a
-                href="#register-form"
-                onClick={scrollToRegistrationForm}
-                className="text-[#00f0ff] hover:text-cyan-300 transition-colors font-semibold"
+                href="#organizers"
+                onClick={(e) => handleLinkClick(e, "#organizers")}
+                className="text-slate-400 hover:text-[#00f0ff] transition-colors"
               >
-                Register (Free)
+                Organizers
               </a>
               <a
                 href="#contact"
@@ -184,11 +202,65 @@ export default function Footer() {
           </div>
 
           {/* Socials & Contact */}
-          <div className="md:col-span-3 space-y-4">
+          <div className="md:col-span-5 space-y-4">
             <h4 className="text-xs text-white font-extrabold uppercase tracking-widest border-b border-slate-900 pb-2">
-              Connect With Us
+              Contact & Connect
             </h4>
-            <div className="flex gap-4">
+            
+            {/* Club Email & Instagram */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+              <div className="flex items-center gap-2 text-slate-400">
+                <Mail size={14} className="text-[#00f0ff] flex-shrink-0" />
+                <div className="truncate">
+                  <span className="block text-[10px] text-slate-500 uppercase tracking-wider font-bold">Club Email</span>
+                  <a href="mailto:aws.sbg.rec@gmail.com" className="text-white hover:text-[#00f0ff] font-semibold transition-colors block truncate">
+                    aws.sbg.rec@gmail.com
+                  </a>
+                </div>
+              </div>
+              <div className="flex items-center gap-2 text-slate-400">
+                <InstagramIcon size={14} className="text-[#00f0ff] flex-shrink-0" />
+                <div>
+                  <span className="block text-[10px] text-slate-500 uppercase tracking-wider font-bold">Instagram</span>
+                  <a 
+                    href="https://instagram.com/" 
+                    target="_blank" 
+                    rel="noopener noreferrer" 
+                    className="text-white hover:text-[#00f0ff] font-semibold transition-colors block"
+                  >
+                    @aws.sbg.rec
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            {/* Member Contact Details */}
+            <div className="pt-2 space-y-2">
+              <h5 className="text-[10px] text-slate-500 font-extrabold uppercase tracking-widest">
+                Student Coordinators
+              </h5>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div className="bg-slate-950/60 border border-slate-900 rounded-xl p-2.5 space-y-0.5">
+                  <p className="text-xs font-bold text-white">Prathakshanaa</p>
+                  <p className="text-[9px] text-cyan-400 font-semibold uppercase tracking-wider">Captain</p>
+                  <a href="tel:+919876543210" className="flex items-center gap-1.5 text-[10px] text-slate-400 hover:text-[#00f0ff] transition-colors pt-1">
+                    <Phone size={10} className="flex-shrink-0" />
+                    <span>+91 98765 43210</span>
+                  </a>
+                </div>
+                <div className="bg-slate-950/60 border border-slate-900 rounded-xl p-2.5 space-y-0.5">
+                  <p className="text-xs font-bold text-white">Pranav Ranjan</p>
+                  <p className="text-[9px] text-cyan-400 font-semibold uppercase tracking-wider">Tech Lead</p>
+                  <a href="tel:+918765432109" className="flex items-center gap-1.5 text-[10px] text-slate-400 hover:text-[#00f0ff] transition-colors pt-1">
+                    <Phone size={10} className="flex-shrink-0" />
+                    <span>+91 87654 32109</span>
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            {/* Social Icons Row */}
+            <div className="flex gap-4 pt-1">
               <a
                 href="https://linkedin.com/"
                 target="_blank"
@@ -216,20 +288,8 @@ export default function Footer() {
               >
                 <TwitterIcon size={14} />
               </a>
-              <a
-                href="mailto:aws.sbg.rec@gmail.com"
-                className="w-8 h-8 rounded-full bg-slate-900 border border-slate-800 flex items-center justify-center text-slate-400 hover:text-[#00f0ff] hover:border-[#00f0ff]/40 hover:shadow-[0_0_10px_rgba(0,240,255,0.2)] transition-all"
-                title="Email Support"
-              >
-                <Mail size={14} />
-              </a>
             </div>
-            <p className="text-[10px] text-slate-500">
-              For sponsorship enquiries, contact: <br />
-              <span className="text-slate-400 font-semibold">aws.sbg.rec@gmail.com</span>
-            </p>
           </div>
-
         </div>
 
         {/* Bottom copyright line */}

@@ -33,23 +33,23 @@ export default function Home() {
         {/* Informative About Section */}
         <About />
 
+        {/* Interactive Event Schedule Timeline */}
+        <Schedule />
+
+        {/* Hackathons — Cards + Modal */}
+        <Hackathons />
+
         {/* Call For Speakers & Sponsors — Split Section */}
         <CallFor />
 
         {/* Featured Speakers Grid Section */}
         <Speakers />
 
-        {/* Interactive Event Schedule Timeline */}
-        <Schedule />
-
-        {/* Organizers Committee Profile Gallery */}
-        <Organizers />
-
         {/* Event Sponsors & Community Partners */}
         <Sponsors />
 
-        {/* Hackathons — Cards + Modal */}
-        <Hackathons />
+        {/* Organizers Committee Profile Gallery */}
+        <Organizers />
 
         {/* Registration Form (above footer) */}
         <RegistrationForm />

@@ -7,11 +7,11 @@ import { Menu, X, ArrowRight } from "lucide-react";
 const navItems = [
   { label: "Home", href: "#home" },
   { label: "About", href: "#about" },
-  { label: "Speakers", href: "#speakers" },
   { label: "Schedule", href: "#schedule" },
-  { label: "Organizers", href: "#organizers" },
-  { label: "Sponsors", href: "#sponsors" },
   { label: "Hackathons", href: "#hackathons" },
+  { label: "Speakers", href: "#speakers" },
+  { label: "Sponsors", href: "#sponsors" },
+  { label: "Organizers", href: "#organizers" },
   { label: "Contact", href: "#contact" },
 ];
 

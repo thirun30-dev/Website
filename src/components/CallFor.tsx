@@ -209,13 +209,7 @@ export default function CallFor() {
 
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
 
-        {/* Section heading */}
-        <div className="text-center mb-10 space-y-2">
-          <p className="text-cyan-400 font-bold uppercase tracking-widest text-[10px]">Get Involved</p>
-          <p className="text-slate-400 text-sm max-w-sm mx-auto">
-            Whether you want to speak or support — we'd love to hear from you.
-          </p>
-        </div>
+
 
         {/* Separate containers */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
