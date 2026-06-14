@@ -35,7 +35,7 @@ export default function Hero() {
   return (
     <section
       id="home"
-      className="relative min-h-screen flex items-center justify-center pt-24 overflow-hidden"
+      className="relative min-h-[70vh] flex items-center justify-center pt-24 pb-8 overflow-hidden"
     >
       {/* Dynamic Cyber Grid Overlay */}
       <div className="absolute inset-0 cyber-grid opacity-30 pointer-events-none" />
@@ -46,7 +46,7 @@ export default function Hero() {
       <div className="absolute top-1/2 right-1/4 w-64 h-64 rounded-full bg-purple-600/5 blur-[100px]" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full">
-        <div className="flex flex-col items-center justify-center text-center py-16 md:py-24 max-w-4xl mx-auto">
+        <div className="flex flex-col items-center justify-center text-center py-10 md:py-14 max-w-4xl mx-auto">
           
           {/* Centered Hero Content */}
           <motion.div

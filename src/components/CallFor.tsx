@@ -202,7 +202,7 @@ export default function CallFor() {
   const [modal, setModal] = useState<ModalType>(null);
 
   return (
-    <section id="cfs" className="py-20 relative overflow-hidden bg-black/30 border-y border-slate-900/60">
+    <section id="cfs" className="py-10 relative overflow-hidden bg-black/30 border-y border-slate-900/60">
       {/* Glows */}
       <div className="absolute top-1/2 left-1/4 -translate-y-1/2 w-96 h-96 rounded-full bg-amber-600/4 blur-[140px] pointer-events-none" />
       <div className="absolute top-1/3 right-1/4 w-80 h-80 rounded-full bg-cyan-600/4 blur-[130px] pointer-events-none" />

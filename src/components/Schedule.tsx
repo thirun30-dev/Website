@@ -202,7 +202,7 @@ function ThreeDToy({ x, y, angle }: { x: number; y: number; angle: number }) {
         top: 0,
         transform: `translate3d(${x}px, ${y}px, 0) translate(-50%, -50%)`,
         pointerEvents: "none",
-        zIndex: 50,
+        zIndex: 30,
         transition: "transform 0.2s cubic-bezier(0.2, 0.8, 0.2, 1)",
       }}
       className="perspective-container flex items-center justify-center w-16 h-16"
@@ -331,8 +331,9 @@ export default function Schedule() {
 
           if (isRowTransition) {
             const isRightBend = start.x > sectionRect.width / 2;
-            const maxOffset = sectionRect.width * 0.0833;
-            const horizontalOffset = isRightBend ? maxOffset * 1.33 : -maxOffset * 1.33;
+            const colStep = nodeCoords.length > 1 ? Math.abs(nodeCoords[1].x - nodeCoords[0].x) : 0;
+            const offset = colStep ? (colStep * 2) / 3 + 15 : 150;
+            const horizontalOffset = isRightBend ? offset : -offset;
 
             const cp1 = { x: start.x + horizontalOffset, y: start.y };
             const cp2 = { x: end.x + horizontalOffset, y: end.y };
@@ -389,8 +390,9 @@ export default function Schedule() {
 
       if (isRowTransition) {
         const isRightBend = start.x > sectionWidth / 2;
-        const maxOffset = sectionWidth * 0.0833;
-        const horizontalOffset = isRightBend ? maxOffset * 1.33 : -maxOffset * 1.33;
+        const colStep = nodeCoords.length > 1 ? Math.abs(nodeCoords[1].x - nodeCoords[0].x) : 0;
+        const offset = colStep ? (colStep * 2) / 3 + 15 : 150;
+        const horizontalOffset = isRightBend ? offset : -offset;
 
         const cp1x = start.x + horizontalOffset;
         const cp1y = start.y;
@@ -406,7 +408,7 @@ export default function Schedule() {
   })();
 
   return (
-    <section ref={sectionRef} id="schedule" className="py-20 relative overflow-hidden">
+    <section ref={sectionRef} id="schedule" className="py-10 relative overflow-hidden">
       {/* Continuous Timeline Overlay Path SVG */}
       {pathD && (
         <svg className="absolute inset-0 w-full h-full pointer-events-none z-0">
@@ -444,7 +446,7 @@ export default function Schedule() {
             Event Agenda
           </p>
           <h2 className="text-3xl sm:text-4xl font-extrabold text-white">
-            Schedule Timeline
+            Event Schedule
           </h2>
           <p className="text-slate-400 text-sm max-w-sm mx-auto">
             Follow the path — a full day of cloud, AI, and community sessions.

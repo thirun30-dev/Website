@@ -146,7 +146,7 @@ export default function RegistrationForm() {
   return (
     <section
       id="register-form"
-      className="relative py-24 overflow-hidden bg-black/30 border-t border-slate-900"
+      className="relative py-10 overflow-hidden bg-black/30 border-t border-slate-900"
     >
       {/* Background glows */}
       <div className="absolute top-0 left-1/4 w-96 h-96 rounded-full bg-cyan-600/8 blur-[150px] pointer-events-none" />

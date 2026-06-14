@@ -346,7 +346,7 @@ export default function Hackathons() {
   const [activeHack, setActiveHack] = useState<Hackathon | null>(null);
 
   return (
-    <section id="hackathons" className="py-20 relative overflow-hidden">
+    <section id="hackathons" className="py-10 relative overflow-hidden">
       {/* Ambient glows */}
       <div className="absolute top-0 left-1/3 w-96 h-80 rounded-full bg-cyan-600/5 blur-[150px] pointer-events-none" />
       <div className="absolute bottom-10 right-1/4 w-80 h-80 rounded-full bg-violet-600/5 blur-[140px] pointer-events-none" />

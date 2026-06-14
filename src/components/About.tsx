@@ -39,7 +39,7 @@ const highlights = [
 
 export default function About() {
   return (
-    <section id="about" className="py-24 relative overflow-hidden">
+    <section id="about" className="py-10 relative overflow-hidden">
       {/* Ambient BG Glow */}
       <div className="absolute top-1/2 left-0 w-80 h-80 rounded-full bg-blue-500/5 blur-[120px] pointer-events-none" />
       

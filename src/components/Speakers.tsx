@@ -103,7 +103,7 @@ const speakers: Speaker[] = [
 
 export default function Speakers() {
   return (
-    <section id="speakers" className="py-24 relative overflow-hidden bg-black/20">
+    <section id="speakers" className="py-10 relative overflow-hidden bg-black/20">
       {/* Background Radial Glow */}
       <div className="absolute top-0 right-1/4 w-80 h-80 rounded-full bg-[#00f0ff]/5 blur-[150px] pointer-events-none" />
 
@@ -123,9 +123,11 @@ export default function Speakers() {
         </div>
 
         {/* 3D Cards Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="flex flex-wrap justify-center gap-8">
           {speakers.map((speaker, idx) => (
-            <SpeakerCard key={idx} speaker={speaker} idx={idx} />
+            <div key={idx} className="w-full max-w-sm md:w-[calc(50%-16px)] lg:w-[calc(33.333%-22px)] flex-shrink-0">
+              <SpeakerCard speaker={speaker} idx={idx} />
+            </div>
           ))}
         </div>
 

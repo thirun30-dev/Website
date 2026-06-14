@@ -60,7 +60,7 @@ export default function Sponsors() {
   ];
 
   return (
-    <section id="sponsors" className="py-24 relative overflow-hidden bg-black/10">
+    <section id="sponsors" className="py-10 relative overflow-hidden bg-black/10">
       {/* Background Glow */}
       <div className="absolute top-1/2 right-1/4 w-96 h-96 rounded-full bg-blue-600/5 blur-[150px] pointer-events-none" />
 

@@ -11,6 +11,63 @@ interface TimeLeft {
   seconds: number;
 }
 
+const THEMES = {
+  days: {
+    bg: "bg-gradient-to-b from-[#0b1430] to-[#040817]/95",
+    border: "border-blue-500/30",
+    text: "text-blue-400",
+    glow: "shadow-[0_0_15px_rgba(59,130,246,0.15)]",
+  },
+  hours: {
+    bg: "bg-gradient-to-b from-[#081a24] to-[#020b10]/95",
+    border: "border-cyan-500/30",
+    text: "text-cyan-400",
+    glow: "shadow-[0_0_15px_rgba(6,182,212,0.15)]",
+  },
+  minutes: {
+    bg: "bg-gradient-to-b from-[#1b0b2e] to-[#0a0314]/95",
+    border: "border-purple-500/30",
+    text: "text-purple-400",
+    glow: "shadow-[0_0_15px_rgba(168,85,247,0.15)]",
+  },
+  seconds: {
+    bg: "bg-gradient-to-b from-[#241208] to-[#0e0602]/95",
+    border: "border-amber-500/30",
+    text: "text-amber-400",
+    glow: "shadow-[0_0_15px_rgba(245,158,11,0.15)]",
+  },
+};
+
+function FlipDigit({ digit, theme }: { digit: string; theme: any }) {
+  return (
+    <div
+      style={{ perspective: 450 }}
+      className={`relative w-[50px] h-[75px] sm:w-[84px] sm:h-[126px] rounded-2xl border flex items-center justify-center font-mono font-black text-3xl sm:text-6xl select-none ${theme.bg} ${theme.border} ${theme.text} ${theme.glow}`}
+    >
+      {/* Horizontal split divider */}
+      <div className="absolute left-0 right-0 top-1/2 h-[1.5px] bg-[#020205]/60 z-10" />
+
+      {/* Metal hinge clips */}
+      <div className="absolute left-[-3px] top-1/2 -translate-y-1/2 w-[6px] h-[10px] sm:w-[8px] sm:h-[14px] sm:left-[-4px] bg-slate-400 border border-slate-300 rounded-sm shadow-sm z-20" />
+      <div className="absolute right-[-3px] top-1/2 -translate-y-1/2 w-[6px] h-[10px] sm:w-[8px] sm:h-[14px] sm:right-[-4px] bg-slate-400 border border-slate-300 rounded-sm shadow-sm z-20" />
+
+      {/* Glossy top overlay */}
+      <div className="absolute inset-x-0 top-0 bottom-1/2 bg-white/[0.03] rounded-t-2xl pointer-events-none" />
+
+      {/* Digit value with vertical 3D rotating X-axis animation on digit change */}
+      <motion.span
+        key={digit}
+        initial={{ rotateX: -90, opacity: 0.3 }}
+        animate={{ rotateX: 0, opacity: 1 }}
+        transition={{ duration: 0.25, ease: "easeOut" }}
+        className="relative z-0 leading-none inline-block"
+      >
+        {digit}
+      </motion.span>
+    </div>
+  );
+}
+
 export default function Countdown() {
   const targetDate = new Date("2026-09-12T09:00:00+05:30"); // Sep 12, 2026 9:00 AM IST
 
@@ -58,32 +115,56 @@ export default function Countdown() {
 
   if (!isMounted) {
     return (
-      <section id="countdown" className="min-h-screen w-full flex items-center justify-center bg-black" />
+      <section id="countdown" className="w-full flex items-center justify-center bg-black py-10" />
     );
   }
 
   const timeUnits = [
-    { label: "Days", value: timeLeft.days, max: 365 },
-    { label: "Hours", value: timeLeft.hours, max: 24 },
-    { label: "Minutes", value: timeLeft.minutes, max: 60 },
-    { label: "Seconds", value: timeLeft.seconds, max: 60 },
+    { label: "Days", value: timeLeft.days, theme: THEMES.days },
+    { label: "Hours", value: timeLeft.hours, theme: THEMES.hours },
+    { label: "Minutes", value: timeLeft.minutes, theme: THEMES.minutes },
+    { label: "Seconds", value: timeLeft.seconds, theme: THEMES.seconds },
   ];
 
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    show: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1,
+      },
+    },
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 30, scale: 0.95 },
+    show: {
+      opacity: 1,
+      y: 0,
+      scale: 1,
+      transition: {
+        type: "spring" as const,
+        stiffness: 100,
+        damping: 15,
+      },
+    },
+  };
+
   return (
-    <section id="countdown" className="min-h-screen w-full relative flex flex-col justify-center items-center overflow-hidden py-16 bg-[#020205]">
+    <section id="countdown" className="w-full relative flex flex-col justify-center items-center overflow-hidden py-10 bg-[#020205]">
       {/* Background Grid & Ambient Glows */}
       <div className="absolute inset-0 cyber-grid opacity-20 pointer-events-none" />
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] rounded-full bg-blue-600/5 blur-[150px] pointer-events-none animate-pulse-glow" />
 
-      <div className="max-w-6xl mx-auto px-4 relative z-10 text-center space-y-16 w-full flex flex-col items-center">
+      <div className="max-w-6xl mx-auto px-4 relative z-10 text-center space-y-12 w-full flex flex-col items-center">
         
         {/* Section Heading */}
         <div className="space-y-4 max-w-xl">
-          <div className="inline-flex items-center gap-2 text-cyan-400 font-semibold uppercase tracking-widest text-xs bg-cyan-950/30 px-4 py-1.5 rounded-full border border-cyan-500/20">
-            <Clock size={14} className="animate-pulse" />
+          <div className="inline-flex items-center gap-2 text-cyan-400 font-semibold uppercase tracking-widest text-[10px] bg-cyan-950/30 px-4 py-1.5 rounded-full border border-cyan-500/20">
+            <Clock size={12} className="animate-pulse" />
             T-Minus Event Launch
           </div>
-          <h2 className="text-4xl sm:text-5xl font-black text-white leading-tight uppercase tracking-tight">
+          <h2 className="text-3xl sm:text-4xl font-black text-white leading-tight uppercase tracking-tight">
             Counting Down to <br />
             <span className="bg-gradient-to-r from-blue-500 via-cyan-400 to-[#00f0ff] bg-clip-text text-transparent text-glow">
               September 12, 2026
@@ -94,128 +175,49 @@ export default function Countdown() {
           </p>
         </div>
 
-        {/* Large Typographic Time Grid */}
-        <div className="w-full max-w-5xl space-y-10 flex flex-col items-center">
-          
-          {/* Days Unit (Top Center Capsule) */}
-          <div className="w-full flex justify-center">
-            {/* Capsule shape for Days */}
-            <div className="relative w-44 h-22 sm:w-52 sm:h-26 flex items-center justify-center">
-              <svg className="absolute inset-0 w-full h-full" viewBox="0 0 200 100">
-                <defs>
-                  <linearGradient id="timer-gradient-days" x1="0%" y1="0%" x2="100%" y2="100%">
-                    <stop offset="0%" stopColor="#2563eb" />
-                    <stop offset="100%" stopColor="#00f0ff" />
-                  </linearGradient>
-                </defs>
-                {/* Static capsule border */}
-                <rect
-                  x="5"
-                  y="5"
-                  width="190"
-                  height="90"
-                  rx="45"
-                  ry="45"
-                  stroke="url(#timer-gradient-days)"
-                  strokeWidth="5"
-                  fill="transparent"
-                  className="drop-shadow-[0_0_8px_rgba(6,182,212,0.4)] opacity-85"
-                />
-              </svg>
-
-              {/* Central Text Panel */}
-              <div className="text-center z-10 flex flex-col items-center">
-                <span className="text-4xl sm:text-5xl font-black tracking-tight bg-gradient-to-r from-blue-500 via-cyan-400 to-[#00f0ff] bg-clip-text text-transparent text-glow select-none">
-                  {String(timeLeft.days).padStart(2, "0")}
-                </span>
-                <span className="text-[10px] sm:text-xs text-slate-500 font-bold uppercase tracking-widest mt-1">
-                  Days
-                </span>
-              </div>
-            </div>
-          </div>
-
-          {/* Hours, Minutes, Seconds Grid (Bottom Row) */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 w-full max-w-4xl justify-items-center">
-            {timeUnits.slice(1).map((unit, idx) => {
-              const actualIdx = idx + 1;
-              return (
-                <div
-                  key={idx}
-                  className="relative group rounded-3xl p-[1px] bg-gradient-to-b from-cyan-500/10 to-transparent hover:from-cyan-400/40 transition-all duration-500 hover:shadow-[0_0_35px_rgba(0,240,255,0.12)] w-full max-w-[280px]"
+        {/* Large Flip Clock Horizontal Container */}
+        <motion.div
+          variants={containerVariants}
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true, margin: "-100px" }}
+          className="flex flex-wrap justify-center items-center gap-4 sm:gap-6 md:gap-8 max-w-5xl mx-auto w-full pt-4"
+        >
+          {timeUnits.map((unit, idx) => {
+            const digits = String(unit.value).padStart(2, "0").split("");
+            return (
+              <React.Fragment key={unit.label}>
+                {/* Unit Container */}
+                <motion.div
+                  variants={itemVariants}
+                  className="flex flex-col items-center gap-3"
                 >
-                  {/* Sleek, Glassmorphic Card */}
-                  <div className="glass-panel rounded-3xl p-6 md:p-8 flex flex-col items-center justify-center bg-slate-950/70 border border-slate-800/60 transition-transform duration-500 hover:-translate-y-1 w-full h-full">
-                    {/* Ambient Internal Glow */}
-                    <div className="absolute inset-0 rounded-3xl bg-gradient-to-br from-blue-600/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
-
-                    {/* Circular progress for others */}
-                    <div className="relative w-36 h-36 sm:w-40 sm:h-40 flex items-center justify-center">
-                      <svg className="absolute inset-0 w-full h-full transform -rotate-90" viewBox="0 0 160 160">
-                        <defs>
-                          <linearGradient id={`timer-gradient-${actualIdx}`} x1="0%" y1="0%" x2="100%" y2="100%">
-                            <stop offset="0%" stopColor="#2563eb" />
-                            <stop offset="100%" stopColor="#00f0ff" />
-                          </linearGradient>
-                        </defs>
-                        {/* Base circle track */}
-                        <circle
-                          cx="80"
-                          cy="80"
-                          r="70"
-                          className="stroke-slate-900/50"
-                          strokeWidth="5"
-                          fill="transparent"
-                        />
-                        {/* Shadow glow track */}
-                        <circle
-                          cx="80"
-                          cy="80"
-                          r="70"
-                          className="stroke-cyan-500/5"
-                          strokeWidth="10"
-                          fill="transparent"
-                        />
-                        {/* Dynamic flow timer arc */}
-                        <motion.circle
-                          cx="80"
-                          cy="80"
-                          r="70"
-                          stroke={`url(#timer-gradient-${actualIdx})`}
-                          strokeWidth="6"
-                          fill="transparent"
-                          strokeDasharray={2 * Math.PI * 70}
-                          initial={{ strokeDashoffset: 2 * Math.PI * 70 }}
-                          animate={{ strokeDashoffset: 2 * Math.PI * 70 * (1 - unit.value / unit.max) }}
-                          transition={{ duration: 0.5, ease: "easeInOut" }}
-                          strokeLinecap="round"
-                          className="drop-shadow-[0_0_8px_rgba(6,182,212,0.45)]"
-                        />
-                      </svg>
-
-                      {/* Central Text Panel */}
-                      <div className="text-center z-10 flex flex-col items-center">
-                        <span className="text-4xl sm:text-5xl font-black tracking-tight bg-gradient-to-r from-blue-500 via-cyan-400 to-[#00f0ff] bg-clip-text text-transparent text-glow select-none">
-                          {String(unit.value).padStart(2, "0")}
-                        </span>
-                        <span className="text-[10px] sm:text-xs text-slate-500 font-bold uppercase tracking-widest mt-1">
-                          {unit.label}
-                        </span>
-                      </div>
-                    </div>
-
-                    {/* Micro Border Glow Segment */}
-                    <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-1/3 h-[2px] bg-cyan-400 opacity-20 group-hover:opacity-100 group-hover:w-1/2 transition-all duration-500" />
+                  {/* Digit Cards */}
+                  <div className="flex gap-1.5 sm:gap-2">
+                    {digits.map((d, dIdx) => (
+                      <FlipDigit key={dIdx} digit={d} theme={unit.theme} />
+                    ))}
                   </div>
-                </div>
-              );
-            })}
-          </div>
-        </div>
+                  {/* Label */}
+                  <span className="text-[10px] sm:text-xs text-slate-500 font-bold uppercase tracking-widest">
+                    {unit.label}
+                  </span>
+                </motion.div>
+
+                {/* Separator Colon */}
+                {idx < timeUnits.length - 1 && (
+                  <div className="hidden sm:block text-2xl sm:text-5xl font-black text-slate-800 self-start mt-[20px] sm:mt-[32px] select-none">
+                    :
+                  </div>
+                )}
+              </React.Fragment>
+            );
+          })}
+        </motion.div>
 
         {/* Action and Venue Prompt */}
         <div className="space-y-4 pt-4">
-          <p className="text-sm font-semibold text-slate-400 uppercase tracking-widest">
+          <p className="text-[11px] font-semibold text-slate-400 uppercase tracking-widest">
             Rajalakshmi Engineering College (REC) Campus, Chennai
           </p>
           

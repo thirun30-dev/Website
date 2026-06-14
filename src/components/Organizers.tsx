@@ -317,11 +317,11 @@ export default function Organizers() {
 
 
   return (
-    <section id="organizers" className="py-24 relative overflow-hidden bg-black/20">
+    <section id="organizers" className="py-10 relative overflow-hidden bg-black/20">
       {/* Background radial glows */}
       <div className="absolute top-1/2 left-1/4 w-72 h-72 rounded-full bg-blue-600/5 blur-[120px] pointer-events-none" />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 space-y-24">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 space-y-10">
         
         {/* Section Heading */}
         <div className="text-center space-y-4">
@@ -337,7 +337,7 @@ export default function Organizers() {
         </div>
 
         {/* 1. Faculty Coordinator Section */}
-        <div className="space-y-12">
+        <div className="space-y-6">
           <h3 className="text-lg font-bold text-[#00f0ff] border-b border-slate-900 pb-3 flex items-center gap-2">
             <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse" />
             Faculty Coordinator
@@ -348,7 +348,7 @@ export default function Organizers() {
         </div>
 
         {/* 2. Core Team Showcase Section — Coverflow Slider + About Us */}
-        <div className="space-y-8 pt-4">
+        <div className="space-y-6">
           <h3 className="text-lg font-bold text-[#00f0ff] border-b border-slate-900 pb-3 flex items-center gap-2">
             <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse" />
             Core Team
@@ -511,7 +511,7 @@ export default function Organizers() {
         </div>
 
         {/* 3. Event Crew Section */}
-        <div className="space-y-12 pt-8">
+        <div className="space-y-6">
           <div className="text-center space-y-2">
             <h3 className="text-xl font-bold text-[#00f0ff] flex items-center justify-center gap-2">
               <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse" />
