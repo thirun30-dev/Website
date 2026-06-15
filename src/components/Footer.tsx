@@ -117,17 +117,17 @@ export default function Footer() {
               <div className="relative w-10 h-10">
                 <Image
                   src="/aws_sbg_logo.png"
-                  alt="AWS Students Builder Group REC Logo"
+                  alt="AWS Student Builder Groups REC Logo"
                   fill
                   className="object-contain filter drop-shadow-[0_0_8px_rgba(0,240,255,0.4)]"
                 />
               </div>
               <div>
                 <span className="text-white font-bold text-base tracking-wide block">
-                  AWS <span className="text-[#00f0ff]">STUDENTS</span>
+                  AWS <span className="text-[#00f0ff]">STUDENT</span>
                 </span>
                 <span className="text-[9px] text-slate-500 font-bold uppercase tracking-wider block -mt-1">
-                  Builder Group @ REC
+                  Builder Groups @ REC
                 </span>
               </div>
             </div>
@@ -294,7 +294,7 @@ export default function Footer() {
 
         {/* Bottom copyright line */}
         <div className="pt-8 border-t border-slate-950 flex flex-col sm:flex-row items-center justify-between gap-4 text-[10px] text-slate-500">
-          <p>© 2026 AWS Students Builder Group REC. All rights reserved.</p>
+          <p>© 2026 AWS Student Builder Groups REC. All rights reserved.</p>
           <div className="flex gap-4">
             <span className="hover:text-slate-400 cursor-pointer">Privacy Policy</span>
             <span className="hover:text-slate-400 cursor-pointer">Terms of Service</span>

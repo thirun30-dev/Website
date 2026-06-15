@@ -62,6 +62,7 @@ interface Advisor {
   linkedin: string;
   bio?: string;
   background?: string;
+  focusAreas?: string[];
   isSpecial?: boolean;
 }
 
@@ -95,8 +96,13 @@ const advisors: Advisor[] = [
     role: "Faculty Coordinator & Cloud Mentor",
     department: "Information Technology",
     linkedin: "https://www.linkedin.com/",
-    bio: "Specializes in Cloud Computing, Distributed Architectures, and DevOps methodologies. Faculty Coordinator for AWS Students Builder Group at Rajalakshmi Engineering College (REC), leading student hackathons, serverless workshops, and cloud migrations.",
-    background: "12+ years of teaching excellence and AWS education curation. Certified AWS Academy Educator, passionate about bridging the gap between industry practices and academic cloud architectures.",
+    bio: "A dedicated educator and mentor, guiding the AWS Students Builder Group at REC in fostering innovation, technical excellence, and industry readiness. With a strong focus on cloud computing and emerging technologies, he supports students in building practical skills, leading impactful initiatives, and creating meaningful learning experiences through community-driven programs and events.",
+    focusAreas: [
+      "Student Mentorship & Leadership",
+      "Cloud Learning Initiatives",
+      "Industry-Academia Collaboration",
+      "Community Growth & Development"
+    ],
     isSpecial: true,
   },
 ];
@@ -104,77 +110,82 @@ const advisors: Advisor[] = [
 const coreTeam: CoreMember[] = [
   {
     name: "Prathakshanaa",
-    role: "Captain",
+    role: "Cloud Captain",
     department: "Information Technology",
-    bio: "Prathakshanaa leads the AWS Students Builder Group as Captain, driving strategic direction, team coordination, and community growth initiatives for AWS Community Day 2026 at REC.",
+    bio: "Leads the cloud learning initiatives of the AWS Students Builder Group and promotes AWS technologies within the student community. Responsible for organizing cloud-focused events, encouraging hands-on learning, and helping students explore certifications, projects, and career opportunities in cloud computing.",
     linkedin: "https://www.linkedin.com/",
     github: "https://github.com/",
     email: "prathakshanaa@example.com",
     image: "/prathakshanaa.jpeg",
     responsibilities: [
-      "Team Leadership & Strategy",
-      "Community Growth Initiatives",
-      "Event Coordination"
+      "AWS Learning Programs",
+      "Community Building",
+      "Technical Workshops",
+      "Cloud Advocacy"
     ]
   },
   {
     name: "Pranav Ranjan",
     role: "Tech Lead",
     department: "Information Technology",
-    bio: "Pranav drives all technical initiatives, architecting cloud-native solutions, managing AWS infrastructure, and guiding the technical roadmap for the AWS Students Builder Group.",
+    bio: "Oversees the technical execution of community initiatives and Student Community Day 2026. Ensures smooth operation of event platforms, technical infrastructure, and digital experiences while guiding the team on technical decisions and innovation.",
     linkedin: "https://www.linkedin.com/",
     github: "https://github.com/",
     email: "pranav@example.com",
     image: "/pranav-ranjan.jpeg",
     responsibilities: [
-      "Cloud Architecture Design",
-      "AWS Infrastructure Management",
-      "Technical Roadmap Planning"
+      "Technical Strategy",
+      "Platform Development",
+      "Cloud Architecture",
+      "Team Mentorship"
     ]
   },
   {
     name: "Thirunavukkarasu",
     role: "Social Media Lead",
     department: "Computer Science",
-    bio: "Thirunavukkarasu manages the group's digital presence, crafting engaging content, running live event coverage, and growing the AWS community across LinkedIn, Instagram, and Twitter.",
+    bio: "Drives the online presence of the AWS Students Builder Group through engaging content, event promotions, and community engagement. Responsible for building awareness, increasing reach, and showcasing the impact of community initiatives.",
     linkedin: "https://www.linkedin.com/",
     github: "https://github.com/",
     email: "thirunavukkarasu@example.com",
     image: "/thirunavukkarasu.png",
     responsibilities: [
-      "Social Media Strategy",
-      "Live Event Coverage",
-      "Digital Community Growth"
+      "Content Strategy",
+      "Event Promotions",
+      "Community Engagement",
+      "Brand Communication"
     ]
   },
   {
     name: "Giiridharan",
-    role: "IT and Support Lead",
+    role: "IT & Support Lead",
     department: "Information Technology",
-    bio: "Giiridharan manages the network infrastructure, hardware coordination, and overall technical support operations to ensure seamless event execution for AWS Community Day 2026.",
+    bio: "Manages the technical support and operational requirements of events and community activities. Ensures all systems, equipment, and digital resources function efficiently to provide a seamless experience for speakers, attendees, and organizers.",
     linkedin: "https://www.linkedin.com/",
     github: "https://github.com/",
     email: "giiridharan@example.com",
     image: "/giridharan.png",
     responsibilities: [
-      "IT Infrastructure Management",
-      "Technical Support Operations",
-      "Network & Connectivity Setup"
+      "Technical Operations",
+      "Event Infrastructure",
+      "Troubleshooting & Support",
+      "Resource Management"
     ]
   },
   {
     name: "Dilip Kannan",
-    role: "Core Organizer",
+    role: "Event Management Lead",
     department: "Information Technology",
-    bio: "Dilip coordinates core operations, design workflows, and event support for the AWS Students Builder Group at REC.",
+    bio: "Coordinates planning, execution, and collaboration across various teams to ensure the success of Student Community Day 2026 and community activities. Works closely with speakers, sponsors, volunteers, and organizers to deliver impactful experiences.",
     linkedin: "https://www.linkedin.com/",
     github: "https://github.com/",
     email: "dilip@example.com",
     image: "/dilip_kannan.JPG",
     responsibilities: [
-      "Core Operations Coordination",
-      "Design Workflow Support",
-      "Event Infrastructure Setup"
+      "Event Planning",
+      "Team Coordination",
+      "Stakeholder Management",
+      "Community Operations"
     ]
   }
 ];
@@ -328,7 +339,7 @@ const crewTeam: CrewMember[] = [
     role: "Ops Coordinator",
     department: "Information Technology",
     image: "/balaambiga.jpg",
-    bio: "Balaambiga manages logistics, registration support, and attendee queries for the AWS Students Builder Group.",
+    bio: "Balaambiga manages logistics, registration support, and attendee queries for the AWS Student Builder Groups.",
     responsibilities: ["Registration Support", "Logistics Coordination", "Attendee Query Help"],
     linkedin: "https://www.linkedin.com/",
     github: "https://github.com/",
@@ -339,7 +350,7 @@ const crewTeam: CrewMember[] = [
     role: "Crew Member",
     department: "Information Technology",
     image: "/rannesh_khumar.jpeg",
-    bio: "Rannesh assists with event operations, tech support, and logistics for AWS Students Builder Group.",
+    bio: "Rannesh assists with event operations, tech support, and logistics for AWS Student Builder Groups.",
     responsibilities: ["Event Operations", "Technical Support", "Logistics Coordination"],
     linkedin: "https://www.linkedin.com/",
     github: "https://github.com/",
@@ -395,7 +406,7 @@ export default function Organizers() {
             Meet the Builders
           </h2>
           <p className="text-slate-400 text-sm max-w-md mx-auto">
-            The student heads and faculty mentors of the AWS Students Builder Group at REC College hosting the 2026 Community Day.
+            The student heads and faculty mentors of the AWS Student Builder Groups at REC College hosting the 2026 Community Day.
           </p>
         </div>
 
@@ -952,14 +963,21 @@ function FeaturedCoordinatorCard({ member }: { member: Advisor }) {
               </p>
             </div>
 
-            <div>
-              <h5 className="text-[9px] text-[#00f0ff]/65 font-bold uppercase tracking-wider mb-1">
-                Cloud Curation & Focus
-              </h5>
-              <p className="text-xs text-slate-400 leading-relaxed font-medium">
-                {member.background}
-              </p>
-            </div>
+            {member.focusAreas && (
+              <div>
+                <h5 className="text-[9px] text-[#00f0ff]/65 font-bold uppercase tracking-wider mb-1.5">
+                  Key Focus Areas
+                </h5>
+                <ul className="grid grid-cols-1 gap-1.5">
+                  {member.focusAreas.map((area, i) => (
+                    <li key={i} className="flex items-center gap-2 text-slate-300 text-xs font-medium">
+                      <span className="w-1.5 h-1.5 rounded-full bg-[#00f0ff] animate-pulse flex-shrink-0" />
+                      <span>{area}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
           </div>
 
           <div className="pt-4 border-t border-slate-800 flex items-center justify-between">

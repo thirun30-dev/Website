@@ -252,7 +252,7 @@ function HackathonModal({
           </div>
 
           {/* ── RIGHT: Registration Form ── */}
-          <div className="w-full lg:w-[45%] p-5 sm:p-6 flex flex-col">
+          <div className="w-full lg:w-[45%] p-5 sm:p-6 flex flex-col lg:overflow-y-auto lg:max-h-[calc(90vh-52px)]">
             {submitted ? (
               <div className="flex-1 flex flex-col items-center justify-center text-center space-y-4 py-12">
                 <div className={`w-14 h-14 rounded-2xl border flex items-center justify-center ${isFirst ? "border-cyan-500/30 bg-cyan-500/10 text-cyan-400" : "border-violet-500/30 bg-violet-500/10 text-violet-400"}`}>

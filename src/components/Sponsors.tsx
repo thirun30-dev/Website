@@ -55,7 +55,7 @@ export default function Sponsors() {
 
   const partners = [
     { name: "AWS User Group Chennai", role: "Official Community Partner" },
-    { name: "AWS Student Builder Group REC", role: "Hosting Student Group" },
+    { name: "AWS Student Builder Groups REC", role: "Hosting Student Group" },
     { name: "Rajalakshmi Engineering College", role: "Academic Host Venue" }
   ];
 

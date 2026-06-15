@@ -46,7 +46,7 @@ export default function Hero() {
       <div className="absolute top-1/2 right-1/4 w-64 h-64 rounded-full bg-purple-600/5 blur-[100px]" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full">
-        <div className="flex flex-col items-center justify-center text-center py-10 md:py-14 max-w-4xl mx-auto">
+        <div className="flex flex-col items-center justify-center text-center pt-2 pb-10 md:pt-4 md:pb-14 max-w-4xl mx-auto">
           
           {/* Centered Hero Content */}
           <motion.div
@@ -55,16 +55,6 @@ export default function Hero() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: "easeOut" }}
           >
-            <motion.div
-              className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 text-xs font-semibold uppercase tracking-wider"
-              initial={{ opacity: 0, y: -10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2, duration: 0.5 }}
-            >
-              <Sparkles size={14} />
-              3rd Industry Academia Tech Conference
-            </motion.div>
-
             <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight text-white leading-tight">
               AWS <br />
               <span className="bg-gradient-to-r from-blue-500 via-cyan-400 to-[#00f0ff] bg-clip-text text-transparent text-glow">
@@ -74,8 +64,7 @@ export default function Hero() {
             </h1>
 
             <p className="text-slate-400 text-base sm:text-lg max-w-2xl mx-auto">
-              The premier gathering for student cloud builders, developer practitioners, and AI enthusiasts. 
-              Elevate your skills, network with AWS professionals, and architect the future at REC College.
+              Bringing together industry experts, cloud professionals, students, and technology enthusiasts for a day of learning, innovation, networking, and knowledge sharing across multiple cloud and emerging technology tracks.
             </p>
 
             {/* Event Meta Details */}

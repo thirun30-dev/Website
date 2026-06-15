@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { Mic, Building2, Send, CheckCircle2, X, Calendar, Clock, Handshake, Star, Award } from "lucide-react";
+import { Mic, Building2, Send, CheckCircle2, X, Calendar, Clock, Handshake, Star, Award, Users } from "lucide-react";
 
 /* ─────────────────────────────────────────────
    SHARED TYPES & HELPERS
@@ -231,32 +231,40 @@ export default function CallFor() {
               <div className="space-y-3">
                 <h3 className="text-2xl font-black text-white">Call for Sponsors</h3>
                 <p className="text-sm text-slate-400 leading-relaxed">
-                  Partner with AWS Student Community Day 2026 and get your brand in front of 500+ cloud builders, students, and industry professionals.
+                  Partner with AWS Student Community Day 2026 and showcase your brand to a growing community of students, builders, developers, and future technology leaders.
                 </p>
               </div>
 
               {/* Perks */}
               <ul className="space-y-2">
                 {[
-                  { icon: <Star size={12} />, text: "Brand visibility on all event materials" },
-                  { icon: <Award size={12} />, text: "Dedicated booth & speaking slot" },
-                  { icon: <Handshake size={12} />, text: "Direct access to top student talent" },
+                  { icon: <Star size={12} />, text: "Brand visibility across event promotions and materials" },
+                  { icon: <Award size={12} />, text: "Opportunity to engage with attendees and showcase solutions" },
+                  { icon: <Users size={12} />, text: "Connect with emerging talent and future professionals" },
+                  { icon: <Handshake size={12} />, text: "Support community-driven learning and innovation" },
                 ].map((perk, i) => (
-                  <li key={i} className="flex items-center gap-2.5 text-[12px] text-slate-300">
-                    <span className="text-amber-400 flex-shrink-0">{perk.icon}</span>
-                    {perk.text}
+                  <li key={i} className="flex items-start gap-2.5 text-[12px] text-slate-300">
+                    <span className="text-amber-400 flex-shrink-0 mt-0.5">{perk.icon}</span>
+                    <span className="leading-normal">{perk.text}</span>
                   </li>
                 ))}
               </ul>
 
               {/* Quick info chips */}
-              <div className="flex flex-wrap gap-2 pt-1">
-                {["Gold Tier", "Silver Tier", "Community Partner"].map((t) => (
-                  <span key={t} className="px-2.5 py-1 rounded-full text-[9px] font-black uppercase tracking-wider border border-amber-500/20 text-amber-400 bg-amber-500/5">
-                    {t}
-                  </span>
-                ))}
+              <div className="space-y-2">
+                <h5 className="text-[10px] text-slate-500 font-bold uppercase tracking-widest">Sponsorship Opportunities</h5>
+                <div className="flex flex-wrap gap-2">
+                  {["Gold Partner", "Silver Partner", "Community Partner"].map((t) => (
+                    <span key={t} className="px-2.5 py-1 rounded-full text-[9px] font-black uppercase tracking-wider border border-amber-500/20 text-amber-400 bg-amber-500/5">
+                      {t}
+                    </span>
+                  ))}
+                </div>
               </div>
+
+              <p className="text-xs text-slate-400 leading-relaxed italic">
+                Join us in empowering the next generation of cloud innovators while expanding your reach within the technology ecosystem.
+              </p>
 
               {/* CTA */}
               <button
@@ -289,7 +297,7 @@ export default function CallFor() {
               <div className="space-y-3">
                 <h3 className="text-2xl font-black text-white">Call for Speakers</h3>
                 <p className="text-sm text-slate-400 leading-relaxed">
-                  Share your cloud expertise, AWS research, or AI innovations with 500+ passionate builders at AWS Student Community Day 2026.
+                  Share your cloud expertise, AWS experiences, research insights, or innovative ideas with a vibrant community of students, developers, and technology enthusiasts at AWS Student Community Day 2026.
                 </p>
               </div>
 
@@ -297,24 +305,31 @@ export default function CallFor() {
               <ul className="space-y-2">
                 {[
                   { icon: <Calendar size={12} />, text: "Deadline: August 10, 2026" },
-                  { icon: <Clock size={12} />, text: "Duration: 30 / 45 minute slots" },
-                  { icon: <Mic size={12} />, text: "Format: PPT + Live Demo" },
+                  { icon: <Clock size={12} />, text: "Duration: 30-minute speaking sessions" },
+                  { icon: <Mic size={12} />, text: "Format: Presentation + Interactive Q&A" },
                 ].map((perk, i) => (
-                  <li key={i} className="flex items-center gap-2.5 text-[12px] text-slate-300">
-                    <span className="text-cyan-400 flex-shrink-0">{perk.icon}</span>
-                    {perk.text}
+                  <li key={i} className="flex items-start gap-2.5 text-[12px] text-slate-300">
+                    <span className="text-cyan-400 flex-shrink-0 mt-0.5">{perk.icon}</span>
+                    <span className="leading-normal">{perk.text}</span>
                   </li>
                 ))}
               </ul>
 
               {/* Topic chips */}
-              <div className="flex flex-wrap gap-2 pt-1">
-                {["AWS Cloud", "Gen AI", "Serverless", "Bedrock", "DevOps"].map((t) => (
-                  <span key={t} className="px-2.5 py-1 rounded-full text-[9px] font-black uppercase tracking-wider border border-cyan-500/20 text-cyan-400 bg-cyan-500/5">
-                    {t}
-                  </span>
-                ))}
+              <div className="space-y-2">
+                <h5 className="text-[10px] text-slate-500 font-bold uppercase tracking-widest">Topics of Interest</h5>
+                <div className="flex flex-wrap gap-2">
+                  {["AWS Cloud", "Generative AI", "Serverless", "DevOps", "Security", "Emerging Technologies"].map((t) => (
+                    <span key={t} className="px-2.5 py-1 rounded-full text-[9px] font-black uppercase tracking-wider border border-cyan-500/20 text-cyan-400 bg-cyan-500/5">
+                      {t}
+                    </span>
+                  ))}
+                </div>
               </div>
+
+              <p className="text-xs text-slate-400 leading-relaxed italic">
+                Inspire, educate, and help shape the future of the cloud community.
+              </p>
 
               {/* CTA */}
               <button

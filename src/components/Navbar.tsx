@@ -95,7 +95,7 @@ export default function Navbar() {
               <div className="relative w-11 h-11 rounded-full overflow-hidden border border-cyan-500/20 bg-slate-950 flex-shrink-0 transition-transform duration-300 group-hover:scale-105">
                 <Image
                   src="/aws_sbg_logo.png"
-                  alt="AWS Students Builder Group REC Logo"
+                  alt="AWS Student Builder Groups REC Logo"
                   fill
                   className="object-cover filter drop-shadow-[0_0_8px_rgba(0,240,255,0.4)]"
                   priority
@@ -104,10 +104,10 @@ export default function Navbar() {
               </div>
               <div className="flex flex-col hidden sm:flex">
                 <span className="text-white font-bold text-sm tracking-wide">
-                  AWS <span className="text-[#00f0ff] text-glow">STUDENTS</span>
+                  AWS <span className="text-[#00f0ff] text-glow">STUDENT</span>
                 </span>
                 <span className="text-[10px] text-slate-400 font-semibold tracking-wider uppercase -mt-1">
-                  Builder Group @ REC
+                  Builder Groups @ REC
                 </span>
               </div>
             </a>

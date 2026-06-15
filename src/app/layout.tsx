@@ -14,8 +14,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "AWS Student Community Day 2026 | AWS Student Builders Group REC",
-  description: "Join us for the premier AWS Student Community Day on September 12, 2026, hosted by the AWS Students Builder Group at REC College. Discover cloud intelligence, GenAI, serverless computing, and more.",
+  title: "AWS Student Community Day 2026 | AWS Student Builder Groups REC",
+  description: "Join us for the premier AWS Student Community Day on September 12, 2026, hosted by the AWS Student Builder Groups at REC College. Discover cloud intelligence, GenAI, serverless computing, and more.",
   icons: {
     icon: "/aws_sbg_logo.png",
   },
