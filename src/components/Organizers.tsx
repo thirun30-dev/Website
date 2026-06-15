@@ -161,6 +161,21 @@ const coreTeam: CoreMember[] = [
       "Technical Support Operations",
       "Network & Connectivity Setup"
     ]
+  },
+  {
+    name: "Dilip Kannan",
+    role: "Core Organizer",
+    department: "Information Technology",
+    bio: "Dilip coordinates core operations, design workflows, and event support for the AWS Students Builder Group at REC.",
+    linkedin: "https://www.linkedin.com/",
+    github: "https://github.com/",
+    email: "dilip@example.com",
+    image: "/dilip_kannan.JPG",
+    responsibilities: [
+      "Core Operations Coordination",
+      "Design Workflow Support",
+      "Event Infrastructure Setup"
+    ]
   }
 ];
 
@@ -307,6 +322,39 @@ const crewTeam: CrewMember[] = [
     linkedin: "https://www.linkedin.com/",
     github: "https://github.com/",
     email: "nisha@example.com"
+  },
+  {
+    name: "Balaambiga",
+    role: "Ops Coordinator",
+    department: "Information Technology",
+    image: "/balaambiga.jpg",
+    bio: "Balaambiga manages logistics, registration support, and attendee queries for the AWS Students Builder Group.",
+    responsibilities: ["Registration Support", "Logistics Coordination", "Attendee Query Help"],
+    linkedin: "https://www.linkedin.com/",
+    github: "https://github.com/",
+    email: "balaambiga@example.com"
+  },
+  {
+    name: "Rannesh Khumar",
+    role: "Crew Member",
+    department: "Information Technology",
+    image: "/rannesh_khumar.jpeg",
+    bio: "Rannesh assists with event operations, tech support, and logistics for AWS Students Builder Group.",
+    responsibilities: ["Event Operations", "Technical Support", "Logistics Coordination"],
+    linkedin: "https://www.linkedin.com/",
+    github: "https://github.com/",
+    email: "rannesh@example.com"
+  },
+  {
+    name: "Sam Devaraj",
+    role: "Crew Member",
+    department: "Information Technology",
+    image: "/sam_devaraj.jpeg",
+    bio: "Sam coordinates technical setups, cloud workshops support, and hardware logistics.",
+    responsibilities: ["Technical Setup", "Workshop Coordination", "Hardware Logistics"],
+    linkedin: "https://www.linkedin.com/",
+    github: "https://github.com/",
+    email: "sam@example.com"
   }
 ];
 
