@@ -15,7 +15,10 @@ import {
   ArrowRight,
   Loader2,
 } from "lucide-react";
+import { useRegistration } from "@/context/RegistrationContext";
+import SuccessBadge from "./SuccessBadge";
 import { motion, AnimatePresence, type Variants } from "framer-motion";
+import QRCode from "react-qr-code";
 
 const interestAreas = [
   "Cloud Computing",
@@ -35,6 +38,7 @@ interface FormData {
   designation: string;
   city: string;
   interest: string;
+  avatar: string;
 }
 
 const initialForm: FormData = {
@@ -45,6 +49,7 @@ const initialForm: FormData = {
   designation: "",
   city: "",
   interest: "",
+  avatar: "man",
 };
 
 const inputVariants: Variants = {
@@ -61,6 +66,8 @@ export default function RegistrationForm() {
   const [errors, setErrors] = useState<Partial<FormData>>({});
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  
+  const { badgeData, setBadgeData } = useRegistration();
 
   const validate = (): boolean => {
     const newErrors: Partial<FormData> = {};
@@ -95,6 +102,12 @@ export default function RegistrationForm() {
     await new Promise((r) => setTimeout(r, 1800));
     setSubmitting(false);
     setSubmitted(true);
+    setBadgeData({
+      name: form.fullName,
+      email: form.email,
+      role: "Participation",
+      avatar: form.avatar,
+    });
   };
 
   const fields = [
@@ -190,54 +203,16 @@ export default function RegistrationForm() {
         </motion.div>
 
         <AnimatePresence mode="wait">
-          {submitted ? (
-            /* Success State */
-            <motion.div
-              key="success"
-              initial={{ opacity: 0, scale: 0.9, y: 30 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.5, type: "spring" }}
-              className="glass-panel rounded-3xl border border-cyan-500/30 p-10 text-center space-y-6 shadow-[0_0_50px_rgba(0,240,255,0.1)]"
-            >
-              <motion.div
-                className="w-20 h-20 rounded-full bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center mx-auto shadow-[0_0_30px_rgba(0,240,255,0.5)]"
-                initial={{ scale: 0 }}
-                animate={{ scale: 1 }}
-                transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
-              >
-                <CheckCircle2 size={38} className="text-white" />
-              </motion.div>
-              <div className="space-y-3">
-                <h3 className="text-2xl font-extrabold text-white">
-                  You&apos;re Registered! 🎉
-                </h3>
-                <p className="text-slate-400 text-sm max-w-md mx-auto leading-relaxed">
-                  Welcome aboard, <strong className="text-cyan-400">{form.fullName}</strong>!
-                  Your spot at AWS Community Day 2026 is confirmed. Check{" "}
-                  <span className="text-cyan-400">{form.email}</span> for your confirmation.
-                </p>
-              </div>
-              <div className="grid grid-cols-3 gap-4 pt-4 border-t border-slate-800">
-                {[
-                  { label: "Event Date", value: "Sep 12, 2026" },
-                  { label: "Venue", value: "REC Campus" },
-                  { label: "Entry Fee", value: "Free" },
-                ].map(({ label, value }) => (
-                  <div key={label} className="text-center">
-                    <p className="text-[10px] text-slate-500 uppercase font-bold tracking-wider">{label}</p>
-                    <p className="text-sm text-white font-bold mt-0.5">{value}</p>
-                  </div>
-                ))}
-              </div>
-              <motion.div
-                animate={{ opacity: [0.5, 1, 0.5] }}
-                transition={{ duration: 2, repeat: Infinity }}
-                className="text-xs text-slate-500"
-              >
-                Add to your calendar and share with your friends!
-              </motion.div>
-            </motion.div>
+          {(submitted || badgeData) ? (
+            /* Success State - Animated ID Card */
+            <div className="pb-8">
+              <SuccessBadge 
+                name={badgeData?.name || form.fullName} 
+                email={badgeData?.email || form.email} 
+                avatar={badgeData?.avatar || form.avatar} 
+                role={badgeData?.role || "Participation"} 
+              />
+            </div>
           ) : (
             /* Registration Form */
             <motion.form
@@ -343,6 +318,48 @@ export default function RegistrationForm() {
                       {errors.interest}
                     </motion.p>
                   )}
+                </motion.div>
+
+                {/* Avatar Selection */}
+                <motion.div
+                  className="space-y-3 sm:col-span-2 pt-2 border-t border-slate-800/60"
+                  custom={fields.length + 1}
+                  variants={inputVariants}
+                  initial="hidden"
+                  whileInView="visible"
+                  viewport={{ once: true }}
+                >
+                  <label className="block text-xs font-bold text-slate-300 uppercase tracking-wider">
+                    Select Your Avatar
+                  </label>
+                  <div className="flex items-center gap-6">
+                    <button
+                      type="button"
+                      onClick={() => setForm((prev) => ({ ...prev, avatar: "man" }))}
+                      className={`relative w-16 h-16 sm:w-20 sm:h-20 rounded-full p-1 transition-all ${
+                        form.avatar === "man" 
+                          ? "bg-gradient-to-br from-cyan-400 to-blue-600 shadow-[0_0_20px_rgba(0,240,255,0.3)] scale-110" 
+                          : "bg-slate-800 hover:bg-slate-700 opacity-60 hover:opacity-100"
+                      }`}
+                    >
+                      <div className="w-full h-full bg-black rounded-full overflow-hidden">
+                        <img src="/avatar-man.png" alt="Man Avatar" className="w-full h-full object-cover" />
+                      </div>
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setForm((prev) => ({ ...prev, avatar: "woman" }))}
+                      className={`relative w-16 h-16 sm:w-20 sm:h-20 rounded-full p-1 transition-all ${
+                        form.avatar === "woman" 
+                          ? "bg-gradient-to-br from-cyan-400 to-blue-600 shadow-[0_0_20px_rgba(0,240,255,0.3)] scale-110" 
+                          : "bg-slate-800 hover:bg-slate-700 opacity-60 hover:opacity-100"
+                      }`}
+                    >
+                      <div className="w-full h-full bg-black rounded-full overflow-hidden">
+                        <img src="/avatar-woman.png" alt="Woman Avatar" className="w-full h-full object-cover" />
+                      </div>
+                    </button>
+                  </div>
                 </motion.div>
               </div>
 

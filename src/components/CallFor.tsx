@@ -2,6 +2,8 @@
 
 import React, { useState } from "react";
 import { Mic, Building2, Send, CheckCircle2, X, Calendar, Clock, Handshake, Star, Award, Users } from "lucide-react";
+import SuccessBadge from "./SuccessBadge";
+import { useRegistration } from "@/context/RegistrationContext";
 
 /* ─────────────────────────────────────────────
    SHARED TYPES & HELPERS
@@ -18,10 +20,17 @@ function SpeakerModal({ onClose }: { onClose: () => void }) {
   const [submitted, setSubmitted] = useState(false);
   const [formData, setFormData] = useState({ name: "", email: "", topic: "", abstract: "" });
 
+  const { setBadgeData } = useRegistration();
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setSubmitted(true);
-    setTimeout(() => { onClose(); }, 2500);
+    setBadgeData({
+      name: formData.name,
+      email: formData.email,
+      role: "Event Speaker"
+    });
+    setTimeout(() => { onClose(); }, 8000);
   };
 
   return (
@@ -38,14 +47,8 @@ function SpeakerModal({ onClose }: { onClose: () => void }) {
 
         <div className="p-6">
           {submitted ? (
-            <div className="py-10 text-center space-y-4">
-              <div className="mx-auto w-14 h-14 rounded-2xl border border-cyan-500/30 bg-cyan-500/10 text-cyan-400 flex items-center justify-center">
-                <CheckCircle2 size={26} className="animate-pulse" />
-              </div>
-              <h3 className="text-lg font-bold text-white">Proposal Submitted!</h3>
-              <p className="text-xs text-slate-400 max-w-xs mx-auto">
-                The REC Student Builder Review Committee will reach out to you shortly.
-              </p>
+            <div className="py-4">
+              <SuccessBadge name={formData.name} email={formData.email} role="Event Speaker" />
             </div>
           ) : (
             <form onSubmit={handleSubmit} className="space-y-4">
@@ -104,10 +107,17 @@ function SponsorModal({ onClose }: { onClose: () => void }) {
     company: "", contact: "", email: "", tier: "", message: "",
   });
 
+  const { setBadgeData } = useRegistration();
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setSubmitted(true);
-    setTimeout(() => { onClose(); }, 2500);
+    setBadgeData({
+      name: formData.contact,
+      email: formData.email,
+      role: "Event Sponsor"
+    });
+    setTimeout(() => { onClose(); }, 8000);
   };
 
   return (
@@ -124,14 +134,8 @@ function SponsorModal({ onClose }: { onClose: () => void }) {
 
         <div className="p-6">
           {submitted ? (
-            <div className="py-10 text-center space-y-4">
-              <div className="mx-auto w-14 h-14 rounded-2xl border border-amber-500/30 bg-amber-500/10 text-amber-400 flex items-center justify-center">
-                <CheckCircle2 size={26} className="animate-pulse" />
-              </div>
-              <h3 className="text-lg font-bold text-white">Enquiry Received!</h3>
-              <p className="text-xs text-slate-400 max-w-xs mx-auto">
-                Our partnerships team will contact you within 48 hours to discuss the sponsorship details.
-              </p>
+            <div className="py-4">
+              <SuccessBadge name={formData.contact} email={formData.email} role="Event Sponsor" />
             </div>
           ) : (
             <form onSubmit={handleSubmit} className="space-y-4">

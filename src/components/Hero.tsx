@@ -5,8 +5,10 @@ import {
   Calendar,
   MapPin,
   Sparkles,
+  QrCode,
 } from "lucide-react";
 import { motion } from "framer-motion";
+import { useRegistration } from "@/context/RegistrationContext";
 
 const scrollToRegistrationForm = () => {
   const el = document.getElementById("register-form");
@@ -19,6 +21,7 @@ const scrollToRegistrationForm = () => {
 };
 
 export default function Hero() {
+  const { badgeData } = useRegistration();
 
   const handleScroll = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
     e.preventDefault();
@@ -91,12 +94,16 @@ export default function Hero() {
             </div>
 
             {/* Action Buttons */}
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4 w-full">
               <button
                 onClick={scrollToRegistrationForm}
-                className="neon-btn w-full sm:w-auto px-8 py-4 rounded-full text-base font-bold text-white text-center"
+                className="neon-btn w-full sm:w-auto px-8 py-4 rounded-full text-base font-bold text-white text-center flex items-center justify-center gap-2"
               >
-                Register Now — It&apos;s Free
+                {badgeData ? (
+                  <>View Your QR Pass <QrCode size={18} /></>
+                ) : (
+                  "Register Now — It's Free"
+                )}
               </button>
               <a
                 href="#schedule"

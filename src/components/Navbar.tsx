@@ -2,7 +2,8 @@
 
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
-import { Menu, X, ArrowRight } from "lucide-react";
+import { Menu, X, ArrowRight, QrCode } from "lucide-react";
+import { useRegistration } from "@/context/RegistrationContext";
 
 const navItems = [
   { label: "Home", href: "#home" },
@@ -19,6 +20,7 @@ export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [activeSection, setActiveSection] = useState("home");
+  const { badgeData } = useRegistration();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -141,7 +143,11 @@ export default function Navbar() {
               onClick={scrollToRegistrationForm}
               className="neon-btn px-6 py-2.5 rounded-full text-xs font-black uppercase tracking-wider text-white flex items-center gap-2"
             >
-              Register Now <ArrowRight size={14} />
+              {badgeData ? (
+                <>View QR Code <QrCode size={14} /></>
+              ) : (
+                <>Register Now <ArrowRight size={14} /></>
+              )}
             </button>
           </div>
 
@@ -187,7 +193,11 @@ export default function Navbar() {
               onClick={scrollToRegistrationForm}
               className="neon-btn w-full py-3 rounded-full text-center text-sm font-bold text-white flex items-center justify-center gap-2"
             >
-              Register Now <ArrowRight size={15} />
+              {badgeData ? (
+                <>View QR Code <QrCode size={15} /></>
+              ) : (
+                <>Register Now <ArrowRight size={15} /></>
+              )}
             </button>
           </div>
         </div>

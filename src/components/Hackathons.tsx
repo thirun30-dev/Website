@@ -6,6 +6,8 @@ import {
   X, ChevronRight, Trophy, Clock, Users, Cpu, Globe, Shield,
   Brain, Cloud, CheckCircle2, Send, Zap, Code2, BookOpen
 } from "lucide-react";
+import SuccessBadge from "./SuccessBadge";
+import { useRegistration } from "@/context/RegistrationContext";
 
 /* ─────────────────────────────────────────────
    DATA
@@ -154,13 +156,20 @@ function HackathonModal({
   });
   const [submitted, setSubmitted] = useState(false);
 
+  const { setBadgeData } = useRegistration();
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setSubmitted(true);
+    setBadgeData({
+      name: formData.name,
+      email: formData.email,
+      role: "Hackathon Builder"
+    });
     setTimeout(() => {
       setSubmitted(false);
       onClose();
-    }, 2500);
+    }, 8000);
   };
 
   const isFirst = hack.id === 1;
@@ -254,14 +263,8 @@ function HackathonModal({
           {/* ── RIGHT: Registration Form ── */}
           <div className="w-full lg:w-[45%] p-5 sm:p-6 flex flex-col lg:overflow-y-auto lg:max-h-[calc(90vh-52px)]">
             {submitted ? (
-              <div className="flex-1 flex flex-col items-center justify-center text-center space-y-4 py-12">
-                <div className={`w-14 h-14 rounded-2xl border flex items-center justify-center ${isFirst ? "border-cyan-500/30 bg-cyan-500/10 text-cyan-400" : "border-violet-500/30 bg-violet-500/10 text-violet-400"}`}>
-                  <CheckCircle2 size={28} className="animate-pulse" />
-                </div>
-                <h3 className="text-lg font-bold text-white">Registered!</h3>
-                <p className="text-xs text-slate-400 max-w-xs">
-                  Your hackathon registration has been received. We'll email you the confirmation and further details.
-                </p>
+              <div className="flex-1 flex flex-col items-center justify-center py-4">
+                <SuccessBadge name={formData.name} email={formData.email} role="Hackathon Builder" />
               </div>
             ) : (
               <form onSubmit={handleSubmit} className="flex-1 flex flex-col space-y-4">
