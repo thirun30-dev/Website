@@ -128,6 +128,7 @@ function HackathonCard({
         {/* CTA */}
         <div className="mt-6 flex flex-wrap gap-3">
           <button
+            suppressHydrationWarning
             onClick={onOpenDetails}
             className={`flex items-center gap-2 px-6 py-3 rounded-full font-black text-xs uppercase tracking-widest
               border transition-all duration-300 text-white
@@ -139,6 +140,7 @@ function HackathonCard({
             View Details <ChevronRight size={14} />
           </button>
           <button
+            suppressHydrationWarning
             onClick={onOpenTeam}
             className={`flex items-center gap-2 px-6 py-3 rounded-full font-black text-xs uppercase tracking-widest
               border transition-all duration-300 text-white
@@ -188,7 +190,7 @@ function HackathonDetailsModal({
               {hack.title} - Details
             </span>
           </div>
-          <button onClick={onClose} className="text-slate-500 hover:text-white transition-colors p-1">
+          <button suppressHydrationWarning onClick={onClose} className="text-slate-500 hover:text-white transition-colors p-1">
             <X size={18} />
           </button>
         </div>
@@ -329,7 +331,7 @@ function TeamRegistrationModal({
               Team Registration
             </span>
           </div>
-          <button onClick={onClose} className="text-slate-500 hover:text-white transition-colors p-1">
+          <button suppressHydrationWarning onClick={onClose} className="text-slate-500 hover:text-white transition-colors p-1">
             <X size={18} />
           </button>
         </div>
@@ -349,6 +351,7 @@ function TeamRegistrationModal({
               {/* Toggle Create / Join */}
               <div className="flex mb-6 p-1 bg-slate-900/50 rounded-lg border border-slate-800">
                 <button
+                  suppressHydrationWarning
                   onClick={() => setActiveTab("create")}
                   className={`flex-1 py-2 text-xs font-bold uppercase tracking-widest rounded-md transition-all ${
                     activeTab === "create" ? "bg-slate-800 text-white shadow-md" : "text-slate-500 hover:text-slate-300"
@@ -357,6 +360,7 @@ function TeamRegistrationModal({
                   Create Team
                 </button>
                 <button
+                  suppressHydrationWarning
                   onClick={() => setActiveTab("join")}
                   className={`flex-1 py-2 text-xs font-bold uppercase tracking-widest rounded-md transition-all ${
                     activeTab === "join" ? "bg-slate-800 text-white shadow-md" : "text-slate-500 hover:text-slate-300"
@@ -372,6 +376,7 @@ function TeamRegistrationModal({
                     <label className="text-[10px] font-bold text-slate-500 uppercase tracking-wide">Full Name</label>
                     <input
                       type="text"
+                      suppressHydrationWarning
                       required
                       value={formData.name}
                       readOnly
@@ -382,6 +387,7 @@ function TeamRegistrationModal({
                     <label className="text-[10px] font-bold text-slate-500 uppercase tracking-wide">Email</label>
                     <input
                       type="email"
+                      suppressHydrationWarning
                       required
                       value={formData.email}
                       readOnly
@@ -392,6 +398,7 @@ function TeamRegistrationModal({
                     <label className="text-[10px] font-bold text-slate-500 uppercase tracking-wide">College / Institution</label>
                     <input
                       type="text"
+                      suppressHydrationWarning
                       required
                       placeholder="e.g. Rajalakshmi Engineering College"
                       value={formData.college}
@@ -405,6 +412,7 @@ function TeamRegistrationModal({
                     </label>
                     <input
                       type="text"
+                      suppressHydrationWarning
                       required
                       placeholder={activeTab === "create" ? "e.g. ByteBusters" : "Enter team to join"}
                       value={formData.team}
@@ -418,6 +426,7 @@ function TeamRegistrationModal({
                       <label className="text-[10px] font-bold text-slate-500 uppercase tracking-wide">Domain</label>
                       <select
                         required
+                        suppressHydrationWarning
                         value={formData.domain}
                         onChange={(e) => setFormData({ ...formData, domain: e.target.value })}
                         className={`w-full bg-black/40 border border-slate-800 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none focus:ring-1 ${inputFocus} transition-all`}
@@ -432,6 +441,7 @@ function TeamRegistrationModal({
                       <label className="text-[10px] font-bold text-slate-500 uppercase tracking-wide">Team Size</label>
                       <select
                         required
+                        suppressHydrationWarning
                         value={formData.size}
                         onChange={(e) => setFormData({ ...formData, size: e.target.value })}
                         className={`w-full bg-black/40 border border-slate-800 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none focus:ring-1 ${inputFocus} transition-all`}
@@ -453,6 +463,7 @@ function TeamRegistrationModal({
 
                 <button
                   type="submit"
+                  suppressHydrationWarning
                   disabled={submitting}
                   className={`w-full mt-4 py-3.5 rounded-xl text-xs font-extrabold uppercase tracking-widest text-white transition-all duration-300 flex items-center justify-center gap-2 ${btnClass} disabled:opacity-70 disabled:cursor-not-allowed`}
                 >
