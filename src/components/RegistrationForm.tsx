@@ -268,6 +268,7 @@ export default function RegistrationForm() {
                         {field.type === "select" ? (
                           <select
                             name={field.name}
+                            suppressHydrationWarning
                             value={form[field.name as keyof FormData]}
                             onChange={handleChange}
                             className={`w-full bg-slate-950/60 border ${
@@ -286,6 +287,7 @@ export default function RegistrationForm() {
                         ) : (
                           <input
                             type={field.type}
+                            suppressHydrationWarning
                             name={field.name}
                             value={form[field.name as keyof FormData]}
                             onChange={handleChange}
@@ -317,6 +319,7 @@ export default function RegistrationForm() {
                           </div>
                           <input
                             type="text"
+                            suppressHydrationWarning
                             value={otherDesignation}
                             onChange={(e) => {
                               setOtherDesignation(e.target.value);
@@ -350,6 +353,7 @@ export default function RegistrationForm() {
                   <div className="flex items-center gap-6">
                     <button
                       type="button"
+                      suppressHydrationWarning
                       onClick={() => setForm((prev) => ({ ...prev, avatar: "man" }))}
                       className={`relative w-16 h-16 sm:w-20 sm:h-20 rounded-full p-1 transition-all ${
                         form.avatar === "man" 
@@ -363,6 +367,7 @@ export default function RegistrationForm() {
                     </button>
                     <button
                       type="button"
+                      suppressHydrationWarning
                       onClick={() => setForm((prev) => ({ ...prev, avatar: "woman" }))}
                       className={`relative w-16 h-16 sm:w-20 sm:h-20 rounded-full p-1 transition-all ${
                         form.avatar === "woman" 
@@ -399,6 +404,7 @@ export default function RegistrationForm() {
               {/* Submit button */}
               <motion.button
                 type="submit"
+                suppressHydrationWarning
                 disabled={submitting}
                 className="neon-btn w-full py-4 rounded-2xl text-base font-extrabold text-white flex items-center justify-center gap-3 disabled:opacity-70 disabled:cursor-not-allowed"
                 whileHover={{ scale: submitting ? 1 : 1.02 }}

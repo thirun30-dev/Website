@@ -381,6 +381,7 @@ export default function Schedule() {
   const [filter, setFilter] = useState<string>("all");
   const filtered = agenda.filter((item) => filter === "all" || item.type === filter);
   const sectionRef = useRef<HTMLDivElement>(null);
+  const [sectionWidth, setSectionWidth] = useState<number>(0);
   const [nodeCoords, setNodeCoords] = useState<{ x: number; y: number }[]>([]);
   const timelineRef = useRef<HTMLDivElement>(null);
   const pathRef = useRef<SVGPathElement>(null);
@@ -450,6 +451,7 @@ export default function Schedule() {
       if (nodes.length === 0) return;
 
       const sectionRect = sectionRef.current.getBoundingClientRect();
+      setSectionWidth(sectionRect.width);
       const coords = nodes.map(({ el }) => {
         const rect = el.getBoundingClientRect();
         return {
@@ -474,9 +476,8 @@ export default function Schedule() {
 
   // Compute continuous path string
   const pathD = (() => {
-    if (nodeCoords.length === 0 || !sectionRef.current) return "";
-    const isMobile = typeof window !== "undefined" ? window.innerWidth < 768 : false;
-    const sectionWidth = sectionRef.current.clientWidth;
+    if (nodeCoords.length === 0 || sectionWidth === 0) return "";
+    const isMobile = window.innerWidth < 768;
 
     let d = `M ${nodeCoords[0].x} ${nodeCoords[0].y}`;
 
@@ -578,6 +579,7 @@ export default function Schedule() {
               <button
                 key={t}
                 onClick={() => setFilter(t)}
+                suppressHydrationWarning
                 className={`px-3 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-wider
                   border transition-all duration-200 ${
                     filter === t

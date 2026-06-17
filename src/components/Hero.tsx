@@ -97,6 +97,7 @@ export default function Hero() {
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4 w-full">
               <button
                 onClick={scrollToRegistrationForm}
+                suppressHydrationWarning
                 className="neon-btn w-full sm:w-auto px-8 py-4 rounded-full text-base font-bold text-white text-center flex items-center justify-center gap-2"
               >
                 {badgeData ? (

@@ -141,6 +141,7 @@ export default function Navbar() {
           <div className="hidden md:flex justify-end w-1/4">
             <button
               onClick={scrollToRegistrationForm}
+              suppressHydrationWarning
               className="neon-btn px-6 py-2.5 rounded-full text-xs font-black uppercase tracking-wider text-white flex items-center gap-2"
             >
               {badgeData ? (
@@ -191,6 +192,7 @@ export default function Navbar() {
           <div className="pt-4 px-4">
             <button
               onClick={scrollToRegistrationForm}
+              suppressHydrationWarning
               className="neon-btn w-full py-3 rounded-full text-center text-sm font-bold text-white flex items-center justify-center gap-2"
             >
               {badgeData ? (
