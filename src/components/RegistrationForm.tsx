@@ -51,6 +51,7 @@ export default function RegistrationForm() {
   const [errors, setErrors] = useState<Partial<FormData>>({});
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
   
   const { badgeData, setBadgeData } = useRegistration();
 
@@ -82,16 +83,41 @@ export default function RegistrationForm() {
     e.preventDefault();
     if (!validate()) return;
     setSubmitting(true);
-    // Simulate async submission
-    await new Promise((r) => setTimeout(r, 1800));
-    setSubmitting(false);
-    setSubmitted(true);
-    setBadgeData({
-      name: form.fullName,
-      email: form.email,
-      role: "Participation",
-      avatar: form.avatar,
-    });
+    setSubmitError(null);
+    try {
+      const res = await fetch("/api/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form),
+      });
+      const json = await res.json();
+      if (!res.ok) {
+        // 409 = already registered — treat as success with info message
+        if (res.status === 409 && json.alreadyRegistered) {
+          setBadgeData({
+            name: form.fullName,
+            email: form.email,
+            role: "Participation",
+            avatar: form.avatar,
+          });
+          setSubmitted(true);
+        } else {
+          setSubmitError(json.message ?? "Registration failed. Please try again.");
+        }
+        return;
+      }
+      setBadgeData({
+        name: form.fullName,
+        email: form.email,
+        role: "Participation",
+        avatar: form.avatar,
+      });
+      setSubmitted(true);
+    } catch {
+      setSubmitError("Network error. Please check your connection and try again.");
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   const fields = [
@@ -302,6 +328,18 @@ export default function RegistrationForm() {
                 By registering, you agree to be contacted about AWS Community Day 2026 updates.
                 Your data is never shared with third parties.
               </p>
+
+              {/* API error message */}
+              {submitError && (
+                <motion.div
+                  initial={{ opacity: 0, y: -6 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="flex items-center gap-2 px-4 py-3 rounded-xl bg-red-500/10 border border-red-500/30 text-red-400 text-sm"
+                >
+                  <span className="shrink-0">⚠</span>
+                  {submitError}
+                </motion.div>
+              )}
 
               {/* Submit button */}
               <motion.button
