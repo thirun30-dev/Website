@@ -9,26 +9,13 @@ import {
   Building2,
   GraduationCap,
   MapPin,
-  ChevronDown,
   CheckCircle2,
-  Sparkles,
   ArrowRight,
   Loader2,
 } from "lucide-react";
 import { useRegistration } from "@/context/RegistrationContext";
 import SuccessBadge from "./SuccessBadge";
 import { motion, AnimatePresence, type Variants } from "framer-motion";
-import QRCode from "react-qr-code";
-
-const interestAreas = [
-  "Cloud Computing",
-  "DevOps",
-  "AI/ML on AWS",
-  "Serverless",
-  "Security",
-  "Data Engineering",
-  "General AWS",
-];
 
 interface FormData {
   fullName: string;
@@ -37,7 +24,6 @@ interface FormData {
   organization: string;
   designation: string;
   city: string;
-  interest: string;
   avatar: string;
 }
 
@@ -48,7 +34,6 @@ const initialForm: FormData = {
   organization: "",
   designation: "",
   city: "",
-  interest: "",
   avatar: "man",
 };
 
@@ -79,7 +64,6 @@ export default function RegistrationForm() {
     if (!form.organization.trim()) newErrors.organization = "College/Organization is required";
     if (!form.designation.trim()) newErrors.designation = "Designation/Year is required";
     if (!form.city.trim()) newErrors.city = "City is required";
-    if (!form.interest) newErrors.interest = "Please select an interest area";
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -190,7 +174,7 @@ export default function RegistrationForm() {
           </p>
           <div className="flex items-center justify-center gap-6 pt-2">
             {[
-              { icon: Sparkles, text: "No Registration Fee" },
+              { icon: CheckCircle2, text: "No Registration Fee" },
               { icon: CheckCircle2, text: "Instant Confirmation" },
               { icon: Cloud, text: "AWS Swag Included" },
             ].map(({ icon: Icon, text }, i) => (
@@ -269,56 +253,6 @@ export default function RegistrationForm() {
                     </motion.div>
                   );
                 })}
-
-                {/* Interest Dropdown */}
-                <motion.div
-                  className="space-y-1.5 sm:col-span-2"
-                  custom={fields.length}
-                  variants={inputVariants}
-                  initial="hidden"
-                  whileInView="visible"
-                  viewport={{ once: true }}
-                >
-                  <label className="block text-xs font-bold text-slate-300 uppercase tracking-wider">
-                    Interest Area
-                  </label>
-                  <div className="relative">
-                    <div className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500">
-                      <Sparkles size={15} />
-                    </div>
-                    <select
-                      name="interest"
-                      value={form.interest}
-                      onChange={handleChange}
-                      className={`w-full appearance-none bg-slate-950/60 border ${
-                        errors.interest
-                          ? "border-red-500/60"
-                          : "border-slate-800 focus:border-cyan-500/60"
-                      } rounded-xl pl-10 pr-10 py-3 text-sm text-white outline-none transition-all focus:bg-slate-900/60 focus:shadow-[0_0_0_3px_rgba(0,240,255,0.08)] cursor-pointer`}
-                    >
-                      <option value="" disabled className="bg-slate-900">
-                        Select your area of interest
-                      </option>
-                      {interestAreas.map((area) => (
-                        <option key={area} value={area} className="bg-slate-900">
-                          {area}
-                        </option>
-                      ))}
-                    </select>
-                    <div className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-500 pointer-events-none">
-                      <ChevronDown size={15} />
-                    </div>
-                  </div>
-                  {errors.interest && (
-                    <motion.p
-                      initial={{ opacity: 0, y: -4 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      className="text-[11px] text-red-400 font-medium"
-                    >
-                      {errors.interest}
-                    </motion.p>
-                  )}
-                </motion.div>
 
                 {/* Avatar Selection */}
                 <motion.div
