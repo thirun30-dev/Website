@@ -19,6 +19,7 @@ model Registration {
   organization String
   designation  String
   city         String
+  address      String
   avatar       String   @default("man")
   createdAt    DateTime @default(now())
 

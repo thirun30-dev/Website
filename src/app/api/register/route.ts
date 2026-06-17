@@ -8,6 +8,7 @@ interface RegisterBody {
   organization: string;
   designation: string;
   city: string;
+  address: string;
   avatar?: string;
 }
 
@@ -20,6 +21,7 @@ function validateBody(body: Partial<RegisterBody>): string | null {
   if (!body.organization?.trim()) return "College/Organization is required";
   if (!body.designation?.trim()) return "Designation/Year is required";
   if (!body.city?.trim()) return "City is required";
+  if (!body.address?.trim()) return "Address is required";
   return null;
 }
 
@@ -41,6 +43,7 @@ export async function POST(request: Request) {
         organization: body.organization!.trim(),
         designation: body.designation!.trim(),
         city: body.city!.trim(),
+        address: body.address!.trim(),
         avatar: body.avatar ?? "man",
       },
     });
@@ -92,6 +95,7 @@ export async function GET() {
         email: true,
         organization: true,
         city: true,
+        address: true,
         createdAt: true,
       },
       orderBy: { createdAt: "desc" },

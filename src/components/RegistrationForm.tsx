@@ -25,6 +25,7 @@ interface FormData {
   organization: string;
   designation: string;
   city: string;
+  address: string;
   avatar: string;
 }
 
@@ -35,6 +36,7 @@ const initialForm: FormData = {
   organization: "",
   designation: "",
   city: "",
+  address: "",
   avatar: "man",
 };
 
@@ -67,7 +69,8 @@ export default function RegistrationForm() {
     if (!form.organization.trim()) newErrors.organization = "College/Organization is required";
     if (!form.designation.trim() || (form.designation === "others" && !otherDesignation.trim()))
       newErrors.designation = "Designation/Year is required";
-    if (!form.city.trim()) newErrors.city = "Location is required";
+    if (!form.city.trim()) newErrors.city = "City is required";
+    if (!form.address.trim()) newErrors.address = "Address is required";
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -168,8 +171,15 @@ export default function RegistrationForm() {
       icon: GraduationCap,
     },
     {
+      name: "address",
+      label: "Address",
+      placeholder: "123 Tech Park, OMR",
+      type: "text",
+      icon: MapPin,
+    },
+    {
       name: "city",
-      label: "Location",
+      label: "City",
       placeholder: "Chennai",
       type: "text",
       icon: MapPin,
@@ -270,7 +280,7 @@ export default function RegistrationForm() {
                           <select
                             name={field.name}
                             suppressHydrationWarning
-                            value={form[field.name as keyof FormData]}
+                            value={form[field.name as keyof FormData] || ""}
                             onChange={handleChange}
                             className={`w-full bg-slate-950/60 border ${
                               error ? "border-red-500/60" : "border-slate-800 focus:border-cyan-500/60"
@@ -290,7 +300,7 @@ export default function RegistrationForm() {
                             type={field.type}
                             suppressHydrationWarning
                             name={field.name}
-                            value={form[field.name as keyof FormData]}
+                            value={form[field.name as keyof FormData] || ""}
                             onChange={handleChange}
                             placeholder={field.placeholder}
                             className={`w-full bg-slate-950/60 border ${
