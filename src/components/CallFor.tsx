@@ -18,19 +18,39 @@ const INPUT_BASE =
 ───────────────────────────────────────────── */
 function SpeakerModal({ onClose }: { onClose: () => void }) {
   const [submitted, setSubmitted] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
+  const [submitting, setSubmitting] = useState(false);
   const [formData, setFormData] = useState({ name: "", email: "", topic: "", abstract: "" });
 
   const { setBadgeData } = useRegistration();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setSubmitted(true);
-    setBadgeData({
-      name: formData.name,
-      email: formData.email,
-      role: "Event Speaker"
-    });
-    setTimeout(() => { onClose(); }, 8000);
+    setSubmitting(true);
+    setSubmitError(null);
+    try {
+      const res = await fetch("/api/speaker", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+      const json = await res.json();
+      if (!res.ok) {
+        setSubmitError(json.message ?? "Proposal submission failed.");
+        setSubmitting(false);
+        return;
+      }
+      setSubmitted(true);
+      setBadgeData({
+        name: formData.name,
+        email: formData.email,
+        role: "Event Speaker"
+      });
+      setTimeout(() => { onClose(); }, 8000);
+    } catch {
+      setSubmitError("Network error. Please try again.");
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -81,14 +101,20 @@ function SpeakerModal({ onClose }: { onClose: () => void }) {
                   className={`${INPUT_BASE} focus:border-cyan-500 focus:ring-cyan-500/20 resize-none`}
                 />
               </div>
+              {submitError && (
+                <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-red-500/10 border border-red-500/30 text-red-400 text-[11px]">
+                  <span className="shrink-0">⚠</span> {submitError}
+                </div>
+              )}
               <button
                 type="submit"
+                disabled={submitting}
                 className="w-full py-3.5 rounded-xl text-xs font-extrabold uppercase tracking-widest text-white
                   bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500
                   shadow-[0_0_20px_rgba(34,211,238,0.2)] hover:shadow-[0_0_30px_rgba(34,211,238,0.35)]
-                  transition-all duration-300 flex items-center justify-center gap-2"
+                  transition-all duration-300 flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed"
               >
-                <Send size={13} /> Submit Proposal
+                <Send size={13} /> {submitting ? "Submitting..." : "Submit Proposal"}
               </button>
             </form>
           )}
@@ -103,21 +129,41 @@ function SpeakerModal({ onClose }: { onClose: () => void }) {
 ───────────────────────────────────────────── */
 function SponsorModal({ onClose }: { onClose: () => void }) {
   const [submitted, setSubmitted] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
+  const [submitting, setSubmitting] = useState(false);
   const [formData, setFormData] = useState({
     company: "", contact: "", email: "", tier: "", message: "",
   });
 
   const { setBadgeData } = useRegistration();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setSubmitted(true);
-    setBadgeData({
-      name: formData.contact,
-      email: formData.email,
-      role: "Event Sponsor"
-    });
-    setTimeout(() => { onClose(); }, 8000);
+    setSubmitting(true);
+    setSubmitError(null);
+    try {
+      const res = await fetch("/api/sponsor", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+      const json = await res.json();
+      if (!res.ok) {
+        setSubmitError(json.message ?? "Enquiry submission failed.");
+        setSubmitting(false);
+        return;
+      }
+      setSubmitted(true);
+      setBadgeData({
+        name: formData.contact,
+        email: formData.email,
+        role: "Event Sponsor"
+      });
+      setTimeout(() => { onClose(); }, 8000);
+    } catch {
+      setSubmitError("Network error. Please try again.");
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -182,14 +228,20 @@ function SponsorModal({ onClose }: { onClose: () => void }) {
                   className={`${INPUT_BASE} focus:border-amber-500 focus:ring-amber-500/20 resize-none`}
                 />
               </div>
+              {submitError && (
+                <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-red-500/10 border border-red-500/30 text-red-400 text-[11px]">
+                  <span className="shrink-0">⚠</span> {submitError}
+                </div>
+              )}
               <button
                 type="submit"
+                disabled={submitting}
                 className="w-full py-3.5 rounded-xl text-xs font-extrabold uppercase tracking-widest text-white
                   bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-500 hover:to-orange-500
                   shadow-[0_0_20px_rgba(251,191,36,0.18)] hover:shadow-[0_0_30px_rgba(251,191,36,0.3)]
-                  transition-all duration-300 flex items-center justify-center gap-2"
+                  transition-all duration-300 flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed"
               >
-                <Handshake size={13} /> Submit Enquiry
+                <Handshake size={13} /> {submitting ? "Submitting..." : "Submit Enquiry"}
               </button>
             </form>
           )}

@@ -19,6 +19,13 @@ services:
       timeout: 5s
       retries: 10
 
+  redis:
+    image: redis:alpine
+    container_name: awscommday_redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+
 volumes:
   pgdata:
     name: awscommday_pgdata

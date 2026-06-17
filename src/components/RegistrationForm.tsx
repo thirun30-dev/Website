@@ -49,6 +49,7 @@ const inputVariants: Variants = {
 export default function RegistrationForm() {
   const [form, setForm] = useState<FormData>(initialForm);
   const [errors, setErrors] = useState<Partial<FormData>>({});
+  const [otherDesignation, setOtherDesignation] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
@@ -58,13 +59,14 @@ export default function RegistrationForm() {
   const validate = (): boolean => {
     const newErrors: Partial<FormData> = {};
     if (!form.fullName.trim()) newErrors.fullName = "Full name is required";
-    if (!form.email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email))
-      newErrors.email = "Valid email is required";
-    if (!form.phone.trim() || !/^\+?[\d\s\-()]{7,}$/.test(form.phone))
-      newErrors.phone = "Valid phone number is required";
+    if (!form.email.trim() || !form.email.trim().toLowerCase().endsWith("@gmail.com"))
+      newErrors.email = "Valid @gmail.com email is required";
+    if (!form.phone.trim() || !/^\d{10}$/.test(form.phone.trim()))
+      newErrors.phone = "Valid 10-digit phone number is required";
     if (!form.organization.trim()) newErrors.organization = "College/Organization is required";
-    if (!form.designation.trim()) newErrors.designation = "Designation/Year is required";
-    if (!form.city.trim()) newErrors.city = "City is required";
+    if (!form.designation.trim() || (form.designation === "others" && !otherDesignation.trim()))
+      newErrors.designation = "Designation/Year is required";
+    if (!form.city.trim()) newErrors.city = "Location is required";
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -84,11 +86,17 @@ export default function RegistrationForm() {
     if (!validate()) return;
     setSubmitting(true);
     setSubmitError(null);
+
+    const finalForm = {
+      ...form,
+      designation: form.designation === "others" ? otherDesignation : form.designation
+    };
+
     try {
       const res = await fetch("/api/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
+        body: JSON.stringify(finalForm),
       });
       const json = await res.json();
       if (!res.ok) {
@@ -132,14 +140,14 @@ export default function RegistrationForm() {
     {
       name: "email",
       label: "Email Address",
-      placeholder: "arjun@college.edu.in",
+      placeholder: "example@gmail.com",
       type: "email",
       icon: Mail,
     },
     {
       name: "phone",
       label: "Phone Number",
-      placeholder: "+91 98765 43210",
+      placeholder: "9876543210",
       type: "tel",
       icon: Phone,
     },
@@ -153,13 +161,14 @@ export default function RegistrationForm() {
     {
       name: "designation",
       label: "Designation / Year of Study",
-      placeholder: "3rd Year B.Tech / Software Engineer",
-      type: "text",
+      placeholder: "Select your designation",
+      type: "select",
+      options: ["1st year", "2nd year", "3rd year", "4th year", "pg - 1st year", "pg - 2nd year", "others"],
       icon: GraduationCap,
     },
     {
       name: "city",
-      label: "City",
+      label: "Location",
       placeholder: "Chennai",
       type: "text",
       icon: MapPin,
@@ -256,16 +265,36 @@ export default function RegistrationForm() {
                         <div className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500">
                           <Icon size={15} />
                         </div>
-                        <input
-                          type={field.type}
-                          name={field.name}
-                          value={form[field.name as keyof FormData]}
-                          onChange={handleChange}
-                          placeholder={field.placeholder}
-                          className={`w-full bg-slate-950/60 border ${
-                            error ? "border-red-500/60" : "border-slate-800 focus:border-cyan-500/60"
-                          } rounded-xl pl-10 pr-4 py-3 text-sm text-white placeholder-slate-600 outline-none transition-all focus:bg-slate-900/60 focus:shadow-[0_0_0_3px_rgba(0,240,255,0.08)]`}
-                        />
+                        {field.type === "select" ? (
+                          <select
+                            name={field.name}
+                            value={form[field.name as keyof FormData]}
+                            onChange={handleChange}
+                            className={`w-full bg-slate-950/60 border ${
+                              error ? "border-red-500/60" : "border-slate-800 focus:border-cyan-500/60"
+                            } rounded-xl pl-10 pr-4 py-3 text-sm text-white placeholder-slate-600 outline-none transition-all focus:bg-slate-900/60 focus:shadow-[0_0_0_3px_rgba(0,240,255,0.08)] appearance-none`}
+                          >
+                            <option value="" disabled className="text-slate-600">
+                              {field.placeholder}
+                            </option>
+                            {field.options?.map((opt) => (
+                              <option key={opt} value={opt} className="bg-slate-900 text-white">
+                                {opt}
+                              </option>
+                            ))}
+                          </select>
+                        ) : (
+                          <input
+                            type={field.type}
+                            name={field.name}
+                            value={form[field.name as keyof FormData]}
+                            onChange={handleChange}
+                            placeholder={field.placeholder}
+                            className={`w-full bg-slate-950/60 border ${
+                              error ? "border-red-500/60" : "border-slate-800 focus:border-cyan-500/60"
+                            } rounded-xl pl-10 pr-4 py-3 text-sm text-white placeholder-slate-600 outline-none transition-all focus:bg-slate-900/60 focus:shadow-[0_0_0_3px_rgba(0,240,255,0.08)]`}
+                          />
+                        )}
                       </div>
                       {error && (
                         <motion.p
@@ -275,6 +304,32 @@ export default function RegistrationForm() {
                         >
                           {error}
                         </motion.p>
+                      )}
+
+                      {field.name === "designation" && form.designation === "others" && (
+                        <motion.div
+                          initial={{ opacity: 0, y: -10 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          className="mt-3 relative"
+                        >
+                          <div className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500">
+                            <GraduationCap size={15} />
+                          </div>
+                          <input
+                            type="text"
+                            value={otherDesignation}
+                            onChange={(e) => {
+                              setOtherDesignation(e.target.value);
+                              if (errors.designation) {
+                                setErrors(prev => ({ ...prev, designation: undefined }));
+                              }
+                            }}
+                            placeholder="Enter your designation"
+                            className={`w-full bg-slate-950/60 border ${
+                              error && !otherDesignation.trim() ? "border-red-500/60" : "border-slate-800 focus:border-cyan-500/60"
+                            } rounded-xl pl-10 pr-4 py-3 text-sm text-white placeholder-slate-600 outline-none transition-all focus:bg-slate-900/60 focus:shadow-[0_0_0_3px_rgba(0,240,255,0.08)]`}
+                          />
+                        </motion.div>
                       )}
                     </motion.div>
                   );

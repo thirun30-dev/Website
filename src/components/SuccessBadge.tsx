@@ -10,17 +10,11 @@ interface SuccessBadgeProps {
   email: string;
   role?: string;
   avatar?: string;
+  teamId?: string;
 }
 
-export default function SuccessBadge({ name, email, role = "Participation", avatar }: SuccessBadgeProps) {
+export default function SuccessBadge({ name, email, role = "Participation", avatar, teamId }: SuccessBadgeProps) {
   const [flipped, setFlipped] = useState(false);
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setFlipped(true);
-    }, 2500);
-    return () => clearTimeout(timer);
-  }, []);
 
   return (
     <motion.div
@@ -44,16 +38,16 @@ export default function SuccessBadge({ name, email, role = "Participation", avat
           style={{ backfaceVisibility: "hidden" }}
         >
           <div className="relative p-4 bg-white rounded-xl overflow-hidden">
-            <QRCode value={`ticket-${email}`} size={180} />
+            <QRCode value={`ticket-${email}`} size={200} />
             {/* Scanning line animation */}
             <motion.div
               className="absolute top-0 left-0 w-full h-1.5 bg-cyan-400 shadow-[0_0_15px_#00f0ff]"
-              animate={{ y: [0, 212, 0] }}
+              animate={{ y: [0, 232, 0] }}
               transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
             />
           </div>
           <p className="mt-8 text-cyan-400 font-semibold text-sm animate-pulse tracking-widest uppercase">
-            Generating Pass...
+            Hover / Click for Details
           </p>
         </div>
 
@@ -100,6 +94,11 @@ export default function SuccessBadge({ name, email, role = "Participation", avat
                   {name}
                 </span>
               </h3>
+              {teamId && (
+                <div className="mt-2 inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-500/20 border border-cyan-500/40 text-cyan-300 text-xs font-bold shadow-[0_0_15px_rgba(0,240,255,0.2)] tracking-widest">
+                  TEAM ID: {teamId}
+                </div>
+              )}
             </div>
           </div>
 

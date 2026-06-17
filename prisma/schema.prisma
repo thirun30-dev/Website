@@ -24,3 +24,41 @@ model Registration {
 
   @@map("registrations")
 }
+
+model HackathonRegistration {
+  id        Int      @id @default(autoincrement())
+  name      String
+  email     String
+  college   String
+  team      String
+  domain    String
+  size      String
+  createdAt DateTime @default(now())
+
+  @@map("hackathon_registrations")
+}
+
+model SponsorEnquiry {
+  id              Int      @id @default(autoincrement())
+  company         String
+  contact         String
+  contactNumber   String
+  alternateNumber String?
+  email           String
+  tier            String
+  message         String?
+  createdAt       DateTime @default(now())
+
+  @@map("sponsor_enquiries")
+}
+
+model SpeakerProposal {
+  id        Int      @id @default(autoincrement())
+  name      String
+  email     String
+  topic     String
+  abstract  String
+  createdAt DateTime @default(now())
+
+  @@map("speaker_proposals")
+}
