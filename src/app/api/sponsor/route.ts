@@ -4,7 +4,7 @@ export async function POST(request: Request) {
   try {
     const body = await request.json();
 
-    if (!body.company?.trim() || !body.contact?.trim() || !body.email?.trim() || !body.tier) {
+    if (!body.company?.trim() || !body.contact?.trim() || !body.contactNumber?.trim() || !body.email?.trim() || !body.tier) {
       return Response.json({ message: "Missing required fields" }, { status: 400 });
     }
 
@@ -12,6 +12,8 @@ export async function POST(request: Request) {
       data: {
         company: body.company.trim(),
         contact: body.contact.trim(),
+        contactNumber: body.contactNumber.trim(),
+        alternateNumber: body.alternateNumber?.trim() || null,
         email: body.email.trim().toLowerCase(),
         tier: body.tier,
         message: body.message?.trim() || null,
