@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Image from "next/image";
 import {
   X, ChevronRight, Trophy, Clock, Users, Cpu, Globe, Shield,

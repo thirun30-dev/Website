@@ -4,7 +4,6 @@ import React from "react";
 import {
   Calendar,
   MapPin,
-  Sparkles,
   QrCode,
 } from "lucide-react";
 import { motion } from "framer-motion";
