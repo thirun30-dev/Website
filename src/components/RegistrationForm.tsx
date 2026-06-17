@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import Image from "next/image";
 import {
   Cloud,
   User,
@@ -361,8 +362,8 @@ export default function RegistrationForm() {
                           : "bg-slate-800 hover:bg-slate-700 opacity-60 hover:opacity-100"
                       }`}
                     >
-                      <div className="w-full h-full bg-black rounded-full overflow-hidden">
-                        <img src="/avatar-man.png" alt="Man Avatar" className="w-full h-full object-cover" />
+                      <div className="relative w-full h-full bg-black rounded-full overflow-hidden">
+                        <Image src="/avatar-man.png" alt="Man Avatar" fill className="object-cover" sizes="(max-width: 640px) 64px, 80px" />
                       </div>
                     </button>
                     <button
@@ -375,8 +376,8 @@ export default function RegistrationForm() {
                           : "bg-slate-800 hover:bg-slate-700 opacity-60 hover:opacity-100"
                       }`}
                     >
-                      <div className="w-full h-full bg-black rounded-full overflow-hidden">
-                        <img src="/avatar-woman.png" alt="Woman Avatar" className="w-full h-full object-cover" />
+                      <div className="relative w-full h-full bg-black rounded-full overflow-hidden">
+                        <Image src="/avatar-woman.png" alt="Woman Avatar" fill className="object-cover" sizes="(max-width: 640px) 64px, 80px" />
                       </div>
                     </button>
                   </div>
