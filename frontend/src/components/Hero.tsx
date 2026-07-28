@@ -1,12 +1,8 @@
 "use client";
 
 import React from "react";
-import {
-  Calendar,
-  MapPin,
-  Sparkles,
-  QrCode,
-} from "lucide-react";
+import Link from "next/link";
+import { Calendar, MapPin, QrCode } from "lucide-react";
 import { motion } from "framer-motion";
 import { useRegistration } from "@/context/RegistrationContext";
 
@@ -24,20 +20,6 @@ const scrollToRegistrationForm = () => {
 
 export default function Hero() {
   const { badgeData } = useRegistration();
-
-  const handleScroll = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
-    e.preventDefault();
-    const targetId = href.slice(1);
-    const el = document.getElementById(targetId);
-    if (el) {
-      const rect = el.getBoundingClientRect();
-      const scrollTop = rect.top + window.scrollY;
-      window.scrollTo({
-        top: scrollTop - 80,
-        behavior: "smooth",
-      });
-    }
-  };
 
   return (
     <section
@@ -109,13 +91,12 @@ export default function Hero() {
                   "Register Now — It's Free"
                 )}
               </button>
-              <a
-                href="#schedule"
-                onClick={(e) => handleScroll(e, "#schedule")}
+              <Link
+                href="/schedule"
                 className="neon-btn-secondary w-full sm:w-auto px-8 py-4 rounded-full text-base font-bold text-center"
               >
                 View Event Schedule
-              </a>
+              </Link>
             </div>
           </motion.div>
 

@@ -2,19 +2,21 @@
 
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
-import { Menu, X, ArrowRight, QrCode } from "lucide-react";
+import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
+import { Menu, X, ArrowRight, QrCode, Lock } from "lucide-react";
 import { useRegistration } from "@/context/RegistrationContext";
 import { motion, AnimatePresence } from "framer-motion";
 
 const navItems = [
-  { label: "Home", href: "#home" },
-  { label: "About", href: "#about" },
-  { label: "Schedule", href: "#schedule" },
-  { label: "Hackathons", href: "#hackathons" },
-  { label: "Speakers", href: "#speakers" },
-  { label: "Sponsors", href: "#sponsors" },
-  { label: "Organizers", href: "#organizers" },
-  { label: "Contact", href: "#contact" },
+  { label: "Home", href: "#home", external: false },
+  { label: "About", href: "#about", external: false },
+  { label: "Schedule", href: "/schedule", external: true },
+  { label: "Hackathons", href: "#hackathons", external: false },
+  { label: "Speakers", href: "#cfs", external: false },
+  { label: "Sponsors", href: "#cfs", external: false },
+  { label: "Organizers", href: "#organizers", external: false },
+  { label: "Contact", href: "#contact", external: false },
 ];
 
 export default function Navbar() {
@@ -22,6 +24,8 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [activeSection, setActiveSection] = useState("home");
   const { badgeData } = useRegistration();
+  const pathname = usePathname();
+  const router = useRouter();
 
   // Lock body scroll and handle keyboard accessibility (Escape key) when menu is open
   useEffect(() => {
@@ -30,13 +34,13 @@ export default function Navbar() {
     } else {
       document.body.style.overflow = "";
     }
-    
+
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
         setIsOpen(false);
       }
     };
-    
+
     window.addEventListener("keydown", handleKeyDown);
     return () => {
       document.body.style.overflow = "";
@@ -54,7 +58,7 @@ export default function Navbar() {
 
       // Track active section on scroll
       const sections = navItems.map(item => item.href.slice(1));
-      
+
       // Bottom of page detection
       const isAtBottom = window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 50;
       if (isAtBottom) {
@@ -82,32 +86,23 @@ export default function Navbar() {
   const handleClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
     e.preventDefault();
     const targetId = href.slice(1);
-    const el = document.getElementById(targetId);
-    
+
     if (isOpen) {
       setIsOpen(false);
       document.body.style.overflow = "";
-      if (el) {
-        setTimeout(() => {
-          const rect = el.getBoundingClientRect();
-          const scrollTop = rect.top + window.scrollY;
-          window.scrollTo({
-            top: scrollTop - 80,
-            behavior: "smooth",
-          });
-          setActiveSection(targetId);
-        }, 50);
-      }
+    }
+
+    if (pathname !== "/") {
+      router.push(`/${href}`);
+      return;
+    }
+
+    const el = document.getElementById(targetId);
+    if (el) {
+      el.scrollIntoView({ behavior: "smooth", block: "start" });
+      setActiveSection(targetId);
     } else {
-      if (el) {
-        const rect = el.getBoundingClientRect();
-        const scrollTop = rect.top + window.scrollY;
-        window.scrollTo({
-          top: scrollTop - 80,
-          behavior: "smooth",
-        });
-        setActiveSection(targetId);
-      }
+      window.location.hash = href;
     }
   };
 
@@ -141,15 +136,14 @@ export default function Navbar() {
   return (
     <>
       <nav
-        className={`fixed top-0 left-0 right-0 z-40 transition-all duration-300 ${
-          scrolled
-            ? "bg-[#020205]/85 backdrop-blur-md border-b border-cyan-500/10 py-3 shadow-lg shadow-cyan-950/10"
-            : "bg-transparent py-3 md:py-5"
-        }`}
+        className={`fixed top-0 left-0 right-0 z-40 transition-all duration-300 ${scrolled
+          ? "bg-[#020205]/85 backdrop-blur-md border-b border-cyan-500/10 py-3 shadow-lg shadow-cyan-950/10"
+          : "bg-transparent py-3 md:py-5"
+          }`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
-            
+
             {/* Logo Brand (Left) */}
             <div className="flex items-center gap-3 w-1/4">
               <a
@@ -182,29 +176,50 @@ export default function Navbar() {
             <div className="hidden md:flex flex-grow justify-center">
               <ul className="flex items-center gap-6 glass-panel px-6 py-2 rounded-full border border-slate-800/80 bg-slate-950/20">
                 {navItems.map((item) => {
-                  const isActive = activeSection === item.href.slice(1);
+                  const isActive = !item.external && activeSection === item.href.slice(1);
                   return (
-                    <li key={item.href}>
-                      <a
-                        href={item.href}
-                        onClick={(e) => handleClick(e, item.href)}
-                        className={`text-xs font-semibold uppercase tracking-wider transition-colors hover:text-[#00f0ff] ${
-                          isActive ? "text-[#00f0ff] font-bold text-glow" : "text-slate-400"
-                        }`}
-                      >
-                        {item.label}
-                      </a>
+                    <li key={item.label}>
+                      {item.external ? (
+                        <Link
+                          href={item.href}
+                          className="text-xs font-semibold uppercase tracking-wider transition-colors hover:text-[#00f0ff] text-slate-400"
+                        >
+                          {item.label}
+                        </Link>
+                      ) : (
+                        <a
+                          href={item.href}
+                          onClick={(e) => handleClick(e, item.href)}
+                          className={`text-xs font-semibold uppercase tracking-wider transition-colors hover:text-[#00f0ff] ${isActive ? "text-[#00f0ff] font-bold text-glow" : "text-slate-400"
+                            }`}
+                        >
+                          {item.label}
+                        </a>
+                      )}
                     </li>
                   );
                 })}
               </ul>
             </div>
 
-            {/* Registration CTA (Right Desktop) */}
-            <div className="hidden md:flex justify-end w-1/4">
+            {/* Right CTA group (Desktop) */}
+            <div className="hidden md:flex items-center justify-end gap-2.5 w-1/4">
+              {/* Admin Login button */}
+              <Link
+                href="/organizer/login"
+                className="flex items-center gap-1.5 px-4 py-2.5 rounded-full text-xs font-black uppercase tracking-wider
+                  border border-slate-700 text-slate-400
+                  hover:border-cyan-500/50 hover:text-cyan-400 hover:bg-cyan-500/5
+                  transition-all duration-200"
+              >
+                <Lock size={12} />
+                Login
+              </Link>
+
+              {/* Register Now / View QR button */}
               <button
                 onClick={scrollToRegistrationForm}
-                className="neon-btn px-6 py-2.5 rounded-full text-xs font-black uppercase tracking-wider text-white flex items-center gap-2"
+                className="neon-btn px-5 py-2.5 rounded-full text-xs font-black uppercase tracking-wider text-white flex items-center gap-2"
               >
                 {badgeData ? (
                   <>View QR Code <QrCode size={14} /></>
@@ -289,17 +304,25 @@ export default function Navbar() {
               {/* Navigation list */}
               <div className="flex-1 overflow-y-auto py-6 px-6 space-y-2">
                 {navItems.map((item) => {
-                  const isActive = activeSection === item.href.slice(1);
-                  return (
+                  const isActive = !item.external && activeSection === item.href.slice(1);
+                  return item.external ? (
+                    <Link
+                      key={item.label}
+                      href={item.href}
+                      onClick={() => setIsOpen(false)}
+                      className="flex items-center w-full py-[18px] px-4 text-base font-bold tracking-wide transition-all duration-200 border-l-2 border-transparent text-slate-300 hover:text-white hover:bg-slate-900/30"
+                    >
+                      {item.label}
+                    </Link>
+                  ) : (
                     <a
-                      key={item.href}
+                      key={item.label}
                       href={item.href}
                       onClick={(e) => handleClick(e, item.href)}
-                      className={`flex items-center w-full py-[18px] px-4 text-base font-bold tracking-wide transition-all duration-200 border-l-2 ${
-                        isActive
-                          ? "border-[#00f0ff] text-[#00f0ff] bg-[#00f0ff]/5 pl-5 shadow-[inset_4px_0_12px_rgba(0,240,255,0.03)] font-bold text-glow-cyan"
-                          : "border-transparent text-slate-300 hover:text-white hover:bg-slate-900/30"
-                      }`}
+                      className={`flex items-center w-full py-[18px] px-4 text-base font-bold tracking-wide transition-all duration-200 border-l-2 ${isActive
+                        ? "border-[#00f0ff] text-[#00f0ff] bg-[#00f0ff]/5 pl-5 shadow-[inset_4px_0_12px_rgba(0,240,255,0.03)] font-bold text-glow-cyan"
+                        : "border-transparent text-slate-300 hover:text-white hover:bg-slate-900/30"
+                        }`}
                       aria-current={isActive ? "page" : undefined}
                     >
                       {item.label}

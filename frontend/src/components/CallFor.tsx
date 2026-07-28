@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { Mic, Building2, Send, CheckCircle2, X, Calendar, Clock, Handshake, Star, Award, Users } from "lucide-react";
 import SuccessBadge from "./SuccessBadge";
 import { useRegistration } from "@/context/RegistrationContext";
+import { useEventData } from "@/context/EventDataContext";
 
 /* ─────────────────────────────────────────────
    SHARED TYPES & HELPERS
@@ -21,14 +22,26 @@ function SpeakerModal({ onClose }: { onClose: () => void }) {
   const [formData, setFormData] = useState({ name: "", email: "", topic: "", abstract: "" });
 
   const { setBadgeData } = useRegistration();
+  const { addSpeakerProposal } = useEventData();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setSubmitted(true);
+
+    addSpeakerProposal({
+      name: formData.name,
+      email: formData.email,
+      role: "Speaker Applicant",
+      company: "Pending Review",
+      topic: formData.topic,
+      bio: formData.abstract,
+      linkedin: "",
+    });
+
     setBadgeData({
       name: formData.name,
       email: formData.email,
-      role: "Event Speaker"
+      role: "Event Speaker (Pending Admin Confirmation)"
     });
     setTimeout(() => { onClose(); }, 8000);
   };
@@ -108,14 +121,23 @@ function SponsorModal({ onClose }: { onClose: () => void }) {
   });
 
   const { setBadgeData } = useRegistration();
+  const { addSponsorEnquiry } = useEventData();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setSubmitted(true);
+
+    addSponsorEnquiry({
+      name: formData.company,
+      category: formData.tier ? `${formData.tier.toUpperCase()} Partner` : "Sponsor Partner",
+      desc: formData.message || "Sponsorship enquiry submitted",
+      contactEmail: formData.email,
+    });
+
     setBadgeData({
       name: formData.contact,
       email: formData.email,
-      role: "Event Sponsor"
+      role: "Event Sponsor (Pending Admin Confirmation)"
     });
     setTimeout(() => { onClose(); }, 8000);
   };

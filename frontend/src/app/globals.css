@@ -1,6 +1,9 @@
 @import "tailwindcss";
 
-@theme {
+:root {
+  --background: #020205;
+  --foreground: #f8fafc;
+
   --color-brand-blue: #0070f3;
   --color-neon-blue: #00f0ff;
   --color-cyan-glowing: #06b6d4;
@@ -8,36 +11,52 @@
   --color-dark-bg: #020205;
   --color-card-bg: #070712;
   --color-panel-bg: rgba(7, 7, 18, 0.65);
-  
-  --animate-float: float 6s ease-in-out infinite;
-  --animate-float-delayed: float-delayed 8s ease-in-out infinite;
-  --animate-pulse-glow: pulse-glow 3s infinite alternate;
-  --animate-grid-move: grid-move 20s linear infinite;
-
-  @keyframes float {
-    0%, 100% { transform: translateY(0px) rotate(0deg); }
-    50% { transform: translateY(-15px) rotate(2deg); }
-  }
-  @keyframes float-delayed {
-    0%, 100% { transform: translateY(0px) rotate(0deg); }
-    50% { transform: translateY(15px) rotate(-2deg); }
-  }
-  @keyframes pulse-glow {
-    0% { opacity: 0.3; filter: drop-shadow(0 0 5px rgba(0, 240, 255, 0.4)); }
-    100% { opacity: 0.8; filter: drop-shadow(0 0 20px rgba(0, 112, 243, 0.8)); }
-  }
-  @keyframes grid-move {
-    0% { background-position: 0 0; }
-    100% { background-position: 0 40px; }
-  }
 }
 
-:root {
-  --background: #020205;
-  --foreground: #f8fafc;
+@keyframes float {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-15px) rotate(2deg); }
+}
+
+@keyframes float-delayed {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(15px) rotate(-2deg); }
+}
+
+@keyframes pulse-glow {
+  0% { opacity: 0.3; filter: drop-shadow(0 0 5px rgba(0, 240, 255, 0.4)); }
+  100% { opacity: 0.8; filter: drop-shadow(0 0 20px rgba(0, 112, 243, 0.8)); }
+}
+
+@keyframes grid-move {
+  0% { background-position: 0 0; }
+  100% { background-position: 0 40px; }
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+.animate-float-delayed {
+  animation: float-delayed 8s ease-in-out infinite;
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 3s infinite alternate;
+}
+
+.animate-grid-move {
+  animation: grid-move 20s linear infinite;
+}
+
+html {
+  height: 100%;
+  scroll-padding-top: 90px;
 }
 
 body {
+  height: 100%;
+  min-height: 100vh;
   background-color: var(--background);
   color: var(--foreground);
   font-family: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;

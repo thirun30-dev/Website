@@ -1,8 +1,9 @@
 "use client";
 
 import React from "react";
-import { ExternalLink } from "lucide-react";
+import { ExternalLink, Mic, ArrowRight, ShieldCheck } from "lucide-react";
 import Image from "next/image";
+import { useEventData, SpeakerItem } from "@/context/EventDataContext";
 
 const LinkedinIcon = ({ size = 24, ...props }: { size?: number } & React.SVGProps<SVGSVGElement>) => (
   <svg
@@ -22,86 +23,24 @@ const LinkedinIcon = ({ size = 24, ...props }: { size?: number } & React.SVGProp
   </svg>
 );
 
-interface Speaker {
-  name: string;
-  role: string;
-  company: string;
-  topic: string;
-  bio: string;
-  linkedin: string;
-  tag?: string;
-  image?: string;
-}
-
-const speakers: Speaker[] = [
-  {
-    name: "Shubham Londhe",
-    role: "Developer Advocate",
-    company: "Amazon Web Services",
-    topic: "Stepping Into The Agentic Web: Building Smart Applications with Strands Agents and MCP",
-    bio: "Developer Advocate at AWS, specializing in DevOps, developer tooling, and modern container architectures.",
-    linkedin: "https://www.linkedin.com/in/shubhamlondhe1996/",
-    tag: "Keynote Speaker",
-    image: "/madan.png",
-  },
-  {
-    name: "Arkodyuti Saha",
-    role: "Community Manager (Developer Experience)",
-    company: "Amazon Web Services",
-    topic: "Be A Builder On Campus: Kickstarting Cloud & AI Journeys",
-    bio: "Community Manager at AWS, developer evangelist, and mentor helping students scale their tech expertise.",
-    linkedin: "https://www.linkedin.com/in/arkodyutisaha",
-    tag: "Keynote Speaker",
-    image: "/sanjay.png",
-  },
-  {
-    name: "Abishek Subramanian",
-    role: "Senior Solutions Engineer",
-    company: "Databricks",
-    topic: "Agentic AI on AWS - The Next Era of Cloud Intelligence",
-    bio: "Senior Solutions Engineer at Databricks with expertise in scalable data platforms and cloud integration architectures.",
-    linkedin: "https://www.linkedin.com/in/abishek-subramanian",
-    image: "/abhishek.png",
-  },
-  {
-    name: "Aadhityaa SB",
-    role: "AI Developer",
-    company: "EY",
-    topic: "Build Structured AI Agent Systems with AWS Strands SDK",
-    bio: "AI Developer specializing in deploying and structuring Agentic systems inside secure cloud infrastructures.",
-    linkedin: "https://www.linkedin.com/in/aadhi0612/",
-    image: "/crew_1.png",
-  },
-  {
-    name: "Ashok Kumar J",
-    role: "Founder & CTO",
-    company: "G3 CyberSpace",
-    topic: "Cloud Compliance and Zero Trust Security",
-    bio: "CTO and compliance auditor specializing in security controls, GDPR, and enterprise cloud policies.",
-    linkedin: "https://www.linkedin.com/in/ashok-kumar-jeyachandran-290a15a5/",
-    image: "/crew_2.png",
-  },
-  {
-    name: "A.V. Karthik",
-    role: "AWS Solutions Architect",
-    company: "RR Donnelley",
-    topic: "Architecting Resilient Applications with AWS CloudFront and S3",
-    bio: "Solutions Architect focusing on microservices, serverless migrations, and content delivery networking.",
-    linkedin: "https://www.linkedin.com/in/karthikav93/",
-    image: "/crew_3.png",
-  },
-  {
-    name: "Jeevitha M",
-    role: "AI Engineer & Community Builder",
-    company: "AWS Community Builder",
-    topic: "Deploying Foundation Models at Scale with Amazon Bedrock",
-    bio: "AWS Community Builder and developer advocate focusing on AI pipelines and scalable foundation model hosting.",
-    linkedin: "https://www.linkedin.com/in/jeevitha-m-357979223/",
-    image: "/monica.png",
-  },
-];
-
 export default function Speakers() {
+  const { speakers } = useEventData();
+
+  // ONLY Admin-Confirmed Speakers are displayed!
+  const confirmedSpeakers = speakers.filter((sp) => sp.confirmed);
+
+  const scrollToCFS = () => {
+    const el = document.getElementById("cfs");
+    if (el) {
+      const rect = el.getBoundingClientRect();
+      const scrollTop = rect.top + window.scrollY;
+      window.scrollTo({
+        top: scrollTop - 80,
+        behavior: "smooth",
+      });
+    }
+  };
+
   return (
     <section id="speakers" className="py-10 relative overflow-hidden bg-black/20">
       {/* Background Radial Glow */}
@@ -111,32 +50,41 @@ export default function Speakers() {
         
         {/* Section Heading */}
         <div className="text-center space-y-4 mb-16">
-          <div className="text-cyan-400 font-semibold uppercase tracking-wider text-xs">
-            Expert Insights
+          <div className="inline-flex items-center gap-2 text-cyan-400 font-semibold uppercase tracking-wider text-xs px-3 py-1 rounded-full border border-cyan-500/20 bg-cyan-500/5">
+            <ShieldCheck size={14} /> Admin Confirmed Lineup
           </div>
           <h2 className="text-3xl sm:text-4xl font-extrabold text-white">
             Featured Speakers
           </h2>
           <p className="text-slate-400 text-sm max-w-md mx-auto">
-            Hover over a card to reveal session details, abstracts, and professional backgrounds.
+            Official confirmed speakers approved by AWS Student Builder Groups admin. Hover cards for session details.
           </p>
         </div>
 
-        {/* 3D Cards Grid */}
-        <div className="flex flex-wrap justify-center gap-8">
-          {speakers.map((speaker, idx) => (
-            <div key={idx} className="w-full max-w-sm md:w-[calc(50%-16px)] lg:w-[calc(33.333%-22px)] flex-shrink-0">
-              <SpeakerCard speaker={speaker} idx={idx} />
-            </div>
-          ))}
-        </div>
+        {/* 3D Cards Grid — ONLY Admin Confirmed Speakers */}
+        {confirmedSpeakers.length > 0 ? (
+          <div className="flex flex-wrap justify-center gap-8">
+            {confirmedSpeakers.map((speaker, idx) => (
+              <div key={speaker.id} className="w-full max-w-sm md:w-[calc(50%-16px)] lg:w-[calc(33.333%-22px)] flex-shrink-0">
+                <SpeakerCard speaker={speaker} idx={idx} />
+              </div>
+            ))}
+          </div>
+        ) : (
+          /* Empty space until admin confirms speakers */
+          <div className="h-28 flex items-center justify-center border border-dashed border-cyan-500/20 rounded-3xl max-w-xl mx-auto bg-[#070712]/50 px-6 text-center">
+            <p className="text-sm font-bold text-cyan-400/90 tracking-wider uppercase">
+              Speaker details will be displayed soon
+            </p>
+          </div>
+        )}
 
       </div>
     </section>
   );
 }
 
-function SpeakerCard({ speaker, idx }: { speaker: Speaker; idx: number }) {
+function SpeakerCard({ speaker, idx }: { speaker: SpeakerItem; idx: number }) {
   const bgGradients = [
     "from-[#11291f] to-[#091711] border-emerald-500/20 shadow-[0_15px_35px_rgba(16,185,129,0.15)]", // green
     "from-[#122332] to-[#0a151f] border-cyan-500/20 shadow-[0_15px_35px_rgba(6,182,212,0.15)]",      // blue
@@ -218,10 +166,10 @@ function SpeakerCard({ speaker, idx }: { speaker: Speaker; idx: number }) {
                 Topic & Abstract
               </span>
               <a
-                href={speaker.linkedin}
+                href={speaker.linkedin || "#"}
                 target="_blank"
                 rel="noopener noreferrer"
-                onClick={(e) => e.stopPropagation()} // Stop flip on click
+                onClick={(e) => e.stopPropagation()}
                 className="text-slate-300 hover:text-[#00f0ff] transition-colors p-1"
                 title="LinkedIn Profile"
               >
@@ -257,7 +205,7 @@ function SpeakerCard({ speaker, idx }: { speaker: Speaker; idx: number }) {
               Click to flip back
             </span>
             <a
-              href={speaker.linkedin}
+              href={speaker.linkedin || "#"}
               target="_blank"
               rel="noopener noreferrer"
               onClick={(e) => e.stopPropagation()}

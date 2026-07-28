@@ -6,7 +6,6 @@ import Countdown from "@/components/Countdown";
 import About from "@/components/About";
 import CallFor from "@/components/CallFor";
 import Speakers from "@/components/Speakers";
-import Schedule from "@/components/Schedule";
 import Organizers from "@/components/Organizers";
 import Sponsors from "@/components/Sponsors";
 import Hackathons from "@/components/Hackathons";
@@ -35,9 +34,6 @@ export default function Home() {
           {/* Informative About Section */}
           <About />
 
-          {/* Interactive Event Schedule Timeline */}
-          <Schedule />
-
           {/* Hackathons — Cards + Modal */}
           <Hackathons />
 
@@ -63,3 +59,5 @@ export default function Home() {
     </ClientOnly>
   );
 }
+
+

@@ -6,9 +6,11 @@ import {
   Users, CheckCircle2, Gift, Mail, Calendar, 
   Search, ArrowUpDown, Trash2, Download, LogOut, 
   ExternalLink, ChevronLeft, ChevronRight, AlertTriangle, Cloud, ShieldAlert,
-  Loader2
+  Loader2, ShieldCheck, XCircle, Mic, Building2, Plus
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useAdminAuth } from "@/context/AdminAuthContext";
+import { useEventData } from "@/context/EventDataContext";
 
 interface Participant {
   id: string;
@@ -72,6 +74,47 @@ interface ActivityLog {
 
 export default function OrganizerDashboard() {
   const router = useRouter();
+  const { isAuthenticated, logout } = useAdminAuth();
+  const {
+    speakers,
+    sponsors,
+    createSpeakerByAdmin,
+    createSponsorByAdmin,
+    toggleSpeakerConfirmation,
+    toggleSponsorConfirmation,
+    deleteSpeaker,
+    deleteSponsor,
+  } = useEventData();
+  const [activeApprovalTab, setActiveApprovalTab] = useState<"speakers" | "sponsors">("speakers");
+
+  // Admin Entry Modals
+  const [showAddSpeaker, setShowAddSpeaker] = useState(false);
+  const [showAddSponsor, setShowAddSponsor] = useState(false);
+
+  // New Speaker Form
+  const [newSpeaker, setNewSpeaker] = useState({
+    name: "", role: "", company: "", topic: "", bio: "", linkedin: "", image: "/abhishek.png"
+  });
+
+  // New Sponsor Form
+  const [newSponsor, setNewSponsor] = useState({
+    name: "", category: "Gold Sponsor", desc: "", logo: "mongodb"
+  });
+
+  // Auth guard — redirect to login if not authenticated
+  useEffect(() => {
+    if (!isAuthenticated) {
+      router.replace("/organizer/login");
+    }
+  }, [isAuthenticated, router]);
+
+  if (!isAuthenticated) {
+    return (
+      <div className="min-h-screen bg-[#020205] flex items-center justify-center">
+        <Loader2 size={28} className="animate-spin text-cyan-400" />
+      </div>
+    );
+  }
 
   // Metrics and Logs states
   const [metrics, setMetrics] = useState<DashboardMetrics | null>(null);
@@ -472,6 +515,307 @@ export default function OrganizerDashboard() {
               );
             })}
           </section>
+        )}
+
+        {/* ── Speaker & Sponsor Confirmation Admin Management Panel ── */}
+        <section className="glass-panel p-6 rounded-2xl border border-cyan-500/20 bg-[#070712]/90 space-y-6">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-800/80 pb-4">
+            <div>
+              <h2 className="text-base font-black uppercase tracking-wider text-white flex items-center gap-2">
+                <ShieldCheck size={18} className="text-cyan-400" />
+                Speaker & Sponsor Approval Control
+              </h2>
+              <p className="text-xs text-slate-400 mt-0.5">
+                Confirm applications to publish speakers on website and display sponsor images. Unconfirmed sponsors redirect clicks to Call for Sponsors.
+              </p>
+            </div>
+
+            {/* Tab Switches & Add Buttons */}
+            <div className="flex flex-wrap items-center gap-2 bg-slate-950 p-1.5 rounded-xl border border-slate-800">
+              <button
+                onClick={() => setActiveApprovalTab("speakers")}
+                className={`px-4 py-1.5 rounded-lg text-xs font-bold uppercase tracking-wider transition-all flex items-center gap-1.5 ${
+                  activeApprovalTab === "speakers"
+                    ? "bg-cyan-500/20 text-cyan-400 border border-cyan-500/30 shadow-[0_0_12px_rgba(0,240,255,0.15)]"
+                    : "text-slate-400 hover:text-white"
+                }`}
+              >
+                <Mic size={13} /> Speakers ({speakers.filter(s => s.confirmed).length}/{speakers.length})
+              </button>
+              <button
+                onClick={() => setActiveApprovalTab("sponsors")}
+                className={`px-4 py-1.5 rounded-lg text-xs font-bold uppercase tracking-wider transition-all flex items-center gap-1.5 ${
+                  activeApprovalTab === "sponsors"
+                    ? "bg-amber-500/20 text-amber-400 border border-amber-500/30 shadow-[0_0_12px_rgba(251,191,36,0.15)]"
+                    : "text-slate-400 hover:text-white"
+                }`}
+              >
+                <Building2 size={13} /> Sponsors ({sponsors.filter(s => s.confirmed).length}/{sponsors.length})
+              </button>
+
+              {activeApprovalTab === "speakers" ? (
+                <button
+                  onClick={() => setShowAddSpeaker(true)}
+                  className="neon-btn px-3 py-1.5 rounded-lg text-xs font-extrabold uppercase tracking-wider text-white flex items-center gap-1 ml-2"
+                >
+                  <Plus size={13} /> Add Speaker
+                </button>
+              ) : (
+                <button
+                  onClick={() => setShowAddSponsor(true)}
+                  className="px-3 py-1.5 rounded-lg text-xs font-extrabold uppercase tracking-wider text-black bg-amber-400 hover:bg-amber-300 transition-colors flex items-center gap-1 ml-2"
+                >
+                  <Plus size={13} /> Add Sponsor
+                </button>
+              )}
+            </div>
+          </div>
+
+          {/* Speakers Approval & Entry Grid */}
+          {activeApprovalTab === "speakers" && (
+            <div>
+              {speakers.length === 0 ? (
+                <div className="text-center py-10 border border-dashed border-slate-800 rounded-xl space-y-3">
+                  <p className="text-slate-400 text-xs">No speakers entered or proposal submitted yet.</p>
+                  <button
+                    onClick={() => setShowAddSpeaker(true)}
+                    className="neon-btn px-5 py-2 rounded-xl text-xs font-bold text-white inline-flex items-center gap-1.5"
+                  >
+                    <Plus size={14} /> Enter First Speaker Details
+                  </button>
+                </div>
+              ) : (
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                  {speakers.map((sp) => (
+                    <div
+                      key={sp.id}
+                      className={`p-4 rounded-xl border flex flex-col justify-between gap-3 transition-all ${
+                        sp.confirmed
+                          ? "bg-cyan-950/20 border-cyan-500/30"
+                          : "bg-slate-950/60 border-slate-800"
+                      }`}
+                    >
+                      <div className="space-y-1">
+                        <div className="flex items-center justify-between">
+                          <h4 className="text-sm font-bold text-white truncate">{sp.name}</h4>
+                          <span
+                            className={`text-[9px] font-black uppercase tracking-wider px-2 py-0.5 rounded border ${
+                              sp.confirmed
+                                ? "bg-green-500/10 border-green-500/30 text-green-400"
+                                : "bg-yellow-500/10 border-yellow-500/30 text-yellow-400"
+                            }`}
+                          >
+                            {sp.confirmed ? "Confirmed & Live" : "Pending Confirmation"}
+                          </span>
+                        </div>
+                        <p className="text-xs text-cyan-400 font-semibold">{sp.role} &bull; {sp.company}</p>
+                        <p className="text-[11px] text-slate-400 line-clamp-2 mt-1">{sp.topic}</p>
+                      </div>
+
+                      <div className="flex items-center gap-2">
+                        <button
+                          onClick={() => toggleSpeakerConfirmation(sp.id)}
+                          className={`flex-1 py-2 px-3 rounded-lg text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-1.5 transition-all ${
+                            sp.confirmed
+                              ? "bg-red-500/10 hover:bg-red-500/20 border border-red-500/30 text-red-400"
+                              : "bg-cyan-500/20 hover:bg-cyan-500/30 border border-cyan-500/40 text-cyan-300"
+                          }`}
+                        >
+                          {sp.confirmed ? (
+                            <>
+                              <XCircle size={13} /> Revoke
+                            </>
+                          ) : (
+                            <>
+                              <CheckCircle2 size={13} /> Confirm & Publish
+                            </>
+                          )}
+                        </button>
+                        <button
+                          onClick={() => deleteSpeaker(sp.id)}
+                          title="Delete Speaker"
+                          className="p-2 rounded-lg border border-slate-800 text-slate-500 hover:text-red-400 hover:border-red-500/30 transition-colors"
+                        >
+                          <Trash2 size={14} />
+                        </button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* Sponsors Approval & Entry Grid */}
+          {activeApprovalTab === "sponsors" && (
+            <div>
+              {sponsors.length === 0 ? (
+                <div className="text-center py-10 border border-dashed border-slate-800 rounded-xl space-y-3">
+                  <p className="text-slate-400 text-xs">No sponsors entered or enquiries submitted yet.</p>
+                  <button
+                    onClick={() => setShowAddSponsor(true)}
+                    className="px-5 py-2 rounded-xl text-xs font-bold text-black bg-amber-400 hover:bg-amber-300 inline-flex items-center gap-1.5 transition-colors"
+                  >
+                    <Plus size={14} /> Enter First Sponsor Details
+                  </button>
+                </div>
+              ) : (
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                  {sponsors.map((spon) => (
+                    <div
+                      key={spon.id}
+                      className={`p-4 rounded-xl border flex flex-col justify-between gap-3 transition-all ${
+                        spon.confirmed
+                          ? "bg-amber-950/20 border-amber-500/30"
+                          : "bg-slate-950/60 border-slate-800"
+                      }`}
+                    >
+                      <div className="space-y-1">
+                        <div className="flex items-center justify-between">
+                          <h4 className="text-sm font-bold text-white truncate">{spon.name}</h4>
+                          <span
+                            className={`text-[9px] font-black uppercase tracking-wider px-2 py-0.5 rounded border ${
+                              spon.confirmed
+                                ? "bg-green-500/10 border-green-500/30 text-green-400"
+                                : "bg-yellow-500/10 border-yellow-500/30 text-yellow-400"
+                            }`}
+                          >
+                            {spon.confirmed ? "Confirmed (Logo Visible)" : "Unconfirmed (Redirects to CFS)"}
+                          </span>
+                        </div>
+                        <p className="text-xs text-amber-400 font-semibold">{spon.category}</p>
+                        <p className="text-[11px] text-slate-400 line-clamp-2 mt-1">{spon.desc}</p>
+                      </div>
+
+                      <div className="flex items-center gap-2">
+                        <button
+                          onClick={() => toggleSponsorConfirmation(spon.id)}
+                          className={`flex-1 py-2 px-3 rounded-lg text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-1.5 transition-all ${
+                            spon.confirmed
+                              ? "bg-red-500/10 hover:bg-red-500/20 border border-red-500/30 text-red-400"
+                              : "bg-amber-500/20 hover:bg-amber-500/30 border border-amber-500/40 text-amber-300"
+                          }`}
+                        >
+                          {spon.confirmed ? (
+                            <>
+                              <XCircle size={13} /> Unconfirm
+                            </>
+                          ) : (
+                            <>
+                              <CheckCircle2 size={13} /> Confirm & Display Image
+                            </>
+                          )}
+                        </button>
+                        <button
+                          onClick={() => deleteSponsor(spon.id)}
+                          title="Delete Sponsor"
+                          className="p-2 rounded-lg border border-slate-800 text-slate-500 hover:text-red-400 hover:border-red-500/30 transition-colors"
+                        >
+                          <Trash2 size={14} />
+                        </button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          )}
+        </section>
+
+        {/* Modal: Add Speaker by Admin */}
+        {showAddSpeaker && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md">
+            <div className="w-full max-w-md glass-panel p-6 rounded-2xl border border-cyan-500/30 bg-[#070712] space-y-4">
+              <div className="flex justify-between items-center border-b border-slate-800 pb-3">
+                <h3 className="text-sm font-bold text-white uppercase tracking-wider">Add New Speaker</h3>
+                <button onClick={() => setShowAddSpeaker(false)} className="text-slate-500 hover:text-white"><XCircle size={18} /></button>
+              </div>
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  createSpeakerByAdmin({ ...newSpeaker, confirmed: true });
+                  setShowAddSpeaker(false);
+                  setNewSpeaker({ name: "", role: "", company: "", topic: "", bio: "", linkedin: "", image: "/abhishek.png" });
+                }}
+                className="space-y-3 text-xs"
+              >
+                <div>
+                  <label className="text-slate-400 font-bold block mb-1">Speaker Name</label>
+                  <input required type="text" value={newSpeaker.name} onChange={(e) => setNewSpeaker({ ...newSpeaker, name: e.target.value })} placeholder="e.g. Dr. Jane Doe" className="w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-white" />
+                </div>
+                <div className="grid grid-cols-2 gap-2">
+                  <div>
+                    <label className="text-slate-400 font-bold block mb-1">Role</label>
+                    <input required type="text" value={newSpeaker.role} onChange={(e) => setNewSpeaker({ ...newSpeaker, role: e.target.value })} placeholder="e.g. Developer Advocate" className="w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-white" />
+                  </div>
+                  <div>
+                    <label className="text-slate-400 font-bold block mb-1">Company</label>
+                    <input required type="text" value={newSpeaker.company} onChange={(e) => setNewSpeaker({ ...newSpeaker, company: e.target.value })} placeholder="e.g. AWS" className="w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-white" />
+                  </div>
+                </div>
+                <div>
+                  <label className="text-slate-400 font-bold block mb-1">Session Topic</label>
+                  <input required type="text" value={newSpeaker.topic} onChange={(e) => setNewSpeaker({ ...newSpeaker, topic: e.target.value })} placeholder="Session title..." className="w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-white" />
+                </div>
+                <div>
+                  <label className="text-slate-400 font-bold block mb-1">Bio / Abstract</label>
+                  <textarea required rows={2} value={newSpeaker.bio} onChange={(e) => setNewSpeaker({ ...newSpeaker, bio: e.target.value })} placeholder="Brief speaker bio..." className="w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-white" />
+                </div>
+                <button type="submit" className="neon-btn w-full py-3 rounded-xl font-bold uppercase tracking-widest text-white mt-2">Publish Speaker to Site</button>
+              </form>
+            </div>
+          </div>
+        )}
+
+        {/* Modal: Add Sponsor by Admin */}
+        {showAddSponsor && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md">
+            <div className="w-full max-w-md glass-panel p-6 rounded-2xl border border-amber-500/30 bg-[#070712] space-y-4">
+              <div className="flex justify-between items-center border-b border-slate-800 pb-3">
+                <h3 className="text-sm font-bold text-white uppercase tracking-wider">Add New Sponsor</h3>
+                <button onClick={() => setShowAddSponsor(false)} className="text-slate-500 hover:text-white"><XCircle size={18} /></button>
+              </div>
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  createSponsorByAdmin({ ...newSponsor, confirmed: true });
+                  setShowAddSponsor(false);
+                  setNewSponsor({ name: "", category: "Gold Sponsor", desc: "", logo: "mongodb" });
+                }}
+                className="space-y-3 text-xs"
+              >
+                <div>
+                  <label className="text-slate-400 font-bold block mb-1">Company / Sponsor Name</label>
+                  <input required type="text" value={newSponsor.name} onChange={(e) => setNewSponsor({ ...newSponsor, name: e.target.value })} placeholder="e.g. MongoDB" className="w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-white" />
+                </div>
+                <div>
+                  <label className="text-slate-400 font-bold block mb-1">Category / Tier</label>
+                  <select value={newSponsor.category} onChange={(e) => setNewSponsor({ ...newSponsor, category: e.target.value })} className="w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-white">
+                    <option value="Title Cloud Partner">Title Cloud Partner</option>
+                    <option value="Gold Sponsor">Gold Sponsor</option>
+                    <option value="Silver Sponsor">Silver Sponsor</option>
+                    <option value="Infrastructure Partner">Infrastructure Partner</option>
+                    <option value="Monitoring Partner">Monitoring Partner</option>
+                    <option value="Community Partner">Community Partner</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="text-slate-400 font-bold block mb-1">Description</label>
+                  <input required type="text" value={newSponsor.desc} onChange={(e) => setNewSponsor({ ...newSponsor, desc: e.target.value })} placeholder="Developer Data Platform..." className="w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-white" />
+                </div>
+                <div>
+                  <label className="text-slate-400 font-bold block mb-1">Logo Type / Icon</label>
+                  <select value={newSponsor.logo} onChange={(e) => setNewSponsor({ ...newSponsor, logo: e.target.value })} className="w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-white">
+                    <option value="mongodb">MongoDB Logo</option>
+                    <option value="hashicorp">HashiCorp Logo</option>
+                    <option value="datadog">Datadog Logo</option>
+                    <option value="/aws_sbg_logo.png">AWS Logo</option>
+                  </select>
+                </div>
+                <button type="submit" className="w-full py-3 rounded-xl font-bold uppercase tracking-widest text-black bg-amber-400 hover:bg-amber-300 mt-2">Publish Sponsor Image to Site</button>
+              </form>
+            </div>
+          </div>
         )}
 
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
