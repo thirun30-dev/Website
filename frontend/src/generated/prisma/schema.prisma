@@ -1,0 +1,65 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Registration {
+  id           Int      @id @default(autoincrement())
+  fullName     String
+  email        String   @unique
+  phone        String
+  organization String
+  designation  String
+  city         String
+  address      String
+  avatar       String   @default("man")
+  createdAt    DateTime @default(now())
+
+  @@map("registrations")
+}
+
+model HackathonRegistration {
+  id        Int      @id @default(autoincrement())
+  name      String
+  email     String
+  college   String
+  team      String
+  domain    String
+  size      String
+  createdAt DateTime @default(now())
+
+  @@map("hackathon_registrations")
+}
+
+model SponsorEnquiry {
+  id              Int      @id @default(autoincrement())
+  company         String
+  contact         String
+  contactNumber   String
+  alternateNumber String?
+  email           String
+  tier            String
+  message         String?
+  createdAt       DateTime @default(now())
+
+  @@map("sponsor_enquiries")
+}
+
+model SpeakerProposal {
+  id        Int      @id @default(autoincrement())
+  name      String
+  email     String
+  topic     String
+  abstract  String
+  createdAt DateTime @default(now())
+
+  @@map("speaker_proposals")
+}

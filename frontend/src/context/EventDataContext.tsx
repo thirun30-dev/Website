@@ -1,10 +1,11 @@
-﻿"use client";
+"use client";
 
 import React, { createContext, useContext, useState, useEffect } from "react";
 
 export interface SpeakerItem {
   id: string;
   name: string;
+  email?: string;
   role: string;
   company: string;
   topic: string;
