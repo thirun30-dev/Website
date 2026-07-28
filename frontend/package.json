@@ -2,26 +2,23 @@
   "name": "sbg-rec-website",
   "version": "0.1.0",
   "private": true,
+  "description": "This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).",
+  "license": "ISC",
+  "author": "",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint",
-    "postinstall": "prisma generate"
+    "lint": "eslint"
   },
   "dependencies": {
-    "@prisma/client": "^6.19.3",
-    "bcryptjs": "^3.0.3",
     "framer-motion": "^12.40.0",
-    "jsonwebtoken": "^9.0.3",
+    "html5-qrcode": "^2.3.8",
     "lucide-react": "^1.18.0",
     "next": "^16.2.9",
-    "prisma": "^6.19.3",
     "react": "^19.2.7",
     "react-dom": "^19.2.7",
-    "react-qr-code": "^2.2.0",
-    "redis": "^6.0.0",
-    "zod": "^4.4.3"
+    "react-qr-code": "^2.2.0"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",

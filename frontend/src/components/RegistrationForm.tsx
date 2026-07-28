@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState } from "react";
-import Image from "next/image";
 import {
   Cloud,
   User,
@@ -25,7 +24,6 @@ interface FormData {
   organization: string;
   designation: string;
   city: string;
-  address: string;
   avatar: string;
 }
 
@@ -36,7 +34,6 @@ const initialForm: FormData = {
   organization: "",
   designation: "",
   city: "",
-  address: "",
   avatar: "man",
 };
 
@@ -52,25 +49,26 @@ const inputVariants: Variants = {
 export default function RegistrationForm() {
   const [form, setForm] = useState<FormData>(initialForm);
   const [errors, setErrors] = useState<Partial<FormData>>({});
-  const [otherDesignation, setOtherDesignation] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
-  const [submitError, setSubmitError] = useState<string | null>(null);
   
+  const [isAlreadyRegistered, setIsAlreadyRegistered] = useState(false);
+  const [resending, setResending] = useState(false);
+  const [resendStatus, setResendStatus] = useState("");
+  const [serverError, setServerError] = useState("");
+
   const { badgeData, setBadgeData } = useRegistration();
 
   const validate = (): boolean => {
     const newErrors: Partial<FormData> = {};
     if (!form.fullName.trim()) newErrors.fullName = "Full name is required";
-    if (!form.email.trim() || !form.email.trim().toLowerCase().endsWith("@gmail.com"))
-      newErrors.email = "Valid @gmail.com email is required";
-    if (!form.phone.trim() || !/^\d{10}$/.test(form.phone.trim()))
-      newErrors.phone = "Valid 10-digit phone number is required";
+    if (!form.email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email))
+      newErrors.email = "Valid email is required";
+    if (!form.phone.trim() || !/^\+?[\d\s\-()]{7,}$/.test(form.phone))
+      newErrors.phone = "Valid phone number is required";
     if (!form.organization.trim()) newErrors.organization = "College/Organization is required";
-    if (!form.designation.trim() || (form.designation === "others" && !otherDesignation.trim()))
-      newErrors.designation = "Designation/Year is required";
+    if (!form.designation.trim()) newErrors.designation = "Designation/Year is required";
     if (!form.city.trim()) newErrors.city = "City is required";
-    if (!form.address.trim()) newErrors.address = "Address is required";
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -85,48 +83,72 @@ export default function RegistrationForm() {
     }
   };
 
+  const handleResendQr = async () => {
+    const targetEmail = badgeData?.email || form.email;
+    if (!targetEmail) return;
+    setResending(true);
+    setResendStatus("");
+    try {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/registrations/resend-qr`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: targetEmail }),
+      });
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.message || "Failed to resend email.");
+      }
+      setResendStatus("Pass email resent successfully!");
+    } catch (err: any) {
+      setResendStatus(err.message || "Too many attempts. Try again later.");
+    } finally {
+      setResending(false);
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!validate()) return;
     setSubmitting(true);
-    setSubmitError(null);
-
-    const finalForm = {
-      ...form,
-      designation: form.designation === "others" ? otherDesignation : form.designation
-    };
+    setServerError("");
+    setIsAlreadyRegistered(false);
 
     try {
-      const res = await fetch("/api/register", {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/registrations`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(finalForm),
+        body: JSON.stringify({
+          fullName: form.fullName,
+          email: form.email,
+          phone: form.phone,
+          organization: form.organization,
+          designation: form.designation,
+          city: form.city,
+          avatar: form.avatar,
+        }),
       });
-      const json = await res.json();
-      if (!res.ok) {
-        // 409 = already registered — treat as success with info message
-        if (res.status === 409 && json.alreadyRegistered) {
-          setBadgeData({
-            name: form.fullName,
-            email: form.email,
-            role: "Participation",
-            avatar: form.avatar,
-          });
-          setSubmitted(true);
-        } else {
-          setSubmitError(json.message ?? "Registration failed. Please try again.");
-        }
-        return;
+
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.message || "Registration failed");
       }
+
+      if (data.status === "ALREADY_REGISTERED") {
+        setIsAlreadyRegistered(true);
+      }
+
       setBadgeData({
-        name: form.fullName,
-        email: form.email,
-        role: "Participation",
-        avatar: form.avatar,
+        name: data.user.name,
+        email: data.user.email,
+        role: "Participant",
+        avatar: data.user.avatar,
+        registrationCode: data.registrationCode,
+        qrImage: data.qrImage,
       });
+      
       setSubmitted(true);
-    } catch {
-      setSubmitError("Network error. Please check your connection and try again.");
+    } catch (err: any) {
+      setServerError(err.message || "Server error. Please try again.");
     } finally {
       setSubmitting(false);
     }
@@ -144,14 +166,14 @@ export default function RegistrationForm() {
     {
       name: "email",
       label: "Email Address",
-      placeholder: "example@gmail.com",
+      placeholder: "arjun@college.edu.in",
       type: "email",
       icon: Mail,
     },
     {
       name: "phone",
       label: "Phone Number",
-      placeholder: "9876543210",
+      placeholder: "+91 98765 43210",
       type: "tel",
       icon: Phone,
     },
@@ -165,17 +187,9 @@ export default function RegistrationForm() {
     {
       name: "designation",
       label: "Designation / Year of Study",
-      placeholder: "Select your designation",
-      type: "select",
-      options: ["1st year", "2nd year", "3rd year", "4th year", "pg - 1st year", "pg - 2nd year", "others"],
-      icon: GraduationCap,
-    },
-    {
-      name: "address",
-      label: "Address",
-      placeholder: "123 Tech Park, OMR",
+      placeholder: "3rd Year B.Tech / Software Engineer",
       type: "text",
-      icon: MapPin,
+      icon: GraduationCap,
     },
     {
       name: "city",
@@ -235,13 +249,39 @@ export default function RegistrationForm() {
         <AnimatePresence mode="wait">
           {(submitted || badgeData) ? (
             /* Success State - Animated ID Card */
-            <div className="pb-8">
+            <div className="pb-8 flex flex-col items-center gap-6">
+              {isAlreadyRegistered && (
+                <div className="px-4 py-2 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-400 text-xs font-semibold uppercase tracking-wider text-center">
+                  You are already registered for this event!
+                </div>
+              )}
               <SuccessBadge 
                 name={badgeData?.name || form.fullName} 
                 email={badgeData?.email || form.email} 
                 avatar={badgeData?.avatar || form.avatar} 
-                role={badgeData?.role || "Participation"} 
+                role={badgeData?.role || "Participant"} 
+                registrationCode={badgeData?.registrationCode}
+                qrImage={badgeData?.qrImage}
               />
+              
+              <div className="flex flex-col items-center gap-2 mt-2">
+                <p className="text-slate-500 text-[11px] text-center">
+                  Lost your ticket email?
+                </p>
+                <button
+                  type="button"
+                  onClick={handleResendQr}
+                  disabled={resending}
+                  className="neon-btn-secondary px-6 py-2.5 rounded-xl text-xs font-bold uppercase tracking-wider transition-all disabled:opacity-50"
+                >
+                  {resending ? "Resending Pass..." : "Resend QR Code Email"}
+                </button>
+                {resendStatus && (
+                  <p className={`text-[11px] font-medium text-center mt-1 ${resendStatus.includes("successfully") ? "text-cyan-400" : "text-red-400"}`}>
+                    {resendStatus}
+                  </p>
+                )}
+              </div>
             </div>
           ) : (
             /* Registration Form */
@@ -276,38 +316,16 @@ export default function RegistrationForm() {
                         <div className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500">
                           <Icon size={15} />
                         </div>
-                        {field.type === "select" ? (
-                          <select
-                            name={field.name}
-                            suppressHydrationWarning
-                            value={form[field.name as keyof FormData] || ""}
-                            onChange={handleChange}
-                            className={`w-full bg-slate-950/60 border ${
-                              error ? "border-red-500/60" : "border-slate-800 focus:border-cyan-500/60"
-                            } rounded-xl pl-10 pr-4 py-3 text-sm text-white placeholder-slate-600 outline-none transition-all focus:bg-slate-900/60 focus:shadow-[0_0_0_3px_rgba(0,240,255,0.08)] appearance-none`}
-                          >
-                            <option value="" disabled className="text-slate-600">
-                              {field.placeholder}
-                            </option>
-                            {field.options?.map((opt) => (
-                              <option key={opt} value={opt} className="bg-slate-900 text-white">
-                                {opt}
-                              </option>
-                            ))}
-                          </select>
-                        ) : (
-                          <input
-                            type={field.type}
-                            suppressHydrationWarning
-                            name={field.name}
-                            value={form[field.name as keyof FormData] || ""}
-                            onChange={handleChange}
-                            placeholder={field.placeholder}
-                            className={`w-full bg-slate-950/60 border ${
-                              error ? "border-red-500/60" : "border-slate-800 focus:border-cyan-500/60"
-                            } rounded-xl pl-10 pr-4 py-3 text-sm text-white placeholder-slate-600 outline-none transition-all focus:bg-slate-900/60 focus:shadow-[0_0_0_3px_rgba(0,240,255,0.08)]`}
-                          />
-                        )}
+                        <input
+                          type={field.type}
+                          name={field.name}
+                          value={form[field.name as keyof FormData]}
+                          onChange={handleChange}
+                          placeholder={field.placeholder}
+                          className={`w-full bg-slate-950/60 border ${
+                            error ? "border-red-500/60" : "border-slate-800 focus:border-cyan-500/60"
+                          } rounded-xl pl-10 pr-4 py-3 text-sm text-white placeholder-slate-600 outline-none transition-all focus:bg-slate-900/60 focus:shadow-[0_0_0_3px_rgba(0,240,255,0.08)]`}
+                        />
                       </div>
                       {error && (
                         <motion.p
@@ -317,33 +335,6 @@ export default function RegistrationForm() {
                         >
                           {error}
                         </motion.p>
-                      )}
-
-                      {field.name === "designation" && form.designation === "others" && (
-                        <motion.div
-                          initial={{ opacity: 0, y: -10 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          className="mt-3 relative"
-                        >
-                          <div className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500">
-                            <GraduationCap size={15} />
-                          </div>
-                          <input
-                            type="text"
-                            suppressHydrationWarning
-                            value={otherDesignation}
-                            onChange={(e) => {
-                              setOtherDesignation(e.target.value);
-                              if (errors.designation) {
-                                setErrors(prev => ({ ...prev, designation: undefined }));
-                              }
-                            }}
-                            placeholder="Enter your designation"
-                            className={`w-full bg-slate-950/60 border ${
-                              error && !otherDesignation.trim() ? "border-red-500/60" : "border-slate-800 focus:border-cyan-500/60"
-                            } rounded-xl pl-10 pr-4 py-3 text-sm text-white placeholder-slate-600 outline-none transition-all focus:bg-slate-900/60 focus:shadow-[0_0_0_3px_rgba(0,240,255,0.08)]`}
-                          />
-                        </motion.div>
                       )}
                     </motion.div>
                   );
@@ -364,7 +355,6 @@ export default function RegistrationForm() {
                   <div className="flex items-center gap-6">
                     <button
                       type="button"
-                      suppressHydrationWarning
                       onClick={() => setForm((prev) => ({ ...prev, avatar: "man" }))}
                       className={`relative w-16 h-16 sm:w-20 sm:h-20 rounded-full p-1 transition-all ${
                         form.avatar === "man" 
@@ -372,13 +362,12 @@ export default function RegistrationForm() {
                           : "bg-slate-800 hover:bg-slate-700 opacity-60 hover:opacity-100"
                       }`}
                     >
-                      <div className="relative w-full h-full bg-black rounded-full overflow-hidden">
-                        <Image src="/avatar-man.png" alt="Man Avatar" fill className="object-cover" sizes="(max-width: 640px) 64px, 80px" />
+                      <div className="w-full h-full bg-black rounded-full overflow-hidden">
+                        <img src="/avatar-man.png" alt="Man Avatar" className="w-full h-full object-cover" />
                       </div>
                     </button>
                     <button
                       type="button"
-                      suppressHydrationWarning
                       onClick={() => setForm((prev) => ({ ...prev, avatar: "woman" }))}
                       className={`relative w-16 h-16 sm:w-20 sm:h-20 rounded-full p-1 transition-all ${
                         form.avatar === "woman" 
@@ -386,8 +375,8 @@ export default function RegistrationForm() {
                           : "bg-slate-800 hover:bg-slate-700 opacity-60 hover:opacity-100"
                       }`}
                     >
-                      <div className="relative w-full h-full bg-black rounded-full overflow-hidden">
-                        <Image src="/avatar-woman.png" alt="Woman Avatar" fill className="object-cover" sizes="(max-width: 640px) 64px, 80px" />
+                      <div className="w-full h-full bg-black rounded-full overflow-hidden">
+                        <img src="/avatar-woman.png" alt="Woman Avatar" className="w-full h-full object-cover" />
                       </div>
                     </button>
                   </div>
@@ -400,22 +389,16 @@ export default function RegistrationForm() {
                 Your data is never shared with third parties.
               </p>
 
-              {/* API error message */}
-              {submitError && (
-                <motion.div
-                  initial={{ opacity: 0, y: -6 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  className="flex items-center gap-2 px-4 py-3 rounded-xl bg-red-500/10 border border-red-500/30 text-red-400 text-sm"
-                >
-                  <span className="shrink-0">⚠</span>
-                  {submitError}
-                </motion.div>
+              {/* Server Error Message */}
+              {serverError && (
+                <p className="text-xs text-red-400 font-semibold text-center mt-2">
+                  {serverError}
+                </p>
               )}
 
               {/* Submit button */}
               <motion.button
                 type="submit"
-                suppressHydrationWarning
                 disabled={submitting}
                 className="neon-btn w-full py-4 rounded-2xl text-base font-extrabold text-white flex items-center justify-center gap-3 disabled:opacity-70 disabled:cursor-not-allowed"
                 whileHover={{ scale: submitting ? 1 : 1.02 }}

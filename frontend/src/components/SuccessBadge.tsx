@@ -10,11 +10,26 @@ interface SuccessBadgeProps {
   email: string;
   role?: string;
   avatar?: string;
-  teamId?: string;
+  registrationCode?: string;
+  qrImage?: string;
 }
 
-export default function SuccessBadge({ name, email, role = "Participation", avatar, teamId }: SuccessBadgeProps) {
+export default function SuccessBadge({ 
+  name, 
+  email, 
+  role = "Participation", 
+  avatar,
+  registrationCode,
+  qrImage
+}: SuccessBadgeProps) {
   const [flipped, setFlipped] = useState(false);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setFlipped(true);
+    }, 2500);
+    return () => clearTimeout(timer);
+  }, []);
 
   return (
     <motion.div
@@ -38,17 +53,26 @@ export default function SuccessBadge({ name, email, role = "Participation", avat
           style={{ backfaceVisibility: "hidden" }}
         >
           <div className="relative p-4 bg-white rounded-xl overflow-hidden">
-            <QRCode value={`ticket-${email}`} size={200} />
+            {qrImage ? (
+              <img src={qrImage} alt="QR Code" className="w-[180px] h-[180px] block" />
+            ) : (
+              <QRCode value={registrationCode || `ticket-${email}`} size={180} />
+            )}
             {/* Scanning line animation */}
             <motion.div
               className="absolute top-0 left-0 w-full h-1.5 bg-cyan-400 shadow-[0_0_15px_#00f0ff]"
-              animate={{ y: [0, 232, 0] }}
+              animate={{ y: [0, 212, 0] }}
               transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
             />
           </div>
-          <p className="mt-8 text-cyan-400 font-semibold text-sm animate-pulse tracking-widest uppercase">
-            Hover / Click for Details
+          <p className="mt-6 text-cyan-400 font-semibold text-sm animate-pulse tracking-widest uppercase">
+            Pass Ready
           </p>
+          {registrationCode && (
+            <p className="mt-2 text-slate-400 font-mono text-xs tracking-wider">
+              ID: <span className="text-white font-bold">{registrationCode}</span>
+            </p>
+          )}
         </div>
 
         {/* Back Side: Final Badge */}
@@ -86,19 +110,19 @@ export default function SuccessBadge({ name, email, role = "Participation", avat
 
           <div className="flex-1 flex flex-col items-center justify-end pb-8 relative z-10 w-full space-y-2">
             <div className="text-center w-full">
-              <p className="text-sm text-cyan-400 uppercase tracking-[0.2em] font-bold mb-1 drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">
+              <p className="text-xs text-cyan-400 uppercase tracking-[0.2em] font-bold mb-1 drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">
                 {role}
               </p>
+              {registrationCode && (
+                <p className="text-[10px] text-slate-300 font-mono tracking-widest uppercase mb-1 drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">
+                  {registrationCode}
+                </p>
+              )}
               <h3 className="text-3xl font-extrabold text-white truncate w-full px-4 drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">
                 <span className="digital-glitch" data-text={name}>
                   {name}
                 </span>
               </h3>
-              {teamId && (
-                <div className="mt-2 inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-500/20 border border-cyan-500/40 text-cyan-300 text-xs font-bold shadow-[0_0_15px_rgba(0,240,255,0.2)] tracking-widest">
-                  TEAM ID: {teamId}
-                </div>
-              )}
             </div>
           </div>
 
@@ -107,8 +131,12 @@ export default function SuccessBadge({ name, email, role = "Participation", avat
               <p className="text-[10px] text-slate-300 uppercase font-bold tracking-wider">Date</p>
               <p className="text-xs text-white font-bold mt-0.5">Sep 12, 2026</p>
             </div>
-            <div className="bg-white p-1 rounded">
-              <QRCode value={`ticket-${email}`} size={40} />
+            <div className="bg-white p-1 rounded w-[48px] h-[48px] flex items-center justify-center">
+              {qrImage ? (
+                <img src={qrImage} alt="QR Code" className="w-[40px] h-[40px] block" />
+              ) : (
+                <QRCode value={registrationCode || `ticket-${email}`} size={40} />
+              )}
             </div>
           </div>
         </div>

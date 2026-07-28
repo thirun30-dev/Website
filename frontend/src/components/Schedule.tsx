@@ -381,7 +381,6 @@ export default function Schedule() {
   const [filter, setFilter] = useState<string>("all");
   const filtered = agenda.filter((item) => filter === "all" || item.type === filter);
   const sectionRef = useRef<HTMLDivElement>(null);
-  const [sectionWidth, setSectionWidth] = useState<number>(0);
   const [nodeCoords, setNodeCoords] = useState<{ x: number; y: number }[]>([]);
   const timelineRef = useRef<HTMLDivElement>(null);
   const pathRef = useRef<SVGPathElement>(null);
@@ -451,7 +450,6 @@ export default function Schedule() {
       if (nodes.length === 0) return;
 
       const sectionRect = sectionRef.current.getBoundingClientRect();
-      setSectionWidth(sectionRect.width);
       const coords = nodes.map(({ el }) => {
         const rect = el.getBoundingClientRect();
         return {
@@ -476,8 +474,9 @@ export default function Schedule() {
 
   // Compute continuous path string
   const pathD = (() => {
-    if (nodeCoords.length === 0 || sectionWidth === 0) return "";
-    const isMobile = window.innerWidth < 768;
+    if (nodeCoords.length === 0 || !sectionRef.current) return "";
+    const isMobile = typeof window !== "undefined" ? window.innerWidth < 768 : false;
+    const sectionWidth = sectionRef.current.clientWidth;
 
     let d = `M ${nodeCoords[0].x} ${nodeCoords[0].y}`;
 
@@ -579,7 +578,6 @@ export default function Schedule() {
               <button
                 key={t}
                 onClick={() => setFilter(t)}
-                suppressHydrationWarning
                 className={`px-3 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-wider
                   border transition-all duration-200 ${
                     filter === t
@@ -708,53 +706,78 @@ export default function Schedule() {
             </p>
           </motion.div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          {/* Unified Layout (3 columns on desktop/tablet, stacked on mobile) */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-10 md:gap-6">
             {TRACKS_DATA.map((track, tIdx) => (
               <motion.div
                 key={tIdx}
-                initial={{ opacity: 0, y: 30 }}
+                initial={{ opacity: 0, y: 15 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-100px" }}
-                transition={{ duration: 0.5, delay: tIdx * 0.12 }}
-                className={`rounded-2xl border bg-[#070712]/95 p-5 space-y-5 transition-all duration-300 ${track.border} ${track.glow}`}
+                viewport={{ once: true, margin: "-80px" }}
+                transition={{ duration: 0.4, delay: tIdx * 0.08 }}
+                className="space-y-4"
               >
                 {/* Track header */}
-                <div className="space-y-1">
-                  <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold border ${track.badge}`}>
+                <div className="space-y-1.5 px-1">
+                  <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-bold border tracking-wider uppercase ${track.badge}`}>
                     Track {tIdx + 1}
                   </span>
-                  <h4 className="text-lg font-black text-white">{track.name.split(': ')[1]}</h4>
+                  <h4 className="text-xl font-extrabold text-white tracking-tight">
+                    {track.name.split(': ')[1]}
+                  </h4>
                 </div>
 
-                {/* Session list */}
+                {/* Session list (Stacked cards) */}
                 <div className="space-y-4">
-                  {track.sessions.map((sess, sIdx) => (
-                    <div key={sIdx} className={`relative pl-6 before:absolute before:left-1.5 before:top-2 before:w-1.5 before:h-1.5 before:rounded-full before:border before:border-slate-950/80 ${track.bullet}`}>
-                      {/* Vertical connector line between bullets */}
-                      {sIdx < track.sessions.length - 1 && (
-                        <div className="absolute left-[8px] top-4 bottom-[-16px] w-[1px] bg-slate-800/60" />
-                      )}
-                      
-                      <div className="space-y-1">
-                        <div className="flex items-center justify-between gap-2">
-                          <span className={`text-[10px] font-mono font-black ${track.textBadge}`}>
+                  {track.sessions.map((sess, sIdx) => {
+                    const isBreak = sess.session.toLowerCase().includes("break");
+                    
+                    return (
+                      <motion.div
+                        key={sIdx}
+                        initial={{ opacity: 0, y: 15 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true, margin: "-80px" }}
+                        transition={{ duration: 0.4, delay: sIdx * 0.05 }}
+                        className={`rounded-2xl border p-5 space-y-3.5 transition-all duration-300 shadow-[0_4px_20px_rgba(0,0,0,0.4)] ${
+                          isBreak
+                            ? "bg-[#120a2b]/80 border-purple-500/25 shadow-[0_0_15px_rgba(168,85,247,0.12)]"
+                            : `bg-[#070712]/90 ${track.border} ${track.glow}`
+                        }`}
+                      >
+                        {/* Top Row: Time & Session Badge */}
+                        <div className="flex items-center justify-between gap-3">
+                          <span className={`text-xs font-bold font-mono ${isBreak ? "text-purple-400" : track.textBadge}`}>
                             {sess.time}
                           </span>
-                          <span className="text-[9px] font-mono text-slate-500 uppercase font-bold">
+                          <span
+                            className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold border uppercase tracking-wider ${
+                              isBreak
+                                ? "bg-purple-500/10 border-purple-500/30 text-purple-300"
+                                : track.badge
+                            }`}
+                          >
+                            {isBreak && <Coffee className="w-3 h-3 text-purple-400 animate-pulse" />}
                             {sess.session}
                           </span>
                         </div>
-                        <h5 className="text-xs font-bold text-slate-200 leading-snug group-hover:text-white transition-colors duration-200">
+
+                        {/* Middle Row: Session Title */}
+                        <h5 className="text-[15px] font-bold text-slate-100 leading-snug line-clamp-2">
                           {sess.topic}
                         </h5>
+
+                        {/* Bottom Row: Speaker (if available) */}
                         {sess.speaker && (
-                          <p className="text-[10px] text-slate-500">
-                            {sess.speaker}
-                          </p>
+                          <div className="pt-0.5">
+                            <p className="text-[11px] font-medium text-slate-500">
+                              {sess.speaker}
+                            </p>
+                          </div>
                         )}
-                      </div>
-                    </div>
-                  ))}
+                      </motion.div>
+                    );
+                  })}
                 </div>
               </motion.div>
             ))}

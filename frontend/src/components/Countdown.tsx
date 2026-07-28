@@ -194,8 +194,10 @@ export default function Countdown() {
   const handleScrollDown = () => {
     const nextSection = document.getElementById("about");
     if (nextSection) {
+      const rect = nextSection.getBoundingClientRect();
+      const scrollTop = rect.top + window.scrollY;
       window.scrollTo({
-        top: nextSection.offsetTop - 80,
+        top: scrollTop - 80,
         behavior: "smooth",
       });
     }

@@ -7,6 +7,8 @@ export interface BadgeData {
   email: string;
   role: string;
   avatar?: string;
+  registrationCode?: string;
+  qrImage?: string;
 }
 
 interface RegistrationContextType {

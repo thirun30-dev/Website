@@ -12,51 +12,54 @@ import Sponsors from "@/components/Sponsors";
 import Hackathons from "@/components/Hackathons";
 import RegistrationForm from "@/components/RegistrationForm";
 import Footer from "@/components/Footer";
+import ClientOnly from "@/components/ClientOnly";
 
 export default function Home() {
   return (
-    <div className="relative min-h-screen flex flex-col justify-between overflow-x-hidden selection:bg-cyan-500/30 selection:text-cyan-200">
-      {/* Dynamic Network Particle Background (Fixed & Full Screen) */}
-      <ParticleBackground />
+    <ClientOnly>
+      <div className="relative min-h-screen flex flex-col justify-between overflow-x-hidden selection:bg-cyan-500/30 selection:text-cyan-200">
+        {/* Dynamic Network Particle Background (Fixed & Full Screen) */}
+        <ParticleBackground />
 
-      {/* Global Navigation Header */}
-      <Navbar />
+        {/* Global Navigation Header */}
+        <Navbar />
 
-      {/* Main Content Area */}
-      <main className="flex-grow">
-        {/* Hero Banner Section */}
-        <Hero />
+        {/* Main Content Area */}
+        <main className="flex-grow">
+          {/* Hero Banner Section */}
+          <Hero />
 
-        {/* Dynamic Countdown Timer Section */}
-        <Countdown />
+          {/* Dynamic Countdown Timer Section */}
+          <Countdown />
 
-        {/* Informative About Section */}
-        <About />
+          {/* Informative About Section */}
+          <About />
 
-        {/* Interactive Event Schedule Timeline */}
-        <Schedule />
+          {/* Interactive Event Schedule Timeline */}
+          <Schedule />
 
-        {/* Hackathons — Cards + Modal */}
-        <Hackathons />
+          {/* Hackathons — Cards + Modal */}
+          <Hackathons />
 
-        {/* Call For Speakers & Sponsors — Split Section */}
-        <CallFor />
+          {/* Call For Speakers & Sponsors — Split Section */}
+          <CallFor />
 
-        {/* Featured Speakers Grid Section */}
-        <Speakers />
+          {/* Featured Speakers Grid Section */}
+          <Speakers />
 
-        {/* Event Sponsors & Community Partners */}
-        <Sponsors />
+          {/* Event Sponsors & Community Partners */}
+          <Sponsors />
 
-        {/* Organizers Committee Profile Gallery */}
-        <Organizers />
+          {/* Organizers Committee Profile Gallery */}
+          <Organizers />
 
-        {/* Registration Form (above footer) */}
-        <RegistrationForm />
-      </main>
+          {/* Registration Form (above footer) */}
+          <RegistrationForm />
+        </main>
 
-      {/* Page Footer Credentials & Links */}
-      <Footer />
-    </div>
+        {/* Page Footer Credentials & Links */}
+        <Footer />
+      </div>
+    </ClientOnly>
   );
 }

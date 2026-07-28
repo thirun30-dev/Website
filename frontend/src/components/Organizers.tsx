@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
+import { createPortal } from "react-dom";
 import { motion, AnimatePresence, useScroll, useMotionValueEvent } from "framer-motion";
 import Image from "next/image";
 
@@ -95,7 +96,7 @@ const advisors: Advisor[] = [
     name: "Mr. B. Bhuvaneshwaran",
     role: "Faculty Coordinator & Cloud Mentor",
     department: "Information Technology",
-    linkedin: "https://www.linkedin.com/",
+    linkedin: "https://www.linkedin.com/in/bhuvaneswaranrec/",
     bio: "A dedicated educator and mentor, guiding the AWS Students Builder Group at REC in fostering innovation, technical excellence, and industry readiness. With a strong focus on cloud computing and emerging technologies, he supports students in building practical skills, leading impactful initiatives, and creating meaningful learning experiences through community-driven programs and events.",
     focusAreas: [
       "Student Mentorship & Leadership",
@@ -113,7 +114,7 @@ const coreTeam: CoreMember[] = [
     role: "Cloud Captain",
     department: "Information Technology",
     bio: "Leads the cloud learning initiatives of the AWS Students Builder Group and promotes AWS technologies within the student community. Responsible for organizing cloud-focused events, encouraging hands-on learning, and helping students explore certifications, projects, and career opportunities in cloud computing.",
-    linkedin: "https://www.linkedin.com/",
+    linkedin: "https://www.linkedin.com/in/prathakshanaa/",
     github: "https://github.com/",
     email: "prathakshanaa@example.com",
     image: "/prathakshanaa.jpeg",
@@ -129,7 +130,7 @@ const coreTeam: CoreMember[] = [
     role: "Tech Lead",
     department: "Information Technology",
     bio: "Oversees the technical execution of community initiatives and Student Community Day 2026. Ensures smooth operation of event platforms, technical infrastructure, and digital experiences while guiding the team on technical decisions and innovation.",
-    linkedin: "https://www.linkedin.com/",
+    linkedin: "https://www.linkedin.com/in/knpranavranjan/",
     github: "https://github.com/",
     email: "pranav@example.com",
     image: "/pranav-ranjan.jpeg",
@@ -145,7 +146,7 @@ const coreTeam: CoreMember[] = [
     role: "Social Media Lead",
     department: "Computer Science",
     bio: "Drives the online presence of the AWS Students Builder Group through engaging content, event promotions, and community engagement. Responsible for building awareness, increasing reach, and showcasing the impact of community initiatives.",
-    linkedin: "https://www.linkedin.com/",
+    linkedin: "https://www.linkedin.com/in/thirunavukkarasu-veeramani-140b6a317/",
     github: "https://github.com/",
     email: "thirunavukkarasu@example.com",
     image: "/thirunavukkarasu.png",
@@ -161,7 +162,7 @@ const coreTeam: CoreMember[] = [
     role: "IT & Support Lead",
     department: "Information Technology",
     bio: "Manages the technical support and operational requirements of events and community activities. Ensures all systems, equipment, and digital resources function efficiently to provide a seamless experience for speakers, attendees, and organizers.",
-    linkedin: "https://www.linkedin.com/",
+    linkedin: "https://www.linkedin.com/in/giridharanr777/",
     github: "https://github.com/",
     email: "giiridharan@example.com",
     image: "/giridharan.png",
@@ -177,7 +178,7 @@ const coreTeam: CoreMember[] = [
     role: "Event Management Lead",
     department: "Information Technology",
     bio: "Coordinates planning, execution, and collaboration across various teams to ensure the success of Student Community Day 2026 and community activities. Works closely with speakers, sponsors, volunteers, and organizers to deliver impactful experiences.",
-    linkedin: "https://www.linkedin.com/",
+    linkedin: "https://www.linkedin.com/in/dilip-kannan-k/",
     github: "https://github.com/",
     email: "dilip@example.com",
     image: "/dilip_kannan.JPG",
@@ -269,15 +270,15 @@ const crewTeam: CrewMember[] = [
     email: "gita@example.com"
   },
   {
-    name: "Hari Prasad",
+    name: "Jaiganesh",
     role: "Technical Support",
     department: "Information Technology",
-    image: "/crew_2.png",
-    bio: "Hari conducts live tech checks, verifies HDMI projections, and ensures flawless audio signals across main venue presentation halls.",
-    responsibilities: ["Live Projection Checkups", "Audio Signal Mixing", "Presenter Mic Setup"],
-    linkedin: "https://www.linkedin.com/",
-    github: "https://github.com/",
-    email: "hari@example.com"
+    image: "/1772814923817.jpg",
+    bio: "Jaiganesh conducts live tech checks, verifies HDMI projections, and ensures flawless audio signals across main venue presentation halls.",
+    responsibilities: ["Technical support", "event coordination support", "social media content editing"],
+    linkedin: "https://www.linkedin.com/in/jai-ganesh-g-aa294632a/",
+    github: "https://github.com/jaiganesh78",
+    email: "jaigokul67@gmail.com"
   },
   {
     name: "Indu J",
@@ -373,6 +374,11 @@ export default function Organizers() {
   const [selectedCrew, setSelectedCrew] = useState<CrewMember | null>(null);
   const [activeCoreIdx, setActiveCoreIdx] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
     const handleResize = () => setIsMobile(window.innerWidth < 1024);
@@ -380,6 +386,18 @@ export default function Organizers() {
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
+
+  // Escape key event listener to close modal
+  useEffect(() => {
+    if (!selectedCrew) return;
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setSelectedCrew(null);
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [selectedCrew]);
 
   // Auto-scroll Core Team carousel every 7 seconds
   useEffect(() => {
@@ -396,7 +414,7 @@ export default function Organizers() {
       <div className="absolute top-1/2 left-1/4 w-72 h-72 rounded-full bg-blue-600/5 blur-[120px] pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 space-y-10">
-        
+
         {/* Section Heading */}
         <div className="text-center space-y-4">
           <div className="text-cyan-400 font-semibold uppercase tracking-wider text-xs">
@@ -431,7 +449,7 @@ export default function Organizers() {
           <div className="flex flex-col lg:flex-row gap-12 items-center justify-between min-h-[480px]">
             {/* Left Side: Coverflow Slider */}
             <div className="w-full lg:w-1/2 flex items-center justify-center relative h-[360px] sm:h-[400px]">
-              <div 
+              <div
                 style={{ perspective: 1000 }}
                 className="relative w-full max-w-[420px] h-full flex items-center justify-center overflow-visible"
               >
@@ -612,7 +630,7 @@ export default function Organizers() {
                 >
                   {/* Card Glow Highlight Effect */}
                   <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/0 via-transparent to-cyan-500/5 opacity-0 hover:opacity-100 transition-opacity duration-300" />
-                  
+
                   {/* Image Container - Medium-sized circle/square */}
                   <div className="relative w-full aspect-square rounded-2xl overflow-hidden bg-slate-900 border border-slate-800">
                     <Image
@@ -645,7 +663,7 @@ export default function Organizers() {
                         <h4 className="text-xs sm:text-sm font-extrabold text-white truncate">{member.name}</h4>
                         <p className="text-[9px] font-semibold text-cyan-400 uppercase tracking-widest truncate">{member.role}</p>
                       </div>
-                      
+
                       <div className="space-y-2">
                         <div>
                           <span className="text-[8px] text-slate-500 font-bold uppercase tracking-wider block mb-0.5">Bio</span>
@@ -653,7 +671,7 @@ export default function Organizers() {
                             {member.bio}
                           </p>
                         </div>
-                        
+
                         <div>
                           <span className="text-[8px] text-slate-500 font-bold uppercase tracking-wider block mb-1">Focus</span>
                           <div className="flex flex-wrap gap-1">
@@ -714,115 +732,11 @@ export default function Organizers() {
         {/* Detailed Crew Member Modal */}
         <AnimatePresence>
           {selectedCrew && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/80 backdrop-blur-md"
-              onClick={() => setSelectedCrew(null)}
-            >
-              <motion.div
-                initial={{ scale: 0.95, y: 20, opacity: 0 }}
-                animate={{ scale: 1, y: 0, opacity: 1 }}
-                exit={{ scale: 0.95, y: 20, opacity: 0 }}
-                transition={{ type: "spring", duration: 0.5 }}
-                className="relative w-full max-w-xl glass-panel text-white rounded-3xl p-6 md:p-8 border border-cyan-500/20 shadow-[0_0_50px_rgba(0,240,255,0.2)] bg-[#070712]/95 flex flex-col md:flex-row gap-6 md:gap-8 overflow-hidden"
-                onClick={(e) => e.stopPropagation()}
-              >
-                {/* Close Button */}
-                <button
-                  onClick={() => setSelectedCrew(null)}
-                  className="absolute top-4 right-4 w-8 h-8 rounded-full bg-slate-900 border border-slate-800 flex items-center justify-center text-slate-400 hover:text-[#00f0ff] hover:border-[#00f0ff]/50 hover:bg-[#00f0ff]/10 active:scale-95 transition-all cursor-pointer z-50"
-                  aria-label="Close details"
-                >
-                  ✕
-                </button>
-
-                {/* Left Section - Medium image in Modal */}
-                <div className="w-full md:w-[45%] flex-shrink-0 relative aspect-square md:aspect-auto md:h-64 rounded-2xl overflow-hidden bg-slate-900 border border-slate-800">
-                  <Image
-                    src={selectedCrew.image}
-                    alt={selectedCrew.name}
-                    fill
-                    priority
-                    className="object-cover object-top"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent pointer-events-none" />
-                </div>
-
-                {/* Right Section - Member details */}
-                <div className="flex-1 flex flex-col justify-between space-y-4 pt-2 md:pt-0">
-                  <div>
-                    <span className="inline-block px-2 py-0.5 rounded bg-cyan-950/40 border border-cyan-500/15 text-cyan-400 text-[9px] font-bold uppercase tracking-widest">
-                      Crew Committee Member
-                    </span>
-                    <h3 className="text-xl sm:text-2xl font-bold mt-2 text-white leading-tight">
-                      {selectedCrew.name}
-                    </h3>
-                    <p className="text-xs font-semibold text-cyan-400 uppercase tracking-wider mt-0.5 text-glow">
-                      {selectedCrew.role}
-                    </p>
-                    <p className="text-[9px] text-slate-500 font-bold uppercase tracking-widest mt-1">
-                      Dept: {selectedCrew.department}
-                    </p>
-                  </div>
-
-                  <div className="space-y-3">
-                    <div>
-                      <h5 className="text-[9px] text-[#00f0ff]/65 font-bold uppercase tracking-wider mb-1">
-                        Biography
-                      </h5>
-                      <p className="text-xs text-slate-300 leading-relaxed font-medium">
-                        {selectedCrew.bio}
-                      </p>
-                    </div>
-
-                    <div>
-                      <h5 className="text-[9px] text-[#00f0ff]/65 font-bold uppercase tracking-wider mb-1">
-                        Key Focus Areas
-                      </h5>
-                      <ul className="grid grid-cols-1 gap-1.5">
-                        {selectedCrew.responsibilities.map((resp, i) => (
-                          <li key={i} className="flex items-center gap-2 text-slate-300 text-xs font-medium">
-                            <span className="w-1.5 h-1.5 rounded-full bg-[#00f0ff] animate-pulse flex-shrink-0" />
-                            <span>{resp}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  </div>
-
-                  {/* Action Social Icons */}
-                  <div className="flex items-center gap-3 pt-4 border-t border-slate-800">
-                    <a
-                      href={selectedCrew.linkedin}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="w-8 h-8 rounded-full bg-slate-900 border border-slate-800 flex items-center justify-center text-slate-400 hover:text-[#00f0ff] hover:border-[#00f0ff]/50 hover:bg-[#00f0ff]/10 transition-all active:scale-95 cursor-pointer"
-                      title="LinkedIn Profile"
-                    >
-                      <LinkedinIcon size={14} />
-                    </a>
-                    <a
-                      href={selectedCrew.github}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="w-8 h-8 rounded-full bg-slate-900 border border-slate-800 flex items-center justify-center text-slate-400 hover:text-white hover:border-white/50 hover:bg-white/10 transition-all active:scale-95 cursor-pointer"
-                      title="GitHub Profile"
-                    >
-                      <GithubIcon size={14} />
-                    </a>
-                    <a
-                      href={`mailto:${selectedCrew.email}`}
-                      className="w-8 h-8 rounded-full bg-slate-900 border border-slate-800 flex items-center justify-center text-slate-400 hover:text-[#ea4335] hover:border-[#ea4335]/50 hover:bg-[#ea4335]/10 transition-all active:scale-95 cursor-pointer"
-                      title="Email"
-                    >
-                      <MailIcon size={14} />
-                    </a>
-                  </div>
-                </div>
-              </motion.div>
-            </motion.div>
+            <CrewMemberModalPortal
+              mounted={mounted}
+              selectedCrew={selectedCrew}
+              onClose={() => setSelectedCrew(null)}
+            />
           )}
         </AnimatePresence>
 
@@ -883,12 +797,12 @@ function FeaturedCoordinatorCard({ member }: { member: Advisor }) {
   const pointerEvents = isExpanded ? ("auto" as const) : ("none" as const);
 
   return (
-    <div 
-      ref={containerRef} 
+    <div
+      ref={containerRef}
       className="relative w-full min-h-[500px] flex items-center justify-center py-16 overflow-hidden"
     >
       <div className="relative w-full max-w-5xl flex flex-col lg:flex-row items-center justify-center gap-8 lg:gap-16">
-        
+
         {/* Animated Coordinator Square Photo (moves left & expands wider on click) */}
         <motion.div
           onClick={() => setIsExpanded(!isExpanded)}
@@ -910,10 +824,10 @@ function FeaturedCoordinatorCard({ member }: { member: Advisor }) {
           />
           {/* Dark gradient overlay */}
           <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent pointer-events-none z-10" />
-          
+
           {/* Subtle click indicator hint */}
           <div className="absolute top-4 right-4 z-20 bg-slate-950/80 backdrop-blur-sm border border-cyan-500/20 rounded-full px-3 py-1 text-[9px] font-bold text-cyan-300 uppercase tracking-wider pointer-events-none group-hover/spotlight:border-cyan-400 group-hover/spotlight:text-cyan-200 transition-colors">
-            {isMobile 
+            {isMobile
               ? (isExpanded ? "Tap to collapse" : "Tap to view bio")
               : (isExpanded ? "Click to lock open" : "Hover to view bio")}
           </div>
@@ -997,5 +911,140 @@ function FeaturedCoordinatorCard({ member }: { member: Advisor }) {
 
       </div>
     </div>
+  );
+}
+
+interface CrewMemberModalPortalProps {
+  mounted: boolean;
+  selectedCrew: CrewMember | null;
+  onClose: () => void;
+}
+
+function CrewMemberModalPortal({ mounted, selectedCrew, onClose }: CrewMemberModalPortalProps) {
+  if (!mounted || !selectedCrew) return null;
+
+  return createPortal(
+    <>
+      {/* Viewport-sized Backdrop at z-50 */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: 0.25, ease: "easeOut" }}
+        className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm"
+        onClick={onClose}
+      />
+
+      {/* Centered Overlay Card Container at z-60 */}
+      <div
+        className="fixed inset-0 z-60 flex items-center justify-center p-4 sm:p-6 overflow-hidden"
+        onClick={onClose}
+      >
+        <motion.div
+          role="dialog"
+          aria-modal="false"
+          initial={{ scale: 0.95, y: 20, opacity: 0 }}
+          animate={{ scale: 1, y: 0, opacity: 1 }}
+          exit={{ scale: 0.95, y: 20, opacity: 0 }}
+          transition={{ duration: 0.25, ease: "easeOut" }}
+          className="relative w-full max-w-xl glass-panel text-white rounded-3xl p-6 md:p-8 border border-cyan-500/20 shadow-[0_0_50px_rgba(0,240,255,0.2)] bg-[#070712]/95 flex flex-col md:flex-row gap-6 md:gap-8 max-h-[90vh] overflow-y-auto"
+          onClick={(e) => e.stopPropagation()}
+        >
+          {/* Close Button inside card at z-70 */}
+          <button
+            onClick={onClose}
+            className="absolute top-4 right-4 w-8 h-8 rounded-full bg-slate-900 border border-slate-800 flex items-center justify-center text-slate-400 hover:text-[#00f0ff] hover:border-[#00f0ff]/50 hover:bg-[#00f0ff]/10 active:scale-95 transition-all cursor-pointer z-50"
+            aria-label="Close details"
+          >
+            ✕
+          </button>
+
+          {/* Left Section - Medium image in Modal */}
+          <div className="w-full md:w-[45%] flex-shrink-0 relative aspect-square md:aspect-auto md:h-64 rounded-2xl overflow-hidden bg-slate-900 border border-slate-800">
+            <Image
+              src={selectedCrew.image}
+              alt={selectedCrew.name}
+              fill
+              priority
+              className="object-cover object-top"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent pointer-events-none" />
+          </div>
+
+          {/* Right Section - Member details */}
+          <div className="flex-1 flex flex-col justify-between space-y-4 pt-2 md:pt-0">
+            <div>
+              <span className="inline-block px-2 py-0.5 rounded bg-cyan-950/40 border border-cyan-500/15 text-cyan-400 text-[9px] font-bold uppercase tracking-widest">
+                Crew Committee Member
+              </span>
+              <h3 className="text-xl sm:text-2xl font-bold mt-2 text-white leading-tight">
+                {selectedCrew.name}
+              </h3>
+              <p className="text-xs font-semibold text-cyan-400 uppercase tracking-wider mt-0.5 text-glow">
+                {selectedCrew.role}
+              </p>
+              <p className="text-[9px] text-slate-500 font-bold uppercase tracking-widest mt-1">
+                Dept: {selectedCrew.department}
+              </p>
+            </div>
+
+            <div className="space-y-3">
+              <div>
+                <h5 className="text-[9px] text-[#00f0ff]/65 font-bold uppercase tracking-wider mb-1">
+                  Biography
+                </h5>
+                <p className="text-xs text-slate-300 leading-relaxed font-medium">
+                  {selectedCrew.bio}
+                </p>
+              </div>
+
+              <div>
+                <h5 className="text-[9px] text-[#00f0ff]/65 font-bold uppercase tracking-wider mb-1">
+                  Key Focus Areas
+                </h5>
+                <ul className="grid grid-cols-1 gap-1.5">
+                  {selectedCrew.responsibilities.map((resp, i) => (
+                    <li key={i} className="flex items-center gap-2 text-slate-300 text-xs font-medium">
+                      <span className="w-1.5 h-1.5 rounded-full bg-[#00f0ff] animate-pulse flex-shrink-0" />
+                      <span>{resp}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+
+            {/* Action Social Icons */}
+            <div className="flex items-center gap-3 pt-4 border-t border-slate-800">
+              <a
+                href={selectedCrew.linkedin}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-8 h-8 rounded-full bg-slate-900 border border-slate-800 flex items-center justify-center text-slate-400 hover:text-[#00f0ff] hover:border-[#00f0ff]/50 hover:bg-[#00f0ff]/10 transition-all active:scale-95 cursor-pointer"
+                title="LinkedIn Profile"
+              >
+                <LinkedinIcon size={14} />
+              </a>
+              <a
+                href={selectedCrew.github}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-8 h-8 rounded-full bg-slate-900 border border-slate-800 flex items-center justify-center text-slate-400 hover:text-white hover:border-white/50 hover:bg-white/10 transition-all active:scale-95 cursor-pointer"
+                title="GitHub Profile"
+              >
+                <GithubIcon size={14} />
+              </a>
+              <a
+                href={`mailto:${selectedCrew.email}`}
+                className="w-8 h-8 rounded-full bg-slate-900 border border-slate-800 flex items-center justify-center text-slate-400 hover:text-[#ea4335] hover:border-[#ea4335]/50 hover:bg-[#ea4335]/10 transition-all active:scale-95 cursor-pointer"
+                title="Email"
+              >
+                <MailIcon size={14} />
+              </a>
+            </div>
+          </div>
+        </motion.div>
+      </div>
+    </>,
+    document.body
   );
 }

@@ -4,6 +4,7 @@ import React from "react";
 import {
   Calendar,
   MapPin,
+  Sparkles,
   QrCode,
 } from "lucide-react";
 import { motion } from "framer-motion";
@@ -12,8 +13,10 @@ import { useRegistration } from "@/context/RegistrationContext";
 const scrollToRegistrationForm = () => {
   const el = document.getElementById("register-form");
   if (el) {
+    const rect = el.getBoundingClientRect();
+    const scrollTop = rect.top + window.scrollY;
     window.scrollTo({
-      top: el.offsetTop - 80,
+      top: scrollTop - 80,
       behavior: "smooth",
     });
   }
@@ -27,8 +30,10 @@ export default function Hero() {
     const targetId = href.slice(1);
     const el = document.getElementById(targetId);
     if (el) {
+      const rect = el.getBoundingClientRect();
+      const scrollTop = rect.top + window.scrollY;
       window.scrollTo({
-        top: el.offsetTop - 80,
+        top: scrollTop - 80,
         behavior: "smooth",
       });
     }
@@ -96,7 +101,6 @@ export default function Hero() {
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4 w-full">
               <button
                 onClick={scrollToRegistrationForm}
-                suppressHydrationWarning
                 className="neon-btn w-full sm:w-auto px-8 py-4 rounded-full text-base font-bold text-white text-center flex items-center justify-center gap-2"
               >
                 {badgeData ? (
