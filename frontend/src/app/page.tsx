@@ -16,7 +16,7 @@ import ClientOnly from "@/components/ClientOnly";
 export default function Home() {
   return (
     <ClientOnly>
-      <div className="relative min-h-screen flex flex-col justify-between overflow-x-hidden selection:bg-cyan-500/30 selection:text-cyan-200">
+      <div className="relative w-full overflow-x-hidden selection:bg-cyan-500/30 selection:text-cyan-200">
         {/* Dynamic Network Particle Background (Fixed & Full Screen) */}
         <ParticleBackground />
 
@@ -24,7 +24,7 @@ export default function Home() {
         <Navbar />
 
         {/* Main Content Area */}
-        <main className="flex-grow">
+        <main className="w-full">
           {/* Hero Banner Section */}
           <Hero />
 

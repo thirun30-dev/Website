@@ -11,10 +11,9 @@ import { motion, AnimatePresence } from "framer-motion";
 const navItems = [
   { label: "Home", href: "#home", external: false },
   { label: "About", href: "#about", external: false },
-  { label: "Schedule", href: "/schedule", external: true },
   { label: "Hackathons", href: "#hackathons", external: false },
-  { label: "Speakers", href: "#cfs", external: false },
-  { label: "Sponsors", href: "#cfs", external: false },
+  { label: "Speakers", href: "#speakers", external: false },
+  { label: "Sponsors", href: "#sponsors", external: false },
   { label: "Organizers", href: "#organizers", external: false },
   { label: "Contact", href: "#contact", external: false },
 ];
@@ -99,7 +98,12 @@ export default function Navbar() {
 
     const el = document.getElementById(targetId);
     if (el) {
-      el.scrollIntoView({ behavior: "smooth", block: "start" });
+      const rect = el.getBoundingClientRect();
+      const scrollTop = rect.top + window.scrollY;
+      window.scrollTo({
+        top: Math.max(0, scrollTop - 80),
+        behavior: "smooth",
+      });
       setActiveSection(targetId);
     } else {
       window.location.hash = href;
@@ -135,105 +139,105 @@ export default function Navbar() {
 
   return (
     <>
-      <nav
-        className={`fixed top-0 left-0 right-0 z-40 transition-all duration-300 ${scrolled
-          ? "bg-[#020205]/85 backdrop-blur-md border-b border-cyan-500/10 py-3 shadow-lg shadow-cyan-950/10"
-          : "bg-transparent py-3 md:py-5"
+      <header
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 bg-[#020617] border-b ${scrolled
+          ? "border-cyan-500/30 shadow-lg shadow-cyan-950/30"
+          : "border-slate-800/80"
           }`}
       >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
+        <div className="w-[94%] max-w-[1440px] mx-auto px-2 sm:px-4">
+          <div className="flex items-center justify-between h-14 sm:h-16">
 
             {/* Logo Brand (Left) */}
-            <div className="flex items-center gap-3 w-1/4">
-              <a
-                href="#home"
-                onClick={(e) => handleClick(e, "#home")}
-                className="flex items-center gap-2 group focus:outline-none"
-              >
-                <div className="relative w-11 h-11 rounded-full overflow-hidden border border-cyan-500/20 bg-slate-950 flex-shrink-0 transition-transform duration-300 group-hover:scale-105">
-                  <Image
-                    src="/aws_sbg_logo.png"
-                    alt="AWS Student Builder Groups REC Logo"
-                    fill
-                    className="object-cover filter drop-shadow-[0_0_8px_rgba(0,240,255,0.4)]"
-                    priority
-                    sizes="44px"
-                  />
-                </div>
-                <div className="flex flex-col hidden sm:flex">
-                  <span className="text-white font-bold text-sm tracking-wide">
-                    AWS <span className="text-[#00f0ff] text-glow">STUDENT</span>
-                  </span>
-                  <span className="text-[10px] text-slate-400 font-semibold tracking-wider uppercase -mt-1">
-                    Builder Groups @ REC
-                  </span>
-                </div>
-              </a>
-            </div>
+            <a
+              href="#home"
+              onClick={(e) => handleClick(e, "#home")}
+              className="flex items-center gap-3 group focus:outline-none flex-shrink-0"
+            >
+              <div className="relative w-8 h-8 flex-shrink-0 flex items-center justify-center">
+                <Image
+                  src="/aws_sbg_logo.svg"
+                  alt="AWS Student Builder Groups REC Logo"
+                  width={32}
+                  height={32}
+                  className="w-full h-full object-contain"
+                  priority
+                />
+              </div>
+              <div className="flex flex-col hidden sm:flex justify-center">
+                <span className="text-white font-extrabold text-sm tracking-wide leading-tight">
+                  AWS <span className="text-[#00f0ff]">STUDENT</span>
+                </span>
+                <span className="text-[10px] text-slate-400 font-bold tracking-widest uppercase mt-0.5">
+                  Builder Groups @ REC
+                </span>
+              </div>
+            </a>
 
             {/* Centered Navigation Links (Desktop) */}
-            <div className="hidden md:flex flex-grow justify-center">
-              <ul className="flex items-center gap-6 glass-panel px-6 py-2 rounded-full border border-slate-800/80 bg-slate-950/20">
-                {navItems.map((item) => {
-                  const isActive = !item.external && activeSection === item.href.slice(1);
-                  return (
-                    <li key={item.label}>
-                      {item.external ? (
-                        <Link
-                          href={item.href}
-                          className="text-xs font-semibold uppercase tracking-wider transition-colors hover:text-[#00f0ff] text-slate-400"
-                        >
-                          {item.label}
-                        </Link>
-                      ) : (
-                        <a
-                          href={item.href}
-                          onClick={(e) => handleClick(e, item.href)}
-                          className={`text-xs font-semibold uppercase tracking-wider transition-colors hover:text-[#00f0ff] ${isActive ? "text-[#00f0ff] font-bold text-glow" : "text-slate-400"
-                            }`}
-                        >
-                          {item.label}
-                        </a>
-                      )}
-                    </li>
-                  );
-                })}
-              </ul>
-            </div>
+            <nav className="hidden lg:flex items-center justify-center gap-1 xl:gap-1.5">
+              {navItems.map((item) => {
+                const isActive = !item.external && activeSection === item.href.slice(1);
+                return item.external ? (
+                  <Link
+                    key={item.label}
+                    href={item.href}
+                    className="h-10 inline-flex items-center justify-center px-3.5 rounded-lg text-xs xl:text-[13px] font-bold uppercase tracking-wider text-slate-300 hover:text-cyan-400 hover:bg-cyan-500/10 transition-all"
+                  >
+                    {item.label}
+                  </Link>
+                ) : (
+                  <a
+                    key={item.label}
+                    href={item.href}
+                    onClick={(e) => handleClick(e, item.href)}
+                    className={`relative h-10 inline-flex items-center justify-center px-3.5 rounded-lg text-xs xl:text-[13px] font-bold uppercase tracking-wider transition-all duration-200 ${isActive
+                      ? "text-cyan-400"
+                      : "text-slate-300 hover:text-white hover:bg-slate-800/50"
+                      }`}
+                  >
+                    {item.label}
+                    {isActive && (
+                      <motion.div
+                        layoutId="activeNavIndicator"
+                        className="absolute bottom-1 left-3.5 right-3.5 h-[2px] bg-cyan-400 rounded-full"
+                        transition={{ type: "spring", stiffness: 380, damping: 30 }}
+                      />
+                    )}
+                  </a>
+                );
+              })}
+            </nav>
 
             {/* Right CTA group (Desktop) */}
-            <div className="hidden md:flex items-center justify-end gap-2.5 w-1/4">
+            <div className="hidden lg:flex items-center gap-3 flex-shrink-0">
               {/* Admin Login button */}
               <Link
                 href="/organizer/login"
-                className="flex items-center gap-1.5 px-4 py-2.5 rounded-full text-xs font-black uppercase tracking-wider
-                  border border-slate-700 text-slate-400
-                  hover:border-cyan-500/50 hover:text-cyan-400 hover:bg-cyan-500/5
-                  transition-all duration-200"
+                className="h-10 inline-flex items-center justify-center gap-2 px-4 rounded-lg text-xs font-bold uppercase tracking-wider text-slate-300 hover:text-cyan-400 hover:bg-slate-900/80 border border-slate-800 hover:border-cyan-500/40 bg-[#080d20]/80 transition-all duration-200"
               >
-                <Lock size={12} />
+                <Lock size={14} className="text-cyan-400" />
                 Login
               </Link>
 
               {/* Register Now / View QR button */}
               <button
                 onClick={scrollToRegistrationForm}
-                className="neon-btn px-5 py-2.5 rounded-full text-xs font-black uppercase tracking-wider text-white flex items-center gap-2"
+                className="h-10 inline-flex items-center justify-center gap-2 px-5 rounded-lg text-xs font-bold uppercase tracking-wider text-white bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 shadow-[0_0_20px_rgba(6,182,212,0.35)] hover:shadow-[0_0_28px_rgba(6,182,212,0.55)] transition-all duration-300 cursor-pointer"
               >
                 {badgeData ? (
-                  <>View QR Code <QrCode size={14} /></>
+                  <>View QR Code <QrCode size={15} /></>
                 ) : (
-                  <>Register Now <ArrowRight size={14} /></>
+                  <>Register Now <ArrowRight size={15} /></>
                 )}
               </button>
             </div>
 
             {/* Mobile Menu Toggle */}
-            <div className="md:hidden">
+            <div className="lg:hidden">
               <button
                 onClick={() => setIsOpen(!isOpen)}
-                className="text-slate-300 hover:text-white p-2 focus:outline-none"
+                className="text-slate-300 hover:text-white p-2 rounded-lg hover:bg-slate-800/50 focus:outline-none transition-colors"
                 aria-label="Toggle menu"
               >
                 {isOpen ? <X size={24} /> : <Menu size={24} />}
@@ -241,7 +245,7 @@ export default function Navbar() {
             </div>
           </div>
         </div>
-      </nav>
+      </header>
 
       {/* Decoupled Mobile Menu Drawer Overlay */}
       <AnimatePresence>
@@ -254,7 +258,7 @@ export default function Navbar() {
               exit={{ opacity: 0 }}
               transition={{ duration: 0.3, ease: "easeOut" }}
               onClick={() => setIsOpen(false)}
-              className="fixed inset-0 z-50 bg-black/70 backdrop-blur-md md:hidden"
+              className="fixed inset-0 z-50 bg-black/70 backdrop-blur-md lg:hidden"
             />
 
             {/* Mobile Drawer (z-index: 60) */}
@@ -272,18 +276,18 @@ export default function Navbar() {
               <div className="flex items-center justify-between h-20 px-6 border-b border-slate-800/60 flex-shrink-0">
                 {/* Logo brand (Left) */}
                 <div className="flex items-center gap-3">
-                  <div className="relative w-10 h-10 rounded-full overflow-hidden border border-cyan-500/20 bg-slate-950 flex-shrink-0">
+                  <div className="relative w-7.5 h-7.5 flex-shrink-0 flex items-center justify-center">
                     <Image
-                      src="/aws_sbg_logo.png"
+                      src="/aws_sbg_logo.svg"
                       alt="AWS Student Builder Groups REC Logo"
-                      fill
-                      className="object-cover filter drop-shadow-[0_0_8px_rgba(0,240,255,0.4)]"
-                      sizes="40px"
+                      width={30}
+                      height={30}
+                      className="w-full h-full object-contain"
                     />
                   </div>
                   <div className="flex flex-col">
                     <span className="text-white font-bold text-sm tracking-wide">
-                      AWS <span className="text-[#00f0ff] text-glow">STUDENT</span>
+                      AWS <span className="text-[#00f0ff]">STUDENT</span>
                     </span>
                     <span className="text-[10px] text-slate-400 font-semibold tracking-wider uppercase -mt-1">
                       Builder Groups @ REC
@@ -320,7 +324,7 @@ export default function Navbar() {
                       href={item.href}
                       onClick={(e) => handleClick(e, item.href)}
                       className={`flex items-center w-full py-[18px] px-4 text-base font-bold tracking-wide transition-all duration-200 border-l-2 ${isActive
-                        ? "border-[#00f0ff] text-[#00f0ff] bg-[#00f0ff]/5 pl-5 shadow-[inset_4px_0_12px_rgba(0,240,255,0.03)] font-bold text-glow-cyan"
+                        ? "border-cyan-400 text-cyan-400 bg-cyan-500/5 pl-5 font-bold"
                         : "border-transparent text-slate-300 hover:text-white hover:bg-slate-900/30"
                         }`}
                       aria-current={isActive ? "page" : undefined}

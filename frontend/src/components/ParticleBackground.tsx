@@ -2,6 +2,27 @@
 
 import React, { useEffect, useRef } from "react";
 
+interface Star {
+  x: number;
+  y: number;
+  vx: number;
+  vy: number;
+  radius: number;
+  baseAlpha: number;
+  alpha: number;
+  pulseSpeed: number;
+  color: string;
+}
+
+interface DataBeam {
+  x: number;
+  y: number;
+  length: number;
+  speed: number;
+  alpha: number;
+  width: number;
+}
+
 export default function ParticleBackground() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
@@ -13,39 +34,59 @@ export default function ParticleBackground() {
     if (!ctx) return;
 
     let animationFrameId: number;
-    let particles: Array<{
-      x: number;
-      y: number;
-      vx: number;
-      vy: number;
-      radius: number;
-      alpha: number;
-    }> = [];
+    let stars: Star[] = [];
+    let dataBeams: DataBeam[] = [];
+    let time = 0;
 
     const mouse = {
       x: -1000,
       y: -1000,
-      radius: 150,
+      radius: 115,
     };
 
     const resizeCanvas = () => {
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
-      initParticles();
+      initElements();
     };
 
-    const initParticles = () => {
-      particles = [];
-      const density = Math.floor((canvas.width * canvas.height) / 11000);
-      const limit = Math.min(density, 120); // Cap particles for performance
-      for (let i = 0; i < limit; i++) {
-        particles.push({
+    const colors = [
+      "rgba(0, 240, 255,",   // Cyan
+      "rgba(0, 112, 243,",   // Electric Blue
+      "rgba(59, 130, 246,",  // Blue 500
+      "rgba(255, 255, 255,", // Star White
+    ];
+
+    const initElements = () => {
+      // 1. Stars (Preserved!)
+      stars = [];
+      const starCount = Math.min(Math.floor((canvas.width * canvas.height) / 7500), 160);
+      for (let i = 0; i < starCount; i++) {
+        const baseAlpha = Math.random() * 0.5 + 0.3;
+        stars.push({
           x: Math.random() * canvas.width,
           y: Math.random() * canvas.height,
-          vx: (Math.random() - 0.5) * 0.4,
-          vy: (Math.random() - 0.5) * 0.4,
-          radius: Math.random() * 1.5 + 1,
-          alpha: Math.random() * 0.5 + 0.3,
+          vx: (Math.random() - 0.5) * 0.3,
+          vy: (Math.random() - 0.5) * 0.3,
+          radius: Math.random() * 1.8 + 0.8,
+          baseAlpha: baseAlpha,
+          alpha: baseAlpha,
+          pulseSpeed: Math.random() * 0.02 + 0.005,
+          color: colors[Math.floor(Math.random() * colors.length)],
+        });
+      }
+
+      // 2. Rising Quantum Data Beams
+      dataBeams = [];
+      const beamCount = 20;
+      for (let i = 0; i < beamCount; i++) {
+        dataBeams.push({
+          x: Math.random() * canvas.width,
+          y: Math.random() * canvas.height,
+          length: Math.random() * 140 + 70,
+          speed: Math.random() * 0.6 + 0.25,
+          alpha: Math.random() * 0.15 + 0.04,
+          width: Math.random() * 1.5 + 0.6,
         });
       }
     };
@@ -67,73 +108,119 @@ export default function ParticleBackground() {
     resizeCanvas();
 
     const animate = () => {
+      time += 0.015;
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-      // Draw subtle background radial glow
-      const baseGradient = ctx.createRadialGradient(
+      // 1. Deep Pitch Black Space Base
+      const baseGrad = ctx.createRadialGradient(
         canvas.width / 2,
         canvas.height / 2,
-        10,
+        80,
         canvas.width / 2,
         canvas.height / 2,
-        canvas.width
+        Math.max(canvas.width, canvas.height)
       );
-      baseGradient.addColorStop(0, "rgba(2, 2, 5, 1)");
-      baseGradient.addColorStop(1, "rgba(0, 0, 0, 1)");
-      ctx.fillStyle = baseGradient;
+      baseGrad.addColorStop(0, "rgba(3, 6, 16, 1)");
+      baseGrad.addColorStop(0.6, "rgba(2, 3, 10, 1)");
+      baseGrad.addColorStop(1, "rgba(1, 1, 4, 1)");
+      ctx.fillStyle = baseGrad;
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-      particles.forEach((p) => {
-        p.x += p.vx;
-        p.y += p.vy;
+      // 2. 3D Perspective Sub-Space Cyber Grid Lines (Perspective Matrix)
+      ctx.save();
+      ctx.strokeStyle = "rgba(0, 240, 255, 0.035)";
+      ctx.lineWidth = 1;
+      const horizonY = canvas.height * 0.35;
+      const gridSpacing = 60;
 
-        // Bounce off edges
-        if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
-        if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
-
-        // Draw particle
+      // Vertical perspective lines
+      const centerX = canvas.width / 2;
+      for (let x = -canvas.width; x <= canvas.width * 2; x += gridSpacing) {
         ctx.beginPath();
-        ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(0, 240, 255, ${p.alpha})`;
-        ctx.shadowBlur = 4;
-        ctx.shadowColor = "#00f0ff";
-        ctx.fill();
-        ctx.shadowBlur = 0; // reset
+        ctx.moveTo(centerX + (x - centerX) * 0.1, horizonY);
+        ctx.lineTo(x, canvas.height);
+        ctx.stroke();
+      }
+
+      // Horizontal perspective grid lines
+      for (let y = horizonY; y <= canvas.height; y += (canvas.height - horizonY) / 14) {
+        ctx.beginPath();
+        ctx.moveTo(0, y);
+        ctx.lineTo(canvas.width, y);
+        ctx.stroke();
+      }
+      ctx.restore();
+
+      // 3. Rising Quantum Light Beams
+      dataBeams.forEach((b) => {
+        b.y -= b.speed;
+        if (b.y + b.length < 0) {
+          b.y = canvas.height + b.length;
+          b.x = Math.random() * canvas.width;
+        }
+
+        const beamGrad = ctx.createLinearGradient(b.x, b.y, b.x, b.y + b.length);
+        beamGrad.addColorStop(0, `rgba(0, 240, 255, ${b.alpha * 1.5})`);
+        beamGrad.addColorStop(0.5, `rgba(0, 112, 243, ${b.alpha})`);
+        beamGrad.addColorStop(1, "rgba(0, 240, 255, 0)");
+
+        ctx.fillStyle = beamGrad;
+        ctx.fillRect(b.x, b.y, b.width, b.length);
       });
 
-      // Connect particles
-      for (let i = 0; i < particles.length; i++) {
-        for (let j = i + 1; j < particles.length; j++) {
-          const dx = particles[i].x - particles[j].x;
-          const dy = particles[i].y - particles[j].y;
+      // 4. Twinkling Starfield (PRESERVED!)
+      stars.forEach((s) => {
+        s.x += s.vx;
+        s.y += s.vy;
+
+        if (s.x < 0 || s.x > canvas.width) s.vx *= -1;
+        if (s.y < 0 || s.y > canvas.height) s.vy *= -1;
+
+        s.alpha = s.baseAlpha + Math.sin(time * 40 * s.pulseSpeed) * 0.25;
+        const currentAlpha = Math.max(0.15, Math.min(1, s.alpha));
+
+        ctx.beginPath();
+        ctx.arc(s.x, s.y, s.radius, 0, Math.PI * 2);
+        ctx.fillStyle = `${s.color}${currentAlpha})`;
+        ctx.shadowBlur = 6;
+        ctx.shadowColor = "#00f0ff";
+        ctx.fill();
+        ctx.shadowBlur = 0;
+      });
+
+      // 5. Connecting Constellation Thread Lines (Balanced & Visible)
+      for (let i = 0; i < stars.length; i++) {
+        for (let j = i + 1; j < stars.length; j++) {
+          const dx = stars[i].x - stars[j].x;
+          const dy = stars[i].y - stars[j].y;
           const dist = Math.sqrt(dx * dx + dy * dy);
 
-          if (dist < 100) {
-            const alpha = (1 - dist / 100) * 0.15;
+          if (dist < 90) {
+            const alpha = (1 - dist / 90) * 0.12;
             ctx.beginPath();
-            ctx.moveTo(particles[i].x, particles[i].y);
-            ctx.lineTo(particles[j].x, particles[j].y);
-            ctx.strokeStyle = `rgba(0, 112, 243, ${alpha})`;
-            ctx.lineWidth = 0.8;
+            ctx.moveTo(stars[i].x, stars[i].y);
+            ctx.lineTo(stars[j].x, stars[j].y);
+            ctx.strokeStyle = `rgba(0, 240, 255, ${alpha})`;
+            ctx.lineWidth = 0.6;
             ctx.stroke();
           }
         }
       }
 
-      // Connect mouse to particles
+      // 6. Interactive Mouse Constellation Connections
       if (mouse.x > -1000) {
-        particles.forEach((p) => {
-          const dx = p.x - mouse.x;
-          const dy = p.y - mouse.y;
+        stars.forEach((s) => {
+          const dx = s.x - mouse.x;
+          const dy = s.y - mouse.y;
           const dist = Math.sqrt(dx * dx + dy * dy);
 
           if (dist < mouse.radius) {
-            const alpha = (1 - dist / mouse.radius) * 0.25;
+            const alpha = (1 - dist / mouse.radius) * 0.22;
             ctx.beginPath();
-            ctx.moveTo(p.x, p.y);
+            ctx.moveTo(s.x, s.y);
             ctx.lineTo(mouse.x, mouse.y);
             ctx.strokeStyle = `rgba(0, 240, 255, ${alpha})`;
-            ctx.lineWidth = 1;
+            ctx.lineWidth = 0.8;
             ctx.stroke();
           }
         });

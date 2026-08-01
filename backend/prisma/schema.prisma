@@ -99,10 +99,12 @@ model HackathonRegistration {
   id        String   @id @default(uuid())
   name      String
   email     String
+  phone     String?
   college   String
   team      String
   domain    String
   size      String
+  status    String   @default("APPROVED") // PENDING, APPROVED, REJECTED
   createdAt DateTime @default(now())
 
   @@map("hackathon_registrations")
@@ -117,8 +119,11 @@ model SponsorEnquiry {
   email           String
   tier            String
   message         String?
+  logoUrl         String?
   confirmed       Boolean  @default(false)
+  status          String   @default("PENDING") // PENDING, APPROVED, REJECTED
   createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt @default(now())
 
   @@map("sponsor_enquiries")
 }
@@ -127,13 +132,46 @@ model SpeakerProposal {
   id        String   @id @default(uuid())
   name      String
   email     String
+  phone     String?
   role      String?
   company   String?
   topic     String
   abstract  String
+  photoUrl  String?
+  bio       String?
   confirmed Boolean  @default(false)
+  status    String   @default("PENDING") // PENDING, APPROVED, REJECTED
   createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt @default(now())
 
   @@map("speaker_proposals")
+}
+
+model ConfirmedSpeaker {
+  id        String   @id @default(uuid())
+  name      String
+  role      String
+  company   String
+  topic     String
+  bio       String?
+  image     String?
+  order     Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt @default(now())
+
+  @@map("confirmed_speakers")
+}
+
+model ConfirmedSponsor {
+  id        String   @id @default(uuid())
+  name      String
+  category  String
+  logo      String?
+  tier      String   @default("COMMUNITY")
+  order     Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt @default(now())
+
+  @@map("confirmed_sponsors")
 }
 

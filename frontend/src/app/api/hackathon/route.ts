@@ -1,69 +1,87 @@
 import { prisma } from "@/lib/prisma";
+import { NextResponse } from "next/server";
+
+export async function GET() {
+  try {
+    const teams = await prisma.hackathonRegistration.findMany({
+      orderBy: { createdAt: "desc" },
+    });
+    return NextResponse.json({ success: true, data: teams, count: teams.length });
+  } catch (error) {
+    console.error("[GET /api/hackathon] Error:", error);
+    return NextResponse.json({ message: "Error fetching hackathon teams" }, { status: 500 });
+  }
+}
 
 export async function POST(request: Request) {
   try {
     const body = await request.json();
 
-    // Basic server-side validation
-    if (!body.name?.trim() || !body.email?.trim() || !body.college?.trim() || !body.team?.trim() || !body.domain || !body.size) {
-      return Response.json({ message: "All fields are required" }, { status: 400 });
+    if (!body.name?.trim() || !body.email?.trim() || !body.college?.trim() || !body.team?.trim()) {
+      return NextResponse.json({ message: "Required fields missing" }, { status: 400 });
     }
 
-    const email = body.email.trim().toLowerCase();
-
-    // Verify that the user has already registered for the main event
-    const mainRegistration = await prisma.registration.findUnique({
-      where: { email },
-    });
-
-    if (!mainRegistration) {
-      return Response.json({ message: "You must register for the main event first to participate in the hackathon." }, { status: 403 });
-    }
-
-    // Verify user hasn't already registered for the hackathon
-    const existingHackathonReg = await prisma.hackathonRegistration.findFirst({
-      where: { email },
-    });
-
-    if (existingHackathonReg) {
-      return Response.json({ message: "You have already joined or created a team for the hackathon." }, { status: 409 });
-    }
-
-    // Verify team name uniqueness if creating a team
-    if (body.isCreating && body.teamName) {
-      const existingTeam = await prisma.hackathonRegistration.findFirst({
-        where: {
-          team: {
-            startsWith: `${body.teamName.trim()} (ID:`
-          }
-        }
-      });
-
-      if (existingTeam) {
-        return Response.json({ message: "A team with this name already exists. Please choose a different name." }, { status: 409 });
-      }
-    }
-
-    const registration = await prisma.hackathonRegistration.create({
+    const team = await prisma.hackathonRegistration.create({
       data: {
         name: body.name.trim(),
-        email,
+        email: body.email.trim().toLowerCase(),
+        phone: body.phone?.trim() || null,
         college: body.college.trim(),
         team: body.team.trim(),
-        domain: body.domain,
-        size: body.size,
+        domain: body.domain || "GenAI & Serverless",
+        size: String(body.size || "4"),
+        status: body.status || "APPROVED",
       },
     });
 
-    return Response.json(
-      { success: true, data: registration },
-      { status: 201 }
-    );
+    return NextResponse.json({ success: true, data: team }, { status: 201 });
   } catch (error) {
     console.error("[POST /api/hackathon] Error:", error);
-    return Response.json(
-      { message: "Something went wrong. Please try again later." },
-      { status: 500 }
-    );
+    return NextResponse.json({ message: "Hackathon registration failed" }, { status: 500 });
+  }
+}
+
+export async function PATCH(request: Request) {
+  try {
+    const body = await request.json();
+    const { id, status, name, college, team, domain, size } = body;
+
+    if (!id) {
+      return NextResponse.json({ message: "ID required" }, { status: 400 });
+    }
+
+    const updated = await prisma.hackathonRegistration.update({
+      where: { id },
+      data: {
+        ...(status && { status }),
+        ...(name && { name }),
+        ...(college && { college }),
+        ...(team && { team }),
+        ...(domain && { domain }),
+        ...(size && { size: String(size) }),
+      },
+    });
+
+    return NextResponse.json({ success: true, data: updated });
+  } catch (error) {
+    console.error("[PATCH /api/hackathon] Error:", error);
+    return NextResponse.json({ message: "Update failed" }, { status: 500 });
+  }
+}
+
+export async function DELETE(request: Request) {
+  try {
+    const { searchParams } = new URL(request.url);
+    const id = searchParams.get("id");
+
+    if (!id) {
+      return NextResponse.json({ message: "ID required" }, { status: 400 });
+    }
+
+    await prisma.hackathonRegistration.delete({ where: { id } });
+    return NextResponse.json({ success: true, message: "Deleted successfully" });
+  } catch (error) {
+    console.error("[DELETE /api/hackathon] Error:", error);
+    return NextResponse.json({ message: "Delete failed" }, { status: 500 });
   }
 }

@@ -2,8 +2,10 @@
 
 import React, { useState } from "react";
 import {
-  Cloud,
+  Zap,
+  Gift,
   User,
+  UserCheck,
   Mail,
   Phone,
   Building2,
@@ -12,6 +14,7 @@ import {
   CheckCircle2,
   ArrowRight,
   Loader2,
+  Sparkles,
 } from "lucide-react";
 import { useRegistration } from "@/context/RegistrationContext";
 import SuccessBadge from "./SuccessBadge";
@@ -26,6 +29,8 @@ interface FormData {
   city: string;
   avatar: string;
 }
+
+
 
 const initialForm: FormData = {
   fullName: "",
@@ -203,28 +208,28 @@ export default function RegistrationForm() {
   return (
     <section
       id="register-form"
-      className="relative py-10 overflow-hidden bg-black/30 border-t border-slate-900"
+      className="relative py-16 overflow-hidden bg-transparent border-t border-slate-900/40"
     >
-      {/* Background glows */}
-      <div className="absolute top-0 left-1/4 w-96 h-96 rounded-full bg-cyan-600/8 blur-[150px] pointer-events-none" />
-      <div className="absolute bottom-0 right-1/4 w-80 h-80 rounded-full bg-blue-600/8 blur-[120px] pointer-events-none" />
+      {/* Background Grid & Ambient Glows (Matching Hero) */}
+      <div className="absolute inset-0 cyber-grid opacity-30 pointer-events-none" />
+      <div className="absolute top-1/3 left-1/4 w-[500px] h-64 rounded-3xl bg-cyan-600/10 blur-[130px] -rotate-12 pointer-events-none" />
+      <div className="absolute bottom-5 right-1/4 w-[500px] h-64 rounded-3xl bg-blue-600/10 blur-[140px] rotate-12 pointer-events-none" />
 
-      <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Header */}
         <motion.div
-          className="text-center space-y-4 mb-12"
+          className="text-center space-y-4 mb-10"
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.3 }}
           transition={{ duration: 0.6 }}
         >
-          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 text-xs font-semibold uppercase tracking-wider">
-            <Cloud size={14} />
-            Free Registration
+          <div className="inline-flex items-center gap-2 text-cyan-400 font-semibold uppercase tracking-wider text-xs px-3 py-1 rounded border border-cyan-500/20 bg-cyan-500/5">
+            <Sparkles size={14} className="text-cyan-400" /> Free Event Registration
           </div>
-          <h2 className="text-3xl sm:text-4xl font-extrabold text-white">
+          <h2 className="text-3xl sm:text-4xl font-black text-white tracking-tight">
             Register for{" "}
-            <span className="bg-gradient-to-r from-blue-400 via-cyan-400 to-[#00f0ff] bg-clip-text text-transparent text-glow">
+            <span className="bg-gradient-to-r from-blue-400 via-cyan-400 to-[#00f0ff] bg-clip-text text-transparent">
               AWS Community Day
             </span>
           </h2>
@@ -232,14 +237,14 @@ export default function RegistrationForm() {
             Join cloud enthusiasts, developers, students, and industry professionals
             for a day of learning, networking, and innovation.
           </p>
-          <div className="flex items-center justify-center gap-6 pt-2">
+          <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-6 pt-2">
             {[
               { icon: CheckCircle2, text: "No Registration Fee" },
               { icon: CheckCircle2, text: "Instant Confirmation" },
-              { icon: Cloud, text: "AWS Swag Included" },
+              { icon: Gift, text: "AWS Swag Included" },
             ].map(({ icon: Icon, text }, i) => (
-              <div key={i} className="flex items-center gap-1.5 text-slate-400 text-xs">
-                <Icon size={13} className="text-cyan-400" />
+              <div key={i} className="flex items-center gap-1.5 text-slate-300 text-xs font-medium bg-slate-900/60 border border-slate-800/80 px-3 py-1 rounded-full">
+                <Icon size={13} className="text-[#00f0ff]" />
                 {text}
               </div>
             ))}
@@ -292,13 +297,17 @@ export default function RegistrationForm() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.5 }}
-              className="glass-panel rounded-3xl border border-cyan-500/15 p-6 sm:p-10 shadow-[0_0_40px_rgba(0,240,255,0.05)] space-y-6"
+              className="glass-panel rounded-3xl border border-cyan-500/20 p-6 sm:p-10 lg:p-12 shadow-[0_0_50px_rgba(0,240,255,0.08),0_20px_50px_rgba(0,0,0,0.8)] bg-[#070c18]/90 backdrop-blur-xl space-y-6 relative overflow-hidden"
             >
+              {/* Top Cyan Line Accent */}
+              <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-[#00f0ff]/60 to-transparent" />
+
               {/* Grid fields */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 sm:gap-6">
                 {fields.map((field, i) => {
                   const Icon = field.icon;
                   const error = errors[field.name as keyof FormData];
+                  const hasValue = Boolean(form[field.name as keyof FormData]);
                   return (
                     <motion.div
                       key={field.name}
@@ -309,11 +318,11 @@ export default function RegistrationForm() {
                       whileInView="visible"
                       viewport={{ once: true }}
                     >
-                      <label className="block text-xs font-bold text-slate-300 uppercase tracking-wider">
+                      <label className="block text-xs font-bold text-slate-200 uppercase tracking-wider">
                         {field.label}
                       </label>
                       <div className="relative">
-                        <div className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500">
+                        <div className={`absolute left-3.5 top-1/2 -translate-y-1/2 transition-colors duration-200 ${hasValue ? "text-[#00f0ff]" : "text-slate-400"}`}>
                           <Icon size={15} />
                         </div>
                         <input
@@ -322,9 +331,9 @@ export default function RegistrationForm() {
                           value={form[field.name as keyof FormData]}
                           onChange={handleChange}
                           placeholder={field.placeholder}
-                          className={`w-full bg-slate-950/60 border ${
-                            error ? "border-red-500/60" : "border-slate-800 focus:border-cyan-500/60"
-                          } rounded-xl pl-10 pr-4 py-3 text-sm text-white placeholder-slate-600 outline-none transition-all focus:bg-slate-900/60 focus:shadow-[0_0_0_3px_rgba(0,240,255,0.08)]`}
+                          className={`w-full bg-[#050914]/90 border ${
+                            error ? "border-red-500/80 focus:border-red-500" : "border-slate-800/90 focus:border-[#00f0ff]"
+                          } rounded-xl pl-10 pr-4 py-3 text-sm text-white placeholder-slate-400 outline-none transition-all duration-200 focus:bg-[#081024] focus:shadow-[0_0_20px_rgba(0,240,255,0.15)]`}
                         />
                       </div>
                       {error && (
@@ -340,9 +349,9 @@ export default function RegistrationForm() {
                   );
                 })}
 
-                {/* Avatar Selection */}
+                {/* Gender Selector (Sits beside City in Column 2) */}
                 <motion.div
-                  className="space-y-3 sm:col-span-2 pt-2 border-t border-slate-800/60"
+                  className="space-y-1.5"
                   custom={fields.length + 1}
                   variants={inputVariants}
                   initial="hidden"
@@ -350,41 +359,39 @@ export default function RegistrationForm() {
                   viewport={{ once: true }}
                 >
                   <label className="block text-xs font-bold text-slate-300 uppercase tracking-wider">
-                    Select Your Avatar
+                    Gender
                   </label>
-                  <div className="flex items-center gap-6">
+                  <div className="grid grid-cols-2 gap-2 p-1.5 rounded-xl bg-[#050914]/90 border border-slate-800/90">
                     <button
                       type="button"
                       onClick={() => setForm((prev) => ({ ...prev, avatar: "man" }))}
-                      className={`relative w-16 h-16 sm:w-20 sm:h-20 rounded-full p-1 transition-all ${
+                      className={`py-2.5 px-4 rounded-lg text-xs font-bold uppercase tracking-wider transition-all duration-200 cursor-pointer flex items-center justify-center gap-2 ${
                         form.avatar === "man" 
-                          ? "bg-gradient-to-br from-cyan-400 to-blue-600 shadow-[0_0_20px_rgba(0,240,255,0.3)] scale-110" 
-                          : "bg-slate-800 hover:bg-slate-700 opacity-60 hover:opacity-100"
+                          ? "bg-cyan-500/15 text-[#00f0ff] border border-cyan-500/40 shadow-[0_0_12px_rgba(0,240,255,0.15)]" 
+                          : "text-slate-400 hover:text-white"
                       }`}
                     >
-                      <div className="w-full h-full bg-black rounded-full overflow-hidden">
-                        <img src="/avatar-man.png" alt="Man Avatar" className="w-full h-full object-cover" />
-                      </div>
+                      <User size={18} className="shrink-0 text-cyan-400" />
+                      <span>Male</span>
                     </button>
                     <button
                       type="button"
                       onClick={() => setForm((prev) => ({ ...prev, avatar: "woman" }))}
-                      className={`relative w-16 h-16 sm:w-20 sm:h-20 rounded-full p-1 transition-all ${
+                      className={`py-2.5 px-4 rounded-lg text-xs font-bold uppercase tracking-wider transition-all duration-200 cursor-pointer flex items-center justify-center gap-2 ${
                         form.avatar === "woman" 
-                          ? "bg-gradient-to-br from-cyan-400 to-blue-600 shadow-[0_0_20px_rgba(0,240,255,0.3)] scale-110" 
-                          : "bg-slate-800 hover:bg-slate-700 opacity-60 hover:opacity-100"
+                          ? "bg-cyan-500/15 text-[#00f0ff] border border-cyan-500/40 shadow-[0_0_12px_rgba(0,240,255,0.15)]" 
+                          : "text-slate-400 hover:text-white"
                       }`}
                     >
-                      <div className="w-full h-full bg-black rounded-full overflow-hidden">
-                        <img src="/avatar-woman.png" alt="Woman Avatar" className="w-full h-full object-cover" />
-                      </div>
+                      <UserCheck size={18} className="shrink-0 text-cyan-400" />
+                      <span>Female</span>
                     </button>
                   </div>
                 </motion.div>
               </div>
 
               {/* Privacy note */}
-              <p className="text-[11px] text-slate-600 text-center">
+              <p className="text-[11px] text-slate-500 text-center">
                 By registering, you agree to be contacted about AWS Community Day 2026 updates.
                 Your data is never shared with third parties.
               </p>
@@ -397,25 +404,27 @@ export default function RegistrationForm() {
               )}
 
               {/* Submit button */}
-              <motion.button
-                type="submit"
-                disabled={submitting}
-                className="neon-btn w-full py-4 rounded-2xl text-base font-extrabold text-white flex items-center justify-center gap-3 disabled:opacity-70 disabled:cursor-not-allowed"
-                whileHover={{ scale: submitting ? 1 : 1.02 }}
-                whileTap={{ scale: submitting ? 1 : 0.98 }}
-              >
-                {submitting ? (
-                  <>
-                    <Loader2 size={20} className="animate-spin" />
-                    Securing Your Spot...
-                  </>
-                ) : (
-                  <>
-                    Complete Registration — Free Entry
-                    <ArrowRight size={20} />
-                  </>
-                )}
-              </motion.button>
+              <div className="flex justify-center pt-2">
+                <motion.button
+                  type="submit"
+                  disabled={submitting}
+                  className="relative w-full max-w-md py-3.5 px-8 rounded-xl text-sm sm:text-base font-bold text-slate-950 bg-gradient-to-r from-[#00f0ff] via-cyan-300 to-[#00f0ff] shadow-[0_0_25px_rgba(0,240,255,0.3)] hover:shadow-[0_0_35px_rgba(0,240,255,0.5)] hover:brightness-110 active:scale-[0.98] transition-all flex items-center justify-center gap-2.5 disabled:opacity-70 disabled:cursor-not-allowed cursor-pointer"
+                  whileHover={{ scale: submitting ? 1 : 1.02 }}
+                  whileTap={{ scale: submitting ? 1 : 0.98 }}
+                >
+                  {submitting ? (
+                    <>
+                      <Loader2 size={18} className="animate-spin text-slate-950" />
+                      <span>Securing Your Spot...</span>
+                    </>
+                  ) : (
+                    <>
+                      <span>Complete Registration — Free Entry</span>
+                      <ArrowRight size={18} className="text-slate-950" />
+                    </>
+                  )}
+                </motion.button>
+              </div>
             </motion.form>
           )}
         </AnimatePresence>

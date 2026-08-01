@@ -1,8 +1,11 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { Clock, ArrowDown } from "lucide-react";
-import { motion } from "framer-motion";
+import { Clock, ArrowDown, MapPin, ExternalLink, X } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Inter } from "next/font/google";
+
+const inter = Inter({ subsets: ["latin"], weight: ["600", "700", "800"] });
 
 interface TimeLeft {
   days: number;
@@ -61,15 +64,15 @@ function FlipDigit({
 
   const roundedClass = 
     position === "first" 
-      ? "rounded-l-2xl rounded-r-none" 
+      ? "rounded-l-md rounded-r-none" 
       : position === "last" 
-      ? "rounded-r-2xl rounded-l-none" 
+      ? "rounded-r-md rounded-l-none" 
       : "rounded-none";
 
   return (
     <div
       style={{ perspective: 1000 }}
-      className={`relative w-[50px] h-[75px] sm:w-[84px] sm:h-[126px] ${roundedClass} border flex items-center justify-center font-mono font-black text-3xl sm:text-6xl select-none ${theme.bg} ${theme.border} ${theme.glow}`}
+      className={`relative w-[48px] h-[72px] sm:w-[80px] sm:h-[120px] ${roundedClass} border flex items-center justify-center ${inter.className} font-bold tabular-nums tracking-normal text-3xl sm:text-6xl select-none ${theme.bg} ${theme.border} ${theme.glow}`}
     >
       {/* Static Top Half (Shows New Digit) */}
       <div 
@@ -146,9 +149,9 @@ function FlipDigit({
       <div 
         className={`absolute inset-x-0 top-0 bottom-1/2 bg-white/[0.03] pointer-events-none z-20 ${
           position === "first" 
-            ? "rounded-tl-2xl" 
+            ? "rounded-tl-md" 
             : position === "last" 
-            ? "rounded-tr-2xl" 
+            ? "rounded-tr-md" 
             : ""
         }`} 
       />
@@ -158,6 +161,7 @@ function FlipDigit({
 
 export default function Countdown() {
   const targetDate = new Date("2026-09-12T09:00:00+05:30"); // Sep 12, 2026 9:00 AM IST
+  const [showMap, setShowMap] = useState(false);
 
   const [timeLeft, setTimeLeft] = useState<TimeLeft>({
     days: 0,
@@ -241,25 +245,28 @@ export default function Countdown() {
   };
 
   return (
-    <section id="countdown" className="w-full relative flex flex-col justify-center items-center overflow-hidden py-10 bg-[#020205]">
-      {/* Background Grid & Ambient Glows */}
-      <div className="absolute inset-0 cyber-grid opacity-20 pointer-events-none" />
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] rounded-full bg-blue-600/5 blur-[150px] pointer-events-none animate-pulse-glow" />
+    <section id="countdown" className="w-full relative flex flex-col justify-center items-center overflow-hidden pt-8 sm:pt-10 pb-2 sm:pb-3 bg-transparent">
+      {/* Background Grid & Ambient Glows (Matching Hero) */}
+      <div className="absolute inset-0 cyber-grid opacity-30 pointer-events-none" />
+      <div className="absolute top-1/2 left-1/4 w-[500px] h-64 rounded-3xl bg-cyan-600/10 blur-[130px] -rotate-12 pointer-events-none" />
+      <div className="absolute bottom-5 right-1/4 w-[500px] h-64 rounded-3xl bg-blue-600/10 blur-[140px] rotate-12 pointer-events-none" />
 
-      <div className="max-w-6xl mx-auto px-4 relative z-10 text-center space-y-12 w-full flex flex-col items-center">
+      <div className="max-w-5xl mx-auto px-4 relative z-10 text-center space-y-6 sm:space-y-8 w-full flex flex-col items-center">
         
         {/* Section Heading */}
-        <div className="space-y-4 max-w-xl">
-          <div className="inline-flex items-center gap-2 text-cyan-400 font-semibold uppercase tracking-widest text-[10px] bg-cyan-950/30 px-4 py-1.5 rounded-full border border-cyan-500/20">
-            <Clock size={12} className="animate-pulse" />
-            T-Minus Event Launch
+        <div className="space-y-3 max-w-xl">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-md bg-cyan-950/40 border border-cyan-500/30 backdrop-blur-md">
+            <Clock size={14} className="text-cyan-400" />
+            <span className="text-xs font-semibold text-cyan-300 tracking-wide">
+              T-Minus Event Launch
+            </span>
           </div>
-          <h2 className="text-3xl sm:text-4xl font-black text-white leading-tight uppercase tracking-tight">
+          <h2 className="text-3xl sm:text-4xl font-extrabold text-white leading-tight uppercase tracking-tight">
             Mark Your Calendar
           </h2>
-          <p className="text-slate-400 text-sm leading-relaxed">
+          <p className="text-slate-400 text-xs sm:text-sm leading-relaxed">
             Every second brings us closer to an unforgettable gathering of cloud enthusiasts, industry experts, students, and builders. See you on{" "}
-            <span className="text-base sm:text-lg font-black bg-gradient-to-r from-blue-500 via-cyan-400 to-[#00f0ff] bg-clip-text text-transparent inline-block mx-1 drop-shadow-[0_0_8px_rgba(0,240,255,0.2)]">
+            <span className="text-sm sm:text-base font-extrabold bg-gradient-to-r from-blue-500 via-cyan-400 to-[#00f0ff] bg-clip-text text-transparent inline-block mx-1 drop-shadow-[0_0_8px_rgba(0,240,255,0.2)]">
               September 12, 2026
             </span>{" "}
             at REC chennai
@@ -272,7 +279,7 @@ export default function Countdown() {
           initial="hidden"
           whileInView="show"
           viewport={{ once: true, margin: "-100px" }}
-          className="flex flex-wrap justify-center items-center gap-4 sm:gap-6 md:gap-8 max-w-5xl mx-auto w-full pt-4"
+          className="flex flex-wrap justify-center items-center gap-3.5 sm:gap-6 md:gap-7 max-w-5xl mx-auto w-full pt-2"
         >
           {timeUnits.map((unit, idx) => {
             const digits = String(unit.value).padStart(2, "0").split("");
@@ -310,7 +317,7 @@ export default function Countdown() {
 
                 {/* Separator Colon */}
                 {idx < timeUnits.length - 1 && (
-                  <div className="hidden sm:block text-2xl sm:text-5xl font-black text-slate-800 self-start mt-[20px] sm:mt-[32px] select-none">
+                  <div className="hidden sm:block text-2xl sm:text-4xl font-extrabold text-slate-800 self-start mt-[18px] sm:mt-[28px] select-none">
                     :
                   </div>
                 )}
@@ -320,21 +327,97 @@ export default function Countdown() {
         </motion.div>
 
         {/* Action and Venue Prompt */}
-        <div className="space-y-4 pt-4">
-          <p className="text-[11px] font-semibold text-slate-400 uppercase tracking-widest">
-            Rajalakshmi Engineering College (REC) Campus, Chennai
-          </p>
+        <div className="space-y-2 pt-1">
+          <div>
+            <button
+              type="button"
+              onClick={() => setShowMap(true)}
+              className="group inline-flex items-center gap-2 hover:text-cyan-400 transition-colors cursor-pointer"
+            >
+              <MapPin size={13} className="text-cyan-400 group-hover:scale-110 transition-transform" />
+              <span className="text-[11px] font-semibold text-slate-400 group-hover:text-cyan-300 uppercase tracking-widest transition-colors">
+                Rajalakshmi Engineering College (REC) Campus, Chennai
+              </span>
+            </button>
+          </div>
           
-          <button
-            onClick={handleScrollDown}
-            className="inline-flex items-center justify-center w-10 h-10 rounded-full border border-slate-800 text-slate-500 hover:text-cyan-400 hover:border-cyan-500/40 hover:shadow-[0_0_15px_rgba(0,240,255,0.2)] transition-all animate-bounce mt-4 cursor-pointer"
-            title="Explore More"
-          >
-            <ArrowDown size={18} />
-          </button>
+          <div>
+            <button
+              onClick={handleScrollDown}
+              className="inline-flex items-center justify-center w-10 h-10 rounded-md border border-slate-800 text-slate-500 hover:text-cyan-400 hover:border-cyan-500/40 hover:shadow-[0_0_15px_rgba(0,240,255,0.2)] transition-all animate-bounce cursor-pointer"
+              title="Explore More"
+            >
+              <ArrowDown size={18} />
+            </button>
+          </div>
         </div>
 
       </div>
+
+      {/* Interactive Google Maps Popup Modal */}
+      <AnimatePresence>
+        {showMap && (
+          <div 
+            onClick={() => setShowMap(false)}
+            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/35 backdrop-blur-sm cursor-pointer"
+          >
+            <motion.div
+              onClick={(e) => e.stopPropagation()}
+              initial={{ opacity: 0, scale: 0.9, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.9, y: 20 }}
+              transition={{ duration: 0.2 }}
+              className="relative w-full max-w-3xl bg-[#030712] border border-cyan-500/30 rounded-2xl shadow-[0_0_50px_rgba(0,240,255,0.15)] overflow-hidden cursor-default"
+            >
+              {/* Header */}
+              <div className="flex items-center justify-between px-5 py-4 border-b border-slate-800/80 bg-slate-950/80">
+                <div className="flex items-center gap-3">
+                  <div className="p-2 rounded-lg bg-cyan-500/10 border border-cyan-500/20 text-cyan-400">
+                    <MapPin size={18} />
+                  </div>
+                  <div>
+                    <span className="text-[10px] font-bold text-cyan-400 uppercase tracking-widest block">Event Venue Map</span>
+                    <h3 className="text-xs sm:text-sm font-extrabold text-white leading-tight">
+                      Rajalakshmi Engineering College (REC) Campus, Chennai
+                    </h3>
+                  </div>
+                </div>
+                <div className="flex items-center gap-2">
+                  <a
+                    href="https://maps.google.com/?q=Rajalakshmi+Engineering+College"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold text-cyan-400 hover:text-white bg-cyan-950/40 border border-cyan-500/30 transition-all"
+                  >
+                    <span>Open Maps</span>
+                    <ExternalLink size={13} />
+                  </a>
+                  <button
+                    onClick={() => setShowMap(false)}
+                    className="p-2 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800/60 transition-all cursor-pointer"
+                  >
+                    <X size={20} />
+                  </button>
+                </div>
+              </div>
+
+              {/* Google Maps Iframe */}
+              <div className="relative w-full h-[380px] sm:h-[450px] bg-slate-950">
+                <iframe
+                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d7774.845616407686!2d79.99804284161404!3d13.008725549240182!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3a528c9ebac84723%3A0x18e2bf88dfefa3ed!2sRajalakshmi%20Engineering%20College!5e0!3m2!1sen!2sin!4v1785480050036!5m2!1sen!2sin"
+                  width="100%"
+                  height="100%"
+                  style={{ border: 0 }}
+                  allowFullScreen
+                  loading="lazy"
+                  referrerPolicy="strict-origin-when-cross-origin"
+                  className="w-full h-full filter contrast-[1.05] brightness-[0.95]"
+                />
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
     </section>
   );
 }

@@ -4,7 +4,6 @@ import { useEffect, useRef, useState } from "react";
 
 export default function CustomCursor() {
   const cursorRef = useRef<HTMLDivElement>(null);
-  const ringRef = useRef<HTMLDivElement>(null);
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
@@ -19,8 +18,6 @@ export default function CustomCursor() {
     let mouseY = -100;
     let cursorX = -100;
     let cursorY = -100;
-    let ringX = -100;
-    let ringY = -100;
     let rafId: number;
 
     const onMouseMove = (e: MouseEvent) => {
@@ -38,20 +35,13 @@ export default function CustomCursor() {
     };
 
     const animate = () => {
-      // Lerp calculations for smooth trailing effect
-      cursorX += (mouseX - cursorX) * 0.25;
-      cursorY += (mouseY - cursorY) * 0.25;
-      
-      ringX += (mouseX - ringX) * 0.12;
-      ringY += (mouseY - ringY) * 0.12;
+      // Lerp calculations for smooth cursor tracking
+      cursorX += (mouseX - cursorX) * 0.45;
+      cursorY += (mouseY - cursorY) * 0.45;
 
       if (cursorRef.current) {
         cursorRef.current.style.left = `${cursorX}px`;
         cursorRef.current.style.top = `${cursorY}px`;
-      }
-      if (ringRef.current) {
-        ringRef.current.style.left = `${ringX}px`;
-        ringRef.current.style.top = `${ringY}px`;
       }
 
       rafId = requestAnimationFrame(animate);
@@ -106,17 +96,27 @@ export default function CustomCursor() {
   }, [isVisible]);
 
   return (
-    <>
-      <div 
-        id="custom-cursor" 
-        ref={cursorRef} 
-        style={{ opacity: isVisible ? 1 : 0, transition: "opacity 0.2s ease-in-out" }}
-      />
-      <div 
-        id="custom-cursor-ring" 
-        ref={ringRef} 
-        style={{ opacity: isVisible ? 1 : 0, transition: "opacity 0.2s ease-in-out, width 0.2s, height 0.2s, border-color 0.2s" }}
-      />
-    </>
+    <div 
+      id="custom-cursor" 
+      ref={cursorRef} 
+      style={{ opacity: isVisible ? 1 : 0, transition: "opacity 0.2s ease-in-out" }}
+    >
+      <svg 
+        width="32" 
+        height="32" 
+        viewBox="0 0 24 24" 
+        fill="none" 
+        xmlns="http://www.w3.org/2000/svg"
+        className="drop-shadow-[0_0_10px_rgba(0,240,255,0.9)]"
+      >
+        <path 
+          d="M3 3L10.07 19.97L13.58 12.58L20.97 9.07L3 3Z" 
+          fill="#00f0ff" 
+          stroke="#00f0ff" 
+          strokeWidth="0.5" 
+          strokeLinejoin="round"
+        />
+      </svg>
+    </div>
   );
 }

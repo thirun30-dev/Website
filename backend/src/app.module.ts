@@ -9,6 +9,8 @@ import { RegistrationModule } from './registration/registration.module';
 import { OrganizerModule } from './organizer/organizer.module';
 import { ActivityLogModule } from './activity-log/activity-log.module';
 import { HealthModule } from './health/health.module';
+import { PublicModule } from './public/public.module';
+import { AdminModule } from './admin/admin.module';
 
 @Module({
   imports: [
@@ -25,6 +27,8 @@ import { HealthModule } from './health/health.module';
     OrganizerModule,
     ActivityLogModule,
     HealthModule,
+    PublicModule,
+    AdminModule,
   ],
 })
 export class AppModule {}

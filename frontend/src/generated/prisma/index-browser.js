@@ -121,16 +121,57 @@ exports.Prisma.TransactionIsolationLevel = makeStrictEnum({
   Serializable: 'Serializable'
 });
 
-exports.Prisma.RegistrationScalarFieldEnum = {
+exports.Prisma.EventConfigScalarFieldEnum = {
   id: 'id',
-  fullName: 'fullName',
+  eventName: 'eventName',
+  registrationPrefix: 'registrationPrefix',
+  eventDate: 'eventDate',
+  registrationsOpen: 'registrationsOpen',
+  goodiesEnabled: 'goodiesEnabled',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.UserScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
   email: 'email',
   phone: 'phone',
+  passwordHash: 'passwordHash',
+  role: 'role',
   organization: 'organization',
   designation: 'designation',
   city: 'city',
-  address: 'address',
   avatar: 'avatar',
+  isActive: 'isActive',
+  mustChangePassword: 'mustChangePassword',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  deletedAt: 'deletedAt'
+};
+
+exports.Prisma.RegistrationScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  registrationCode: 'registrationCode',
+  qrToken: 'qrToken',
+  entryVerified: 'entryVerified',
+  entryVerifiedAt: 'entryVerifiedAt',
+  goodiesVerified: 'goodiesVerified',
+  goodiesVerifiedAt: 'goodiesVerifiedAt',
+  emailStatus: 'emailStatus',
+  emailSentAt: 'emailSentAt',
+  emailProvider: 'emailProvider',
+  lastEmailAttemptAt: 'lastEmailAttemptAt',
+  lastEmailError: 'lastEmailError',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.ActivityLogScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  action: 'action',
+  metadata: 'metadata',
   createdAt: 'createdAt'
 };
 
@@ -138,10 +179,12 @@ exports.Prisma.HackathonRegistrationScalarFieldEnum = {
   id: 'id',
   name: 'name',
   email: 'email',
+  phone: 'phone',
   college: 'college',
   team: 'team',
   domain: 'domain',
   size: 'size',
+  status: 'status',
   createdAt: 'createdAt'
 };
 
@@ -154,21 +197,62 @@ exports.Prisma.SponsorEnquiryScalarFieldEnum = {
   email: 'email',
   tier: 'tier',
   message: 'message',
-  createdAt: 'createdAt'
+  logoUrl: 'logoUrl',
+  confirmed: 'confirmed',
+  status: 'status',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 };
 
 exports.Prisma.SpeakerProposalScalarFieldEnum = {
   id: 'id',
   name: 'name',
   email: 'email',
+  phone: 'phone',
+  role: 'role',
+  company: 'company',
   topic: 'topic',
   abstract: 'abstract',
-  createdAt: 'createdAt'
+  photoUrl: 'photoUrl',
+  bio: 'bio',
+  confirmed: 'confirmed',
+  status: 'status',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.ConfirmedSpeakerScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  role: 'role',
+  company: 'company',
+  topic: 'topic',
+  bio: 'bio',
+  image: 'image',
+  order: 'order',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.ConfirmedSponsorScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  category: 'category',
+  logo: 'logo',
+  tier: 'tier',
+  order: 'order',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 };
 
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
+};
+
+exports.Prisma.NullableJsonNullValueInput = {
+  DbNull: Prisma.DbNull,
+  JsonNull: Prisma.JsonNull
 };
 
 exports.Prisma.QueryMode = {
@@ -181,12 +265,50 @@ exports.Prisma.NullsOrder = {
   last: 'last'
 };
 
+exports.Prisma.JsonNullValueFilter = {
+  DbNull: Prisma.DbNull,
+  JsonNull: Prisma.JsonNull,
+  AnyNull: Prisma.AnyNull
+};
+exports.UserRole = exports.$Enums.UserRole = {
+  PARTICIPANT: 'PARTICIPANT',
+  ORGANIZER: 'ORGANIZER',
+  SPEAKER: 'SPEAKER'
+};
+
+exports.EmailStatus = exports.$Enums.EmailStatus = {
+  PENDING: 'PENDING',
+  SENT: 'SENT',
+  FAILED: 'FAILED'
+};
+
+exports.ActivityType = exports.$Enums.ActivityType = {
+  PARTICIPANT_REGISTERED: 'PARTICIPANT_REGISTERED',
+  ENTRY_VERIFIED: 'ENTRY_VERIFIED',
+  GOODIES_CLAIMED: 'GOODIES_CLAIMED',
+  ORGANIZER_LOGIN: 'ORGANIZER_LOGIN',
+  EMAIL_SENT: 'EMAIL_SENT',
+  EMAIL_FAILED: 'EMAIL_FAILED',
+  QR_RESENT: 'QR_RESENT',
+  PASSWORD_CHANGED: 'PASSWORD_CHANGED',
+  CSV_EXPORTED: 'CSV_EXPORTED',
+  EMAIL_SENT_SES: 'EMAIL_SENT_SES',
+  EMAIL_SENT_GMAIL: 'EMAIL_SENT_GMAIL',
+  EMAIL_FAILED_SES: 'EMAIL_FAILED_SES',
+  EMAIL_FAILED_GMAIL: 'EMAIL_FAILED_GMAIL',
+  EMAIL_FALLBACK_SUCCESS: 'EMAIL_FALLBACK_SUCCESS'
+};
 
 exports.Prisma.ModelName = {
+  EventConfig: 'EventConfig',
+  User: 'User',
   Registration: 'Registration',
+  ActivityLog: 'ActivityLog',
   HackathonRegistration: 'HackathonRegistration',
   SponsorEnquiry: 'SponsorEnquiry',
-  SpeakerProposal: 'SpeakerProposal'
+  SpeakerProposal: 'SpeakerProposal',
+  ConfirmedSpeaker: 'ConfirmedSpeaker',
+  ConfirmedSponsor: 'ConfirmedSponsor'
 };
 
 /**

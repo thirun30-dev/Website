@@ -42,15 +42,17 @@ export default function Speakers() {
   };
 
   return (
-    <section id="speakers" className="py-10 relative overflow-hidden bg-black/20">
-      {/* Background Radial Glow */}
-      <div className="absolute top-0 right-1/4 w-80 h-80 rounded-full bg-[#00f0ff]/5 blur-[150px] pointer-events-none" />
+    <section id="speakers" className="py-10 relative overflow-hidden bg-transparent">
+      {/* Background Grid & Ambient Glows (Matching Hero) */}
+      <div className="absolute inset-0 cyber-grid opacity-30 pointer-events-none" />
+      <div className="absolute top-0 right-1/4 w-[450px] h-60 rounded-3xl bg-cyan-600/10 blur-[130px] rotate-12 pointer-events-none" />
+      <div className="absolute bottom-5 left-1/4 w-[450px] h-60 rounded-3xl bg-blue-600/10 blur-[140px] -rotate-12 pointer-events-none" />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div className="w-[94%] max-w-[1440px] mx-auto relative z-10">
         
         {/* Section Heading */}
         <div className="text-center space-y-4 mb-16">
-          <div className="inline-flex items-center gap-2 text-cyan-400 font-semibold uppercase tracking-wider text-xs px-3 py-1 rounded-full border border-cyan-500/20 bg-cyan-500/5">
+          <div className="inline-flex items-center gap-2 text-cyan-400 font-semibold uppercase tracking-wider text-xs px-3 py-1 rounded border border-cyan-500/20 bg-cyan-500/5">
             <ShieldCheck size={14} /> Admin Confirmed Lineup
           </div>
           <h2 className="text-3xl sm:text-4xl font-extrabold text-white">
@@ -72,7 +74,7 @@ export default function Speakers() {
           </div>
         ) : (
           /* Empty space until admin confirms speakers */
-          <div className="h-28 flex items-center justify-center border border-dashed border-cyan-500/20 rounded-3xl max-w-xl mx-auto bg-[#070712]/50 px-6 text-center">
+          <div className="h-28 flex items-center justify-center border border-dashed border-cyan-500/20 rounded-lg max-w-xl mx-auto bg-[#070712]/50 px-6 text-center">
             <p className="text-sm font-bold text-cyan-400/90 tracking-wider uppercase">
               Speaker details will be displayed soon
             </p>
@@ -105,7 +107,7 @@ function SpeakerCard({ speaker, idx }: { speaker: SpeakerItem; idx: number }) {
       >
         
         {/* FRONT FACE */}
-        <div className={`absolute inset-0 w-full h-full [backface-visibility:hidden] bg-gradient-to-b ${bgGradient} border border-white/5 rounded-[28px] flex flex-col justify-end shadow-2xl relative overflow-hidden`}>
+        <div className={`absolute inset-0 w-full h-full [backface-visibility:hidden] bg-gradient-to-b ${bgGradient} border border-white/5 rounded-xl flex flex-col justify-end shadow-2xl relative overflow-hidden`}>
           
           {/* Full bleed image background */}
           <div className="absolute inset-0 z-0">
@@ -125,7 +127,7 @@ function SpeakerCard({ speaker, idx }: { speaker: SpeakerItem; idx: number }) {
             <h3 className="text-xl font-black text-white tracking-wide leading-tight drop-shadow-md truncate">
               {speaker.name}
             </h3>
-            <p className="text-xs font-bold text-cyan-400 tracking-wide uppercase leading-none text-glow">
+            <p className="text-xs font-bold text-cyan-400 tracking-wide uppercase leading-none">
               {speaker.role}
             </p>
             <p className="text-[10px] text-slate-300 font-bold uppercase tracking-widest leading-none mt-1 drop-shadow">
@@ -139,7 +141,7 @@ function SpeakerCard({ speaker, idx }: { speaker: SpeakerItem; idx: number }) {
               <span className="text-[8px] text-slate-300 font-bold uppercase tracking-wider block leading-none">Session</span>
               <span className="text-xs font-black text-white mt-1.5 block leading-none">Track 0{idx + 1}</span>
             </div>
-            <button className="px-5 py-2.5 bg-white hover:bg-[#00f0ff] hover:text-slate-950 text-slate-950 font-bold rounded-full text-[10px] uppercase tracking-wider transition-all duration-300 shadow-md active:scale-95">
+            <button className="px-5 py-2.5 bg-white hover:bg-[#00f0ff] hover:text-slate-950 text-slate-950 font-bold rounded-md text-[10px] uppercase tracking-wider transition-all duration-300 shadow-md active:scale-95">
               View Topic
             </button>
           </div>
@@ -147,7 +149,7 @@ function SpeakerCard({ speaker, idx }: { speaker: SpeakerItem; idx: number }) {
         </div>
 
         {/* BACK FACE */}
-        <div className={`absolute inset-0 w-full h-full [backface-visibility:hidden] [transform:rotateY(180deg)] bg-gradient-to-b ${bgGradient} border border-white/5 rounded-[28px] p-6 sm:p-8 flex flex-col justify-between shadow-2xl overflow-hidden`}>
+        <div className={`absolute inset-0 w-full h-full [backface-visibility:hidden] [transform:rotateY(180deg)] bg-gradient-to-b ${bgGradient} border border-white/5 rounded-xl p-6 sm:p-8 flex flex-col justify-between shadow-2xl overflow-hidden`}>
           {/* Subtle blurred speaker photo in the background for depth */}
           <div className="absolute inset-0 opacity-15 blur-xl scale-110 pointer-events-none z-0">
             <Image

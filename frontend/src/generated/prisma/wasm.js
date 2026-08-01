@@ -93,16 +93,57 @@ exports.Prisma.TransactionIsolationLevel = makeStrictEnum({
   Serializable: 'Serializable'
 });
 
-exports.Prisma.RegistrationScalarFieldEnum = {
+exports.Prisma.EventConfigScalarFieldEnum = {
   id: 'id',
-  fullName: 'fullName',
+  eventName: 'eventName',
+  registrationPrefix: 'registrationPrefix',
+  eventDate: 'eventDate',
+  registrationsOpen: 'registrationsOpen',
+  goodiesEnabled: 'goodiesEnabled',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.UserScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
   email: 'email',
   phone: 'phone',
+  passwordHash: 'passwordHash',
+  role: 'role',
   organization: 'organization',
   designation: 'designation',
   city: 'city',
-  address: 'address',
   avatar: 'avatar',
+  isActive: 'isActive',
+  mustChangePassword: 'mustChangePassword',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  deletedAt: 'deletedAt'
+};
+
+exports.Prisma.RegistrationScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  registrationCode: 'registrationCode',
+  qrToken: 'qrToken',
+  entryVerified: 'entryVerified',
+  entryVerifiedAt: 'entryVerifiedAt',
+  goodiesVerified: 'goodiesVerified',
+  goodiesVerifiedAt: 'goodiesVerifiedAt',
+  emailStatus: 'emailStatus',
+  emailSentAt: 'emailSentAt',
+  emailProvider: 'emailProvider',
+  lastEmailAttemptAt: 'lastEmailAttemptAt',
+  lastEmailError: 'lastEmailError',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.ActivityLogScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  action: 'action',
+  metadata: 'metadata',
   createdAt: 'createdAt'
 };
 
@@ -110,10 +151,12 @@ exports.Prisma.HackathonRegistrationScalarFieldEnum = {
   id: 'id',
   name: 'name',
   email: 'email',
+  phone: 'phone',
   college: 'college',
   team: 'team',
   domain: 'domain',
   size: 'size',
+  status: 'status',
   createdAt: 'createdAt'
 };
 
@@ -126,21 +169,62 @@ exports.Prisma.SponsorEnquiryScalarFieldEnum = {
   email: 'email',
   tier: 'tier',
   message: 'message',
-  createdAt: 'createdAt'
+  logoUrl: 'logoUrl',
+  confirmed: 'confirmed',
+  status: 'status',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 };
 
 exports.Prisma.SpeakerProposalScalarFieldEnum = {
   id: 'id',
   name: 'name',
   email: 'email',
+  phone: 'phone',
+  role: 'role',
+  company: 'company',
   topic: 'topic',
   abstract: 'abstract',
-  createdAt: 'createdAt'
+  photoUrl: 'photoUrl',
+  bio: 'bio',
+  confirmed: 'confirmed',
+  status: 'status',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.ConfirmedSpeakerScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  role: 'role',
+  company: 'company',
+  topic: 'topic',
+  bio: 'bio',
+  image: 'image',
+  order: 'order',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.ConfirmedSponsorScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  category: 'category',
+  logo: 'logo',
+  tier: 'tier',
+  order: 'order',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 };
 
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
+};
+
+exports.Prisma.NullableJsonNullValueInput = {
+  DbNull: Prisma.DbNull,
+  JsonNull: Prisma.JsonNull
 };
 
 exports.Prisma.QueryMode = {
@@ -153,12 +237,50 @@ exports.Prisma.NullsOrder = {
   last: 'last'
 };
 
+exports.Prisma.JsonNullValueFilter = {
+  DbNull: Prisma.DbNull,
+  JsonNull: Prisma.JsonNull,
+  AnyNull: Prisma.AnyNull
+};
+exports.UserRole = exports.$Enums.UserRole = {
+  PARTICIPANT: 'PARTICIPANT',
+  ORGANIZER: 'ORGANIZER',
+  SPEAKER: 'SPEAKER'
+};
+
+exports.EmailStatus = exports.$Enums.EmailStatus = {
+  PENDING: 'PENDING',
+  SENT: 'SENT',
+  FAILED: 'FAILED'
+};
+
+exports.ActivityType = exports.$Enums.ActivityType = {
+  PARTICIPANT_REGISTERED: 'PARTICIPANT_REGISTERED',
+  ENTRY_VERIFIED: 'ENTRY_VERIFIED',
+  GOODIES_CLAIMED: 'GOODIES_CLAIMED',
+  ORGANIZER_LOGIN: 'ORGANIZER_LOGIN',
+  EMAIL_SENT: 'EMAIL_SENT',
+  EMAIL_FAILED: 'EMAIL_FAILED',
+  QR_RESENT: 'QR_RESENT',
+  PASSWORD_CHANGED: 'PASSWORD_CHANGED',
+  CSV_EXPORTED: 'CSV_EXPORTED',
+  EMAIL_SENT_SES: 'EMAIL_SENT_SES',
+  EMAIL_SENT_GMAIL: 'EMAIL_SENT_GMAIL',
+  EMAIL_FAILED_SES: 'EMAIL_FAILED_SES',
+  EMAIL_FAILED_GMAIL: 'EMAIL_FAILED_GMAIL',
+  EMAIL_FALLBACK_SUCCESS: 'EMAIL_FALLBACK_SUCCESS'
+};
 
 exports.Prisma.ModelName = {
+  EventConfig: 'EventConfig',
+  User: 'User',
   Registration: 'Registration',
+  ActivityLog: 'ActivityLog',
   HackathonRegistration: 'HackathonRegistration',
   SponsorEnquiry: 'SponsorEnquiry',
-  SpeakerProposal: 'SpeakerProposal'
+  SpeakerProposal: 'SpeakerProposal',
+  ConfirmedSpeaker: 'ConfirmedSpeaker',
+  ConfirmedSponsor: 'ConfirmedSponsor'
 };
 /**
  * Create the Client
@@ -171,7 +293,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "D:\\TK\\Website\\frontend\\src\\generated\\prisma",
+      "value": "C:\\Users\\Sam Devaraja\\Desktop\\Website\\frontend\\src\\generated\\prisma",
       "fromEnvVar": null
     },
     "config": {
@@ -185,11 +307,12 @@ const config = {
       }
     ],
     "previewFeatures": [],
-    "sourceFilePath": "D:\\TK\\Website\\frontend\\prisma\\schema.prisma",
+    "sourceFilePath": "C:\\Users\\Sam Devaraja\\Desktop\\Website\\frontend\\prisma\\schema.prisma",
     "isCustomOutput": true
   },
   "relativeEnvPaths": {
-    "rootEnvPath": null
+    "rootEnvPath": null,
+    "schemaEnvPath": "../../../.env"
   },
   "relativePath": "../../../prisma",
   "clientVersion": "6.19.3",
@@ -207,13 +330,13 @@ const config = {
       }
     }
   },
-  "inlineSchema": "// This is your Prisma schema file,\n// learn more about it in the docs: https://pris.ly/d/prisma-schema\n\ngenerator client {\n  provider = \"prisma-client-js\"\n  output   = \"../src/generated/prisma\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n  url      = env(\"DATABASE_URL\")\n}\n\nmodel Registration {\n  id           Int      @id @default(autoincrement())\n  fullName     String\n  email        String   @unique\n  phone        String\n  organization String\n  designation  String\n  city         String\n  address      String\n  avatar       String   @default(\"man\")\n  createdAt    DateTime @default(now())\n\n  @@map(\"registrations\")\n}\n\nmodel HackathonRegistration {\n  id        Int      @id @default(autoincrement())\n  name      String\n  email     String\n  college   String\n  team      String\n  domain    String\n  size      String\n  createdAt DateTime @default(now())\n\n  @@map(\"hackathon_registrations\")\n}\n\nmodel SponsorEnquiry {\n  id              Int      @id @default(autoincrement())\n  company         String\n  contact         String\n  contactNumber   String\n  alternateNumber String?\n  email           String\n  tier            String\n  message         String?\n  createdAt       DateTime @default(now())\n\n  @@map(\"sponsor_enquiries\")\n}\n\nmodel SpeakerProposal {\n  id        Int      @id @default(autoincrement())\n  name      String\n  email     String\n  topic     String\n  abstract  String\n  createdAt DateTime @default(now())\n\n  @@map(\"speaker_proposals\")\n}\n",
-  "inlineSchemaHash": "2494e6c1b803787801ebeb0cd599b73e8e14dda69250cf5ed409db1e3198b407",
+  "inlineSchema": "datasource db {\n  provider = \"postgresql\"\n  url      = env(\"DATABASE_URL\")\n}\n\ngenerator client {\n  provider = \"prisma-client-js\"\n  output   = \"../src/generated/prisma\"\n}\n\nenum UserRole {\n  PARTICIPANT\n  ORGANIZER\n  SPEAKER\n}\n\nenum EmailStatus {\n  PENDING\n  SENT\n  FAILED\n}\n\nenum ActivityType {\n  PARTICIPANT_REGISTERED\n  ENTRY_VERIFIED\n  GOODIES_CLAIMED\n  ORGANIZER_LOGIN\n  EMAIL_SENT\n  EMAIL_FAILED\n  QR_RESENT\n  PASSWORD_CHANGED\n  CSV_EXPORTED\n  EMAIL_SENT_SES\n  EMAIL_SENT_GMAIL\n  EMAIL_FAILED_SES\n  EMAIL_FAILED_GMAIL\n  EMAIL_FALLBACK_SUCCESS\n}\n\nmodel EventConfig {\n  id                 String   @id @default(uuid())\n  eventName          String\n  registrationPrefix String // e.g. \"AWSCD2026\"\n  eventDate          DateTime\n  registrationsOpen  Boolean  @default(true)\n  goodiesEnabled     Boolean  @default(true)\n  createdAt          DateTime @default(now())\n}\n\nmodel User {\n  id                 String    @id @default(uuid())\n  name               String\n  email              String    @unique\n  phone              String\n  passwordHash       String? // Nullable for participants, required for organizers/speakers\n  role               UserRole  @default(PARTICIPANT)\n  organization       String\n  designation        String\n  city               String\n  avatar             String\n  isActive           Boolean   @default(true)\n  mustChangePassword Boolean   @default(false)\n  createdAt          DateTime  @default(now())\n  updatedAt          DateTime  @updatedAt\n  deletedAt          DateTime? // For Soft Delete Support\n\n  registration Registration?\n  activityLogs ActivityLog[]\n}\n\nmodel Registration {\n  id                 String      @id @default(uuid())\n  userId             String      @unique\n  user               User        @relation(fields: [userId], references: [id], onDelete: Cascade)\n  registrationCode   String      @unique // Format: PREFIX-XXXXXXXX\n  qrToken            String      @unique // Secure cryptographic verification token\n  entryVerified      Boolean     @default(false)\n  entryVerifiedAt    DateTime?\n  goodiesVerified    Boolean     @default(false)\n  goodiesVerifiedAt  DateTime?\n  emailStatus        EmailStatus @default(PENDING)\n  emailSentAt        DateTime?\n  emailProvider      String?\n  lastEmailAttemptAt DateTime?\n  lastEmailError     String?\n  createdAt          DateTime    @default(now())\n  updatedAt          DateTime    @updatedAt\n}\n\nmodel ActivityLog {\n  id        String       @id @default(uuid())\n  userId    String?\n  user      User?        @relation(fields: [userId], references: [id], onDelete: SetNull)\n  action    ActivityType\n  metadata  Json? // Any contextual metadata\n  createdAt DateTime     @default(now())\n}\n\nmodel HackathonRegistration {\n  id        String   @id @default(uuid())\n  name      String\n  email     String\n  phone     String?\n  college   String\n  team      String\n  domain    String\n  size      String\n  status    String   @default(\"APPROVED\") // PENDING, APPROVED, REJECTED\n  createdAt DateTime @default(now())\n\n  @@map(\"hackathon_registrations\")\n}\n\nmodel SponsorEnquiry {\n  id              String   @id @default(uuid())\n  company         String\n  contact         String\n  contactNumber   String?\n  alternateNumber String?\n  email           String\n  tier            String\n  message         String?\n  logoUrl         String?\n  confirmed       Boolean  @default(false)\n  status          String   @default(\"PENDING\") // PENDING, APPROVED, REJECTED\n  createdAt       DateTime @default(now())\n  updatedAt       DateTime @default(now()) @updatedAt\n\n  @@map(\"sponsor_enquiries\")\n}\n\nmodel SpeakerProposal {\n  id        String   @id @default(uuid())\n  name      String\n  email     String\n  phone     String?\n  role      String?\n  company   String?\n  topic     String\n  abstract  String\n  photoUrl  String?\n  bio       String?\n  confirmed Boolean  @default(false)\n  status    String   @default(\"PENDING\") // PENDING, APPROVED, REJECTED\n  createdAt DateTime @default(now())\n  updatedAt DateTime @default(now()) @updatedAt\n\n  @@map(\"speaker_proposals\")\n}\n\nmodel ConfirmedSpeaker {\n  id        String   @id @default(uuid())\n  name      String\n  role      String\n  company   String\n  topic     String\n  bio       String?\n  image     String?\n  order     Int      @default(0)\n  createdAt DateTime @default(now())\n  updatedAt DateTime @default(now()) @updatedAt\n\n  @@map(\"confirmed_speakers\")\n}\n\nmodel ConfirmedSponsor {\n  id        String   @id @default(uuid())\n  name      String\n  category  String\n  logo      String?\n  tier      String   @default(\"COMMUNITY\")\n  order     Int      @default(0)\n  createdAt DateTime @default(now())\n  updatedAt DateTime @default(now()) @updatedAt\n\n  @@map(\"confirmed_sponsors\")\n}\n",
+  "inlineSchemaHash": "2eeff17bc0002c07775d17d600bd31de3a37b52abeb08ce85781f0b483b217ed",
   "copyEngine": true
 }
 config.dirname = '/'
 
-config.runtimeDataModel = JSON.parse("{\"models\":{\"Registration\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"fullName\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"email\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"phone\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"organization\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"designation\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"city\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"address\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"avatar\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"}],\"dbName\":\"registrations\"},\"HackathonRegistration\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"email\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"college\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"team\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"domain\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"size\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"}],\"dbName\":\"hackathon_registrations\"},\"SponsorEnquiry\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"company\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"contact\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"contactNumber\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"alternateNumber\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"email\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"tier\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"message\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"}],\"dbName\":\"sponsor_enquiries\"},\"SpeakerProposal\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"email\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"topic\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"abstract\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"}],\"dbName\":\"speaker_proposals\"}},\"enums\":{},\"types\":{}}")
+config.runtimeDataModel = JSON.parse("{\"models\":{\"EventConfig\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"eventName\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"registrationPrefix\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"eventDate\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"registrationsOpen\",\"kind\":\"scalar\",\"type\":\"Boolean\"},{\"name\":\"goodiesEnabled\",\"kind\":\"scalar\",\"type\":\"Boolean\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"}],\"dbName\":null},\"User\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"email\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"phone\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"passwordHash\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"role\",\"kind\":\"enum\",\"type\":\"UserRole\"},{\"name\":\"organization\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"designation\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"city\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"avatar\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"isActive\",\"kind\":\"scalar\",\"type\":\"Boolean\"},{\"name\":\"mustChangePassword\",\"kind\":\"scalar\",\"type\":\"Boolean\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"deletedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"registration\",\"kind\":\"object\",\"type\":\"Registration\",\"relationName\":\"RegistrationToUser\"},{\"name\":\"activityLogs\",\"kind\":\"object\",\"type\":\"ActivityLog\",\"relationName\":\"ActivityLogToUser\"}],\"dbName\":null},\"Registration\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"userId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"user\",\"kind\":\"object\",\"type\":\"User\",\"relationName\":\"RegistrationToUser\"},{\"name\":\"registrationCode\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"qrToken\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"entryVerified\",\"kind\":\"scalar\",\"type\":\"Boolean\"},{\"name\":\"entryVerifiedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"goodiesVerified\",\"kind\":\"scalar\",\"type\":\"Boolean\"},{\"name\":\"goodiesVerifiedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"emailStatus\",\"kind\":\"enum\",\"type\":\"EmailStatus\"},{\"name\":\"emailSentAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"emailProvider\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"lastEmailAttemptAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"lastEmailError\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"}],\"dbName\":null},\"ActivityLog\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"userId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"user\",\"kind\":\"object\",\"type\":\"User\",\"relationName\":\"ActivityLogToUser\"},{\"name\":\"action\",\"kind\":\"enum\",\"type\":\"ActivityType\"},{\"name\":\"metadata\",\"kind\":\"scalar\",\"type\":\"Json\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"}],\"dbName\":null},\"HackathonRegistration\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"email\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"phone\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"college\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"team\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"domain\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"size\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"status\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"}],\"dbName\":\"hackathon_registrations\"},\"SponsorEnquiry\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"company\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"contact\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"contactNumber\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"alternateNumber\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"email\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"tier\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"message\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"logoUrl\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"confirmed\",\"kind\":\"scalar\",\"type\":\"Boolean\"},{\"name\":\"status\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"}],\"dbName\":\"sponsor_enquiries\"},\"SpeakerProposal\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"email\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"phone\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"role\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"company\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"topic\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"abstract\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"photoUrl\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"bio\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"confirmed\",\"kind\":\"scalar\",\"type\":\"Boolean\"},{\"name\":\"status\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"}],\"dbName\":\"speaker_proposals\"},\"ConfirmedSpeaker\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"role\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"company\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"topic\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"bio\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"image\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"order\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"}],\"dbName\":\"confirmed_speakers\"},\"ConfirmedSponsor\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"category\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"logo\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"tier\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"order\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"}],\"dbName\":\"confirmed_sponsors\"}},\"enums\":{},\"types\":{}}")
 defineDmmfProperty(exports.Prisma, config.runtimeDataModel)
 config.engineWasm = {
   getRuntime: async () => require('./query_engine_bg.js'),

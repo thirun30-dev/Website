@@ -13,6 +13,47 @@
   --color-panel-bg: rgba(7, 7, 18, 0.65);
 }
 
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 80px;
+}
+
+/* Override browser native autofill background and text color to match dark cyber theme */
+input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus, 
+input:-webkit-autofill:active,
+textarea:-webkit-autofill,
+textarea:-webkit-autofill:hover,
+textarea:-webkit-autofill:focus,
+textarea:-webkit-autofill:active,
+select:-webkit-autofill,
+select:-webkit-autofill:hover,
+select:-webkit-autofill:focus,
+select:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 1000px #0f192e inset !important;
+  -webkit-text-fill-color: #ffffff !important;
+  caret-color: #38bdf8 !important;
+  transition: background-color 9999999s ease-in-out 0s !important;
+  box-shadow: 0 0 0 1000px #0f192e inset !important;
+  color: #ffffff !important;
+}
+
+input:-internal-autofill-selected {
+  background-color: #0f192e !important;
+  color: #ffffff !important;
+}
+
+input::placeholder {
+  color: #cbd5e1 !important;
+  opacity: 0.9 !important;
+}
+
+input::-webkit-input-placeholder {
+  color: #cbd5e1 !important;
+  opacity: 0.9 !important;
+}
+
 @keyframes float {
   0%, 100% { transform: translateY(0px) rotate(0deg); }
   50% { transform: translateY(-15px) rotate(2deg); }
@@ -96,7 +137,7 @@ body {
 
 /* Glowing text */
 .text-glow {
-  text-shadow: 0 0 10px rgba(0, 240, 255, 0.5), 0 0 20px rgba(0, 112, 243, 0.3);
+  text-shadow: none;
 }
 
 /* Card Glow Hover */
@@ -152,78 +193,73 @@ body {
     position: fixed;
     top: 0;
     left: 0;
-    width: 24px;
-    height: 24px;
+    width: 32px;
+    height: 32px;
     pointer-events: none;
     z-index: 99999;
-    background-image: url('/cursor.png');
-    background-size: contain;
-    background-repeat: no-repeat;
-    transform: translate(0, 0);
+    transform: translate(-4px, -4px);
+    transition: transform 0.15s ease-out;
   }
 
   #custom-cursor-ring {
     position: fixed;
     top: 0;
     left: 0;
-    width: 38px;
-    height: 38px;
-    border: 2px solid rgba(0, 240, 255, 0.5);
+    width: 46px;
+    height: 46px;
+    border: 2px solid rgba(0, 240, 255, 0.65);
     border-radius: 50%;
     pointer-events: none;
     z-index: 99998;
     transform: translate(-50%, -50%);
-    box-shadow: 0 0 10px rgba(0, 240, 255, 0.2);
-    animation: cursor-ring-spin 6s linear infinite;
-  }
-
-  @keyframes cursor-ring-spin {
-    from { transform: translate(-50%, -50%) rotate(0deg); }
-    to { transform: translate(-50%, -50%) rotate(360deg); }
+    box-shadow: 0 0 14px rgba(0, 240, 255, 0.3);
+    transition: width 0.2s cubic-bezier(0.25, 1, 0.5, 1), height 0.2s cubic-bezier(0.25, 1, 0.5, 1), border-color 0.2s ease, background-color 0.2s ease;
   }
 
   /* Custom cursor states active on body classes */
   body.cursor-hover #custom-cursor {
-    transform: scale(1.1);
+    transform: translate(-4px, -4px) scale(1.25);
   }
 
   body.cursor-hover #custom-cursor-ring {
-    width: 50px;
-    height: 50px;
+    width: 60px;
+    height: 60px;
     border-color: rgba(0, 240, 255, 0.95);
-    border-style: dashed;
+    border-style: solid;
     background-color: rgba(0, 240, 255, 0.08);
-    box-shadow: 0 0 20px rgba(0, 240, 255, 0.45);
-    animation: cursor-ring-spin 3s linear infinite;
+    box-shadow: 0 0 28px rgba(0, 240, 255, 0.45);
+  }
+
+  body.cursor-click #custom-cursor {
+    transform: translate(-4px, -4px) scale(0.9);
   }
 
   body.cursor-click #custom-cursor-ring {
-    width: 28px;
-    height: 28px;
+    width: 32px;
+    height: 32px;
     border-color: rgba(0, 240, 255, 1);
-    background-color: rgba(0, 240, 255, 0.25);
-    box-shadow: 0 0 15px rgba(0, 240, 255, 0.6);
-    animation: none;
+    background-color: rgba(0, 240, 255, 0.35);
+    box-shadow: 0 0 20px rgba(0, 240, 255, 0.75);
   }
 }
 
-/* Event Crew continuous left-to-right marquee sliding styling */
-@keyframes marquee-ltr {
+/* Event Crew continuous right-to-left marquee sliding styling */
+@keyframes marquee-rtl {
   0% {
-    transform: translateX(-50%);
-  }
-  100% {
     transform: translateX(0%);
   }
+  100% {
+    transform: translateX(-50%);
+  }
 }
 
-.animate-marquee-ltr {
+.animate-marquee-rtl {
   display: flex;
   width: max-content;
-  animation: marquee-ltr 40s linear infinite;
+  animation: marquee-rtl 40s linear infinite;
 }
 
-.marquee-container:hover .animate-marquee-ltr {
+.marquee-container:hover .animate-marquee-rtl {
   animation-play-state: paused;
 }
 

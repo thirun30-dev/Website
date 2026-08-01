@@ -6,11 +6,7 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 import { useEventData } from "@/context/EventDataContext";
 
-const AWSSmile = () => (
-  <svg viewBox="0 0 24 24" width="32" height="32" className="text-[#ff9900] fill-current">
-    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15.5c-2.48 0-4.5-2.02-4.5-4.5s2.02-4.5 4.5-4.5 4.5 2.02 4.5 4.5-2.02 4.5-4.5 4.5z"/>
-  </svg>
-);
+
 
 const HashiCorpLogo = () => (
   <svg viewBox="0 0 24 24" width="32" height="32" className="text-[#ffffff] fill-current">
@@ -70,11 +66,13 @@ export default function Sponsors() {
   ];
 
   return (
-    <section id="sponsors" className="py-10 relative overflow-hidden bg-black/10">
-      {/* Background Glow */}
-      <div className="absolute top-1/2 right-1/4 w-96 h-96 rounded-full bg-blue-600/5 blur-[150px] pointer-events-none" />
+    <section id="sponsors" className="py-10 relative overflow-hidden bg-transparent">
+      {/* Background Grid & Ambient Glows (Matching Hero) */}
+      <div className="absolute inset-0 cyber-grid opacity-30 pointer-events-none" />
+      <div className="absolute top-1/2 right-1/4 w-[450px] h-60 rounded-3xl bg-cyan-600/10 blur-[130px] -rotate-12 pointer-events-none" />
+      <div className="absolute bottom-5 left-1/4 w-[450px] h-60 rounded-3xl bg-blue-600/10 blur-[140px] rotate-12 pointer-events-none" />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 space-y-16">
+      <div className="w-[94%] max-w-[1440px] mx-auto relative z-10 space-y-16">
         
         {/* Section Heading */}
         <div className="text-center space-y-4">
@@ -90,21 +88,21 @@ export default function Sponsors() {
         </div>
 
         {/* 1. Title Sponsor Box (AWS) */}
-        <div className="max-w-3xl mx-auto text-center space-y-6">
+        <div className="max-w-4xl mx-auto text-center space-y-6">
           <h3 className="text-xs font-bold text-slate-500 uppercase tracking-widest">
             Title Cloud Partner
           </h3>
           
           <motion.div 
             whileHover={{ scale: 1.02 }}
-            className="glass-panel rounded-[24px] p-8 md:p-10 border border-cyan-500/10 flex flex-col sm:flex-row items-center justify-between gap-6 bg-[#070712]/80 shadow-[0_0_50px_rgba(255,153,0,0.08)] hover:border-[#ff9900]/30 hover:shadow-[0_0_50px_rgba(255,153,0,0.18)] transition-all duration-500"
+            className="glass-panel rounded-xl p-8 md:p-10 border border-cyan-500/10 flex flex-col sm:flex-row items-center justify-between gap-6 bg-[#070712]/80 shadow-[0_0_50px_rgba(255,153,0,0.08)] hover:border-[#ff9900]/30 hover:shadow-[0_0_50px_rgba(255,153,0,0.18)] transition-all duration-500"
           >
             <div className="flex items-center gap-4">
-              <div className="w-14 h-14 rounded-2xl bg-amber-500/10 flex items-center justify-center border border-[#ff9900]/20 shadow-inner">
-                <AWSSmile />
+              <div className="w-14 h-14 rounded-lg bg-black/50 flex items-center justify-center border border-[#ff9900]/40 shadow-[0_0_20px_rgba(255,153,0,0.25)] p-2.5 shrink-0">
+                <Image src="/aws-logo.svg" alt="AWS Logo" width={38} height={38} className="object-contain" />
               </div>
               <div className="text-left">
-                <h4 className="text-2xl font-black text-white tracking-tight">Amazon Web Services</h4>
+                <h4 className="text-2xl font-bold text-white tracking-tight">Amazon Web Services</h4>
                 <p className="text-xs text-[#ff9900] font-bold uppercase tracking-wider mt-0.5">Cloud Computing Services Provider</p>
               </div>
             </div>
@@ -115,7 +113,7 @@ export default function Sponsors() {
         </div>
 
         {/* 2. Confirmed Sponsors Image / Logo Gallery */}
-        <div className="space-y-8 max-w-5xl mx-auto">
+        <div className="space-y-8 w-full mx-auto">
           <div className="flex items-center justify-between">
             <h3 className="text-xs font-bold text-slate-500 uppercase tracking-widest">
               Confirmed Event Sponsors
@@ -132,10 +130,10 @@ export default function Sponsors() {
                 <motion.div
                   key={sponsor.id}
                   whileHover={{ y: -5, scale: 1.02 }}
-                  className="glass-panel p-6 rounded-2xl border border-slate-800 bg-[#070712]/90 flex flex-col items-center justify-center text-center space-y-4 h-48 transition-all duration-300 hover:border-cyan-500/40 hover:shadow-[0_0_30px_rgba(0,240,255,0.15)] group"
+                  className="glass-panel p-6 rounded-lg border border-slate-800 bg-[#070712]/90 flex flex-col items-center justify-center text-center space-y-4 h-48 transition-all duration-300 hover:border-cyan-500/40 hover:shadow-[0_0_30px_rgba(0,240,255,0.15)] group"
                 >
                   {/* Logo Image */}
-                  <div className="w-16 h-16 rounded-2xl bg-slate-900/60 border border-slate-800/80 flex items-center justify-center p-3 group-hover:scale-110 transition-transform duration-300 shadow-lg">
+                  <div className="w-16 h-16 rounded-md bg-slate-900/60 border border-slate-800/80 flex items-center justify-center p-3 group-hover:scale-110 transition-transform duration-300 shadow-lg">
                     {getSponsorLogo(sponsor.logo, sponsor.name)}
                   </div>
                   <div>
@@ -147,7 +145,7 @@ export default function Sponsors() {
             </div>
           ) : (
             /* Empty space until admin confirms sponsors */
-            <div className="h-28 flex items-center justify-center border border-dashed border-amber-500/20 rounded-2xl max-w-xl mx-auto bg-[#070712]/50 px-6 text-center">
+            <div className="h-28 flex items-center justify-center border border-dashed border-amber-500/20 rounded-lg max-w-xl mx-auto bg-[#070712]/50 px-6 text-center">
               <p className="text-sm font-bold text-amber-400/90 tracking-wider uppercase">
                 Sponsor details will be displayed soon
               </p>
@@ -156,7 +154,7 @@ export default function Sponsors() {
         </div>
 
         {/* 3. Community Partners Grid */}
-        <div className="space-y-8 max-w-5xl mx-auto pt-4">
+        <div className="space-y-8 w-full mx-auto pt-4">
           <h3 className="text-center text-xs font-bold text-slate-500 uppercase tracking-widest">
             Community Partners
           </h3>
@@ -165,9 +163,9 @@ export default function Sponsors() {
             {partners.map((partner, idx) => (
               <div 
                 key={idx} 
-                className="glass-panel p-6 rounded-xl border border-slate-800/80 bg-[#070712]/70 flex items-center gap-4 hover:border-cyan-500/20 transition-all duration-300"
+                className="glass-panel p-6 rounded-md border border-slate-800/80 bg-[#070712]/70 flex items-center gap-4 hover:border-cyan-500/20 transition-all duration-300"
               >
-                <div className="w-10 h-10 rounded-full bg-blue-950/30 border border-blue-500/20 flex items-center justify-center text-[#00f0ff] flex-shrink-0">
+                <div className="w-10 h-10 rounded-md bg-blue-950/30 border border-blue-500/20 flex items-center justify-center text-[#00f0ff] flex-shrink-0">
                   {idx === 0 ? <Globe size={16} /> : idx === 1 ? <Users size={16} /> : <Award size={16} />}
                 </div>
                 <div className="min-w-0">

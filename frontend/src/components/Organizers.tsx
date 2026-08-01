@@ -93,16 +93,16 @@ interface CrewMember {
 
 const advisors: Advisor[] = [
   {
-    name: "Mr. B. Bhuvaneshwaran",
+    name: "Dr. Bhuvaneshwaran B",
     role: "Faculty Coordinator & Cloud Mentor",
-    department: "Information Technology",
+    department: "Assistant Professor, School of Computer Engineering, REC",
     linkedin: "https://www.linkedin.com/in/bhuvaneswaranrec/",
-    bio: "A dedicated educator and mentor, guiding the AWS Students Builder Group at REC in fostering innovation, technical excellence, and industry readiness. With a strong focus on cloud computing and emerging technologies, he supports students in building practical skills, leading impactful initiatives, and creating meaningful learning experiences through community-driven programs and events.",
+    bio: "Dr. Bhuvaneshwaran B serves as the Faculty Coordinator of AWS Student Builders Group (SBG) REC. With extensive expertise in AI, Cloud Computing, Data Engineering, and Software Development—backed by industry certifications from AWS, IBM, Oracle, MongoDB, Snowflake, UiPath, and Microsoft—he inspires students to transform ideas into impactful solutions through hands-on mentorship, hackathons, and collaborative learning.",
     focusAreas: [
-      "Student Mentorship & Leadership",
-      "Cloud Learning Initiatives",
-      "Industry-Academia Collaboration",
-      "Community Growth & Development"
+      "AI & Cloud Computing",
+      "Data Engineering & Automation",
+      "Hackathon & Project Mentorship",
+      "Industry Certifications & Research"
     ],
     isSpecial: true,
   },
@@ -110,14 +110,14 @@ const advisors: Advisor[] = [
 
 const coreTeam: CoreMember[] = [
   {
-    name: "Prathakshanaa",
-    role: "Cloud Captain",
+    name: "Prathakshanaa T",
+    role: "Captain",
     department: "Information Technology",
     bio: "Leads the cloud learning initiatives of the AWS Students Builder Group and promotes AWS technologies within the student community. Responsible for organizing cloud-focused events, encouraging hands-on learning, and helping students explore certifications, projects, and career opportunities in cloud computing.",
     linkedin: "https://www.linkedin.com/in/prathakshanaa/",
     github: "https://github.com/",
-    email: "prathakshanaa@example.com",
-    image: "/prathakshanaa.jpeg",
+    email: "aws.sbg.rec@gmail.com",
+    image: "/images/core/prathakshanaa_t.jpg",
     responsibilities: [
       "AWS Learning Programs",
       "Community Building",
@@ -126,14 +126,14 @@ const coreTeam: CoreMember[] = [
     ]
   },
   {
-    name: "Pranav Ranjan",
+    name: "K N Pranav Ranjan",
     role: "Tech Lead",
     department: "Information Technology",
     bio: "Oversees the technical execution of community initiatives and Student Community Day 2026. Ensures smooth operation of event platforms, technical infrastructure, and digital experiences while guiding the team on technical decisions and innovation.",
     linkedin: "https://www.linkedin.com/in/knpranavranjan/",
     github: "https://github.com/",
-    email: "pranav@example.com",
-    image: "/pranav-ranjan.jpeg",
+    email: "knpranavranjan@gmail.com",
+    image: "/images/core/pranav_ranjan.jpg",
     responsibilities: [
       "Technical Strategy",
       "Platform Development",
@@ -142,14 +142,14 @@ const coreTeam: CoreMember[] = [
     ]
   },
   {
-    name: "Thirunavukkarasu",
+    name: "V Thirunavukkarasu",
     role: "Social Media Lead",
     department: "Computer Science",
     bio: "Drives the online presence of the AWS Students Builder Group through engaging content, event promotions, and community engagement. Responsible for building awareness, increasing reach, and showcasing the impact of community initiatives.",
     linkedin: "https://www.linkedin.com/in/thirunavukkarasu-veeramani-140b6a317/",
     github: "https://github.com/",
     email: "thirunavukkarasu@example.com",
-    image: "/thirunavukkarasu.png",
+    image: "/images/core/thirunavukkarasu.jpg",
     responsibilities: [
       "Content Strategy",
       "Event Promotions",
@@ -158,14 +158,14 @@ const coreTeam: CoreMember[] = [
     ]
   },
   {
-    name: "Giiridharan",
+    name: "Giridharan R",
     role: "IT & Support Lead",
     department: "Information Technology",
     bio: "Manages the technical support and operational requirements of events and community activities. Ensures all systems, equipment, and digital resources function efficiently to provide a seamless experience for speakers, attendees, and organizers.",
     linkedin: "https://www.linkedin.com/in/giridharanr777/",
     github: "https://github.com/",
     email: "giiridharan@example.com",
-    image: "/giridharan.png",
+    image: "/images/core/giridharan_r.jpg",
     responsibilities: [
       "Technical Operations",
       "Event Infrastructure",
@@ -174,14 +174,14 @@ const coreTeam: CoreMember[] = [
     ]
   },
   {
-    name: "Dilip Kannan",
+    name: "Dilip Kannan K",
     role: "Event Management Lead",
     department: "Information Technology",
     bio: "Coordinates planning, execution, and collaboration across various teams to ensure the success of Student Community Day 2026 and community activities. Works closely with speakers, sponsors, volunteers, and organizers to deliver impactful experiences.",
     linkedin: "https://www.linkedin.com/in/dilip-kannan-k/",
     github: "https://github.com/",
     email: "dilip@example.com",
-    image: "/dilip_kannan.JPG",
+    image: "/images/core/dilip_kannan.jpg",
     responsibilities: [
       "Event Planning",
       "Team Coordination",
@@ -193,180 +193,136 @@ const coreTeam: CoreMember[] = [
 
 const crewTeam: CrewMember[] = [
   {
-    name: "Aditya P",
-    role: "Technical Support",
-    department: "Information Technology",
-    image: "/crew_1.png",
-    bio: "Aditya manages cloud-native developer environments, assists with registration API integrations, and ensures high availability of hackathon server clusters.",
-    responsibilities: ["API Integrations", "Cluster Operations", "Hardware Diagnostics"],
-    linkedin: "https://www.linkedin.com/",
+    name: "Abimithren S",
+    role: "Crew Member",
+    department: "AWS SBG REC",
+    image: "/images/crew/abimithren.jpg",
+    bio: "Abimithren manages cloud-native developer environments, assists with registration API integrations, and ensures high availability of hackathon server clusters.",
+    responsibilities: ["API Integrations", "Cloud Native Builds", "Hardware Diagnostics"],
+    linkedin: "https://www.linkedin.com/in/abimithren-s-a0bb79331",
     github: "https://github.com/",
-    email: "aditya@example.com"
+    email: "abimithren@example.com"
   },
   {
-    name: "Bhavya S",
-    role: "Ops Coordinator",
-    department: "Computer Science",
-    image: "/crew_2.png",
-    bio: "Bhavya coordinates presentation logistics, controls stage lighting setups, and organizes interactive gaming arenas for event breaks.",
-    responsibilities: ["Stage Event Flow", "Breakout Session Logistics", "AV Control Systems"],
-    linkedin: "https://www.linkedin.com/",
-    github: "https://github.com/",
-    email: "bhavya@example.com"
-  },
-  {
-    name: "Charan K",
-    role: "Web Developer",
-    department: "Information Technology",
-    image: "/crew_3.png",
-    bio: "Charan is a developer building landing pages, optimizing SVG animations, and ensuring mobile-first responsive viewports for the event site.",
-    responsibilities: ["Tailwind Utility Styling", "Next.js Build Optimization", "Responsive QA Testing"],
-    linkedin: "https://www.linkedin.com/",
-    github: "https://github.com/",
-    email: "charan@example.com"
-  },
-  {
-    name: "Divya N",
-    role: "Design Associate",
-    department: "Computer Science",
-    image: "/crew_4.png",
-    bio: "Divya crafts custom vectors, designs banner assets, and styles printable ID badges for all student delegates and keynote speakers.",
-    responsibilities: ["Graphic Vector Assets", "ID Badge Custom Layouts", "Promotional Keynote Slides"],
-    linkedin: "https://www.linkedin.com/",
-    github: "https://github.com/",
-    email: "divya@example.com"
-  },
-  {
-    name: "Eshwar R",
-    role: "Logistics Associate",
-    department: "Information Technology",
-    image: "/crew_5.png",
-    bio: "Eshwar handles collegiate networking arrangements, manages check-in desks, and directs catering queues during the community lunch break.",
-    responsibilities: ["Delegate Check-in Systems", "Local Vendor Coordination", "Catering & Lounge Setup"],
-    linkedin: "https://www.linkedin.com/",
-    github: "https://github.com/",
-    email: "eshwar@example.com"
-  },
-  {
-    name: "Faisal M",
-    role: "Cloud Associate",
-    department: "Computer Science",
-    image: "/crew_1.png",
-    bio: "Faisal sets up sandbox AWS IAM credentials, builds serverless mock APIs for workshops, and assists attendees with container builds.",
-    responsibilities: ["AWS Account Vending", "Serverless API Mocks", "Docker Build Support"],
-    linkedin: "https://www.linkedin.com/",
-    github: "https://github.com/",
-    email: "faisal@example.com"
-  },
-  {
-    name: "Gita V",
-    role: "Public Relations",
-    department: "Artificial Intelligence",
-    image: "/priya.png",
-    bio: "Gita runs public relations pipelines, drafting collegiate announcements and publishing newsletter summaries to local tech hubs.",
-    responsibilities: ["Newsletter Content Copy", "Collegiate PR Outreach", "Sponsor Relations Support"],
-    linkedin: "https://www.linkedin.com/",
-    github: "https://github.com/",
-    email: "gita@example.com"
-  },
-  {
-    name: "Jaiganesh",
-    role: "Technical Support",
-    department: "Information Technology",
-    image: "/1772814923817.jpg",
-    bio: "Jaiganesh conducts live tech checks, verifies HDMI projections, and ensures flawless audio signals across main venue presentation halls.",
-    responsibilities: ["Technical support", "event coordination support", "social media content editing"],
-    linkedin: "https://www.linkedin.com/in/jai-ganesh-g-aa294632a/",
-    github: "https://github.com/jaiganesh78",
-    email: "jaigokul67@gmail.com"
-  },
-  {
-    name: "Indu J",
-    role: "Ops Coordinator",
-    department: "Computer Science",
-    image: "/crew_3.png",
-    bio: "Indu arranges accommodation guides, coordinates local shuttle schedules, and runs the info desk for out-of-town student delegates.",
-    responsibilities: ["Delegate Travel Guides", "Shuttle Dispatch Flow", "General Information Desk"],
-    linkedin: "https://www.linkedin.com/",
-    github: "https://github.com/",
-    email: "indu@example.com"
-  },
-  {
-    name: "Karthik S",
-    role: "Web Developer",
-    department: "Information Technology",
-    image: "/crew_4.png",
-    bio: "Karthik designs the real-time feedback forms, tracks registrations database pipelines, and automates email confirmations via SES.",
-    responsibilities: ["SES Email Templates", "Database Pipeline Queries", "Feedback Form API"],
-    linkedin: "https://www.linkedin.com/",
-    github: "https://github.com/",
-    email: "karthik@example.com"
-  },
-  {
-    name: "Leela M",
-    role: "Design Associate",
-    department: "Computer Science",
-    image: "/crew_5.png",
-    bio: "Leela plans video highlights, takes official event photos, and edits social media reels showcasing keynote highlights.",
-    responsibilities: ["Highlight Reel Editing", "Photography Coverage", "Social Post Aesthetics"],
-    linkedin: "https://www.linkedin.com/",
-    github: "https://github.com/",
-    email: "leela@example.com"
-  },
-  {
-    name: "Manoj K",
-    role: "Logistics Associate",
-    department: "Information Technology",
-    image: "/crew_1.png",
-    bio: "Manoj handles the inventory management of AWS merchandise, distributes T-shirts, and ensures proper storage of extra setup gear.",
-    responsibilities: ["Swag Inventory Audits", "Merchandise Distribution", "Equipment Storage Plan"],
-    linkedin: "https://www.linkedin.com/",
-    github: "https://github.com/",
-    email: "manoj@example.com"
-  },
-  {
-    name: "Nisha R",
-    role: "Social Media",
-    department: "Artificial Intelligence",
-    image: "/priya.png",
-    bio: "Nisha coordinates real-time event updates, shares live speaker quote cards, and moderates discord community builder channels.",
-    responsibilities: ["Live Session Posting", "Speaker Quote Cards", "Discord Moderation"],
-    linkedin: "https://www.linkedin.com/",
-    github: "https://github.com/",
-    email: "nisha@example.com"
-  },
-  {
-    name: "Balaambiga",
-    role: "Ops Coordinator",
-    department: "Information Technology",
-    image: "/balaambiga.jpg",
+    name: "Balaambiga C A",
+    role: "Crew Member",
+    department: "AWS SBG REC",
+    image: "/images/crew/balaambiga_c_a.jpg",
     bio: "Balaambiga manages logistics, registration support, and attendee queries for the AWS Student Builder Groups.",
     responsibilities: ["Registration Support", "Logistics Coordination", "Attendee Query Help"],
-    linkedin: "https://www.linkedin.com/",
+    linkedin: "https://www.linkedin.com/in/balaambiga-ca-46a49431a",
     github: "https://github.com/",
     email: "balaambiga@example.com"
   },
   {
-    name: "Rannesh Khumar",
+    name: "Goutham R",
     role: "Crew Member",
-    department: "Information Technology",
-    image: "/rannesh_khumar.jpeg",
-    bio: "Rannesh assists with event operations, tech support, and logistics for AWS Student Builder Groups.",
-    responsibilities: ["Event Operations", "Technical Support", "Logistics Coordination"],
-    linkedin: "https://www.linkedin.com/",
+    department: "AWS SBG REC",
+    image: "/images/crew/goutham_r.jpg",
+    bio: "Goutham sets up sandbox AWS IAM credentials, builds serverless mock APIs for workshops, and assists attendees with container builds.",
+    responsibilities: ["AWS Account Vending", "Serverless API Mocks", "Docker Build Support"],
+    linkedin: "https://www.linkedin.com/in/goutham-r-688a4730b",
+    github: "https://github.com/",
+    email: "goutham@example.com"
+  },
+  {
+    name: "Harini S",
+    role: "Crew Member",
+    department: "AWS SBG REC",
+    image: "/images/crew/harini_s.jpg",
+    bio: "Harini coordinates presentation logistics, controls stage lighting setups, and organizes interactive gaming arenas for event breaks.",
+    responsibilities: ["Stage Event Flow", "Breakout Session Logistics", "AV Control Systems"],
+    linkedin: "https://www.linkedin.com/in/harini-s-5549b2333",
+    github: "https://github.com/",
+    email: "harini@example.com"
+  },
+  {
+    name: "Jaiganesh G",
+    role: "Crew Member",
+    department: "AWS SBG REC",
+    image: "/images/crew/jaiganesh_g.jpg",
+    bio: "Jaiganesh conducts live tech checks, verifies HDMI projections, and assists with event promotion and social media content editing.",
+    responsibilities: ["Technical Support", "Event Coordination", "Social Media Content"],
+    linkedin: "https://www.linkedin.com/in/jai-ganesh-g-aa294632a",
+    github: "https://github.com/jaiganesh78",
+    email: "jaigokul67@gmail.com"
+  },
+  {
+    name: "Lakshminarasimhan Uppili",
+    role: "Crew Member",
+    department: "AWS SBG REC",
+    image: "/images/crew/lakshminarasimhan.jpg",
+    bio: "Lakshminarasimhan manages network infrastructure, venue connectivity, and cloud lab setups for hackathon attendees.",
+    responsibilities: ["Network Infrastructure", "Cloud Lab Setups", "Technical Operations"],
+    linkedin: "https://www.linkedin.com/in/lakshminarasimhan-uppili",
+    github: "https://github.com/",
+    email: "lakshminarasimhan@example.com"
+  },
+  {
+    name: "Neil Daniel",
+    role: "Crew Member",
+    department: "AWS SBG REC",
+    image: "/images/crew/neil_daniel.jpg",
+    bio: "Neil drafts collegiate announcements, crafts event newsletters, and publishes summary articles across technical hubs.",
+    responsibilities: ["Content Strategy", "Collegiate Outreach", "Sponsor Relations"],
+    linkedin: "https://www.linkedin.com/in/neildaniel",
+    github: "https://github.com/",
+    email: "neildaniel@example.com"
+  },
+  {
+    name: "Rannesh Khumar B R",
+    role: "Crew Member",
+    department: "AWS SBG REC",
+    image: "/images/crew/rannesh_khumar_b_r.jpg",
+    bio: "Rannesh builds interactive landing page components, optimizes web viewports, and maintains frontend pipelines.",
+    responsibilities: ["Frontend Components", "UI/UX Enhancements", "Web Optimization"],
+    linkedin: "https://www.linkedin.com/in/rannesh-khumar-b-r-507377289",
     github: "https://github.com/",
     email: "rannesh@example.com"
   },
   {
-    name: "Sam Devaraj",
+    name: "Sam Devaraja J",
     role: "Crew Member",
-    department: "Information Technology",
-    image: "/sam_devaraj.jpeg",
-    bio: "Sam coordinates technical setups, cloud workshops support, and hardware logistics.",
-    responsibilities: ["Technical Setup", "Workshop Coordination", "Hardware Logistics"],
-    linkedin: "https://www.linkedin.com/",
+    department: "AWS SBG REC",
+    image: "/images/crew/sam_devaraja_j.jpg",
+    bio: "Sam leads full-stack web application development, real-time database integrations, and cloud infrastructure deployment.",
+    responsibilities: ["Full-Stack Engineering", "Cloud Infrastructure", "System Architecture"],
+    linkedin: "https://www.linkedin.com/in/samdevaraja",
     github: "https://github.com/",
-    email: "sam@example.com"
+    email: "samdevaraja@example.com"
+  },
+  {
+    name: "Sudhish R",
+    role: "Crew Member",
+    department: "AWS SBG REC",
+    image: "/images/crew/sudhish.jpg",
+    bio: "Sudhish coordinates check-in desks, delegate reception flow, and stage management during main sessions.",
+    responsibilities: ["Delegate Reception", "Stage Management", "Event Operations"],
+    linkedin: "https://www.linkedin.com/in/sudhish-r-9319b22a2",
+    github: "https://github.com/",
+    email: "sudhish@example.com"
+  },
+  {
+    name: "Sunchitha V K",
+    role: "Crew Member",
+    department: "AWS SBG REC",
+    image: "/images/crew/sunchitha_vk.jpg",
+    bio: "Sunchitha crafts custom graphic vectors, designs banner assets, and styles printable ID badges for all student delegates.",
+    responsibilities: ["Graphic Vector Assets", "ID Badge Designs", "Promotional Keynote Slides"],
+    linkedin: "https://www.linkedin.com/in/sunchitha-vk-0a3439319",
+    github: "https://github.com/",
+    email: "sunchitha@example.com"
+  },
+  {
+    name: "Vs Thamizh Selvan",
+    role: "Crew Member",
+    department: "AWS SBG REC",
+    image: "/images/crew/vs_thamizh_selvan.jpg",
+    bio: "Thamizh assists with container setups, serverless architecture demos, and cloud workshop lab operations.",
+    responsibilities: ["Container Setups", "Workshop Demos", "Cloud Operations"],
+    linkedin: "https://www.linkedin.com/in/vs-thamizh",
+    github: "https://github.com/",
+    email: "thamizh@example.com"
   }
 ];
 
@@ -375,12 +331,10 @@ export default function Organizers() {
   const [activeCoreIdx, setActiveCoreIdx] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
   const [mounted, setMounted] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
 
   useEffect(() => {
     setMounted(true);
-  }, []);
-
-  useEffect(() => {
     const handleResize = () => setIsMobile(window.innerWidth < 1024);
     handleResize();
     window.addEventListener("resize", handleResize);
@@ -399,21 +353,24 @@ export default function Organizers() {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [selectedCrew]);
 
-  // Auto-scroll Core Team carousel every 7 seconds
+  // Auto-scroll Core Team carousel every 6 seconds (pauses on hover)
   useEffect(() => {
+    if (isHovered) return;
     const timer = setInterval(() => {
       setActiveCoreIdx((prev) => (prev + 1) % coreTeam.length);
-    }, 7000);
+    }, 6000);
     return () => clearInterval(timer);
-  }, [activeCoreIdx]);
+  }, [activeCoreIdx, isHovered]);
 
 
   return (
-    <section id="organizers" className="py-10 relative overflow-hidden bg-black/20">
-      {/* Background radial glows */}
-      <div className="absolute top-1/2 left-1/4 w-72 h-72 rounded-full bg-blue-600/5 blur-[120px] pointer-events-none" />
+    <section id="organizers" className="py-10 relative overflow-hidden bg-transparent">
+      {/* Background Grid & Ambient Glows (Matching Hero) */}
+      <div className="absolute inset-0 cyber-grid opacity-30 pointer-events-none" />
+      <div className="absolute top-1/3 left-1/4 w-[450px] h-60 rounded-3xl bg-cyan-600/10 blur-[130px] -rotate-12 pointer-events-none" />
+      <div className="absolute bottom-5 right-1/4 w-[450px] h-60 rounded-3xl bg-blue-600/10 blur-[140px] rotate-12 pointer-events-none" />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 space-y-10">
+      <div className="w-[94%] max-w-[1440px] mx-auto relative z-10 space-y-10">
 
         {/* Section Heading */}
         <div className="text-center space-y-4">
@@ -439,92 +396,142 @@ export default function Organizers() {
           <FeaturedCoordinatorCard member={advisors[0]} />
         </div>
 
-        {/* 2. Core Team Showcase Section — Coverflow Slider + About Us */}
-        <div className="space-y-6">
+        {/* 2. Core Team Showcase Section — 3D Coverflow Showcase & Spotlight Profile */}
+        <div
+          className="space-y-6"
+          onMouseEnter={() => setIsHovered(true)}
+          onMouseLeave={() => setIsHovered(false)}
+        >
           <h3 className="text-lg font-bold text-[#00f0ff] border-b border-slate-900 pb-3 flex items-center gap-2">
             <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse" />
             Core Team
           </h3>
 
-          <div className="flex flex-col lg:flex-row gap-12 items-center justify-between min-h-[480px]">
-            {/* Left Side: Coverflow Slider */}
-            <div className="w-full lg:w-1/2 flex items-center justify-center relative h-[360px] sm:h-[400px]">
+          <div className="flex flex-col lg:flex-row gap-8 lg:gap-10 items-stretch justify-between min-h-[460px]">
+            {/* Left Side: 3D Coverflow Card Slider */}
+            <div className="w-full lg:w-1/2 flex flex-col items-center justify-center relative py-4">
               <div
                 style={{ perspective: 1000 }}
-                className="relative w-full max-w-[420px] h-full flex items-center justify-center overflow-visible"
+                className="relative w-full max-w-[420px] h-[390px] sm:h-[430px] flex items-center justify-center overflow-visible select-none"
               >
                 {coreTeam.map((member, idx) => {
-                  // Wrapping logic for a circular list
                   let offset = idx - activeCoreIdx;
                   const N = coreTeam.length;
                   if (offset < -Math.floor(N / 2)) offset += N;
                   if (offset > Math.floor((N - 1) / 2)) offset -= N;
 
                   const isActive = offset === 0;
-                  const cardXOffset = isMobile ? 80 : 100;
+                  const cardSpacing = isMobile ? 65 : 85;
 
                   return (
                     <motion.div
                       key={member.name}
                       onClick={() => setActiveCoreIdx(idx)}
                       style={{
-                        zIndex: 10 - Math.abs(offset),
+                        zIndex: 20 - Math.abs(offset),
                         pointerEvents: "auto",
                       }}
                       animate={{
-                        x: offset * cardXOffset,
-                        scale: offset === 0 ? 1 : 0.8,
-                        rotateY: offset === 0 ? 0 : offset < 0 ? 25 : -25,
-                        opacity: offset === 0 ? 1 : Math.max(0.2, 0.7 - Math.abs(offset) * 0.15),
+                        x: offset * cardSpacing,
+                        scale: isActive ? 1 : 0.84,
+                        rotateY: isActive ? 0 : offset < 0 ? 18 : -18,
                       }}
                       transition={{
                         type: "spring",
-                        stiffness: 220,
-                        damping: 22,
+                        stiffness: 360,
+                        damping: 28,
+                        mass: 0.4,
                       }}
-                      className="absolute w-[240px] sm:w-[280px] aspect-[3/4] rounded-3xl overflow-hidden bg-gradient-to-br from-[#0c1a30] to-[#050b14] border border-cyan-500/20 shadow-[0_0_35px_rgba(0,240,255,0.15)] hover:border-cyan-500/40 hover:shadow-[0_0_40px_rgba(0,240,255,0.25)] cursor-pointer group/core flex-shrink-0 origin-center"
+                      className={`absolute w-[240px] sm:w-[275px] aspect-[4/5] rounded-2xl overflow-hidden bg-[#070c18] cursor-pointer group/core flex-shrink-0 origin-center ${
+                        isActive
+                          ? "border-2 border-[#00f0ff] shadow-[0_0_35px_rgba(0,240,255,0.35),0_15px_40px_rgba(0,0,0,0.9)]"
+                          : "border border-slate-800 shadow-[0_10px_30px_rgba(0,0,0,0.8)] hover:border-cyan-500/40"
+                      }`}
                     >
-                      {/* Portrait Image */}
+                      {/* Member Image */}
                       <Image
                         src={member.image}
                         alt={member.name}
                         fill
-                        sizes="(max-width: 640px) 240px, 280px"
-                        className="object-cover object-top transition-transform duration-500 group-hover/core:scale-105"
+                        sizes="(max-width: 640px) 240px, 275px"
+                        className="object-cover object-center transition-transform duration-500 group-hover/core:scale-105"
                       />
-                      {/* Gradient overlay */}
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent pointer-events-none z-10" />
 
-                      {/* Floating name badge overlay inside card */}
-                      <div className="absolute bottom-5 left-4 right-4 z-20 text-center select-none">
-                        <h4 className="text-base sm:text-lg font-bold tracking-wide text-white drop-shadow-md truncate">
-                          {member.name}
-                        </h4>
-                        <p className="text-[10px] sm:text-xs text-cyan-400 font-semibold uppercase tracking-wider mt-0.5 truncate leading-none">
-                          {member.role}
-                        </p>
-                      </div>
+                      {/* Vignette Overlay */}
+                      <div
+                        className={`absolute inset-0 transition-opacity duration-200 pointer-events-none z-10 ${
+                          isActive
+                            ? "bg-gradient-to-t from-black/95 via-black/35 to-transparent"
+                            : "bg-black/60 backdrop-blur-[1px]"
+                        }`}
+                      />
 
-                      {/* Coverflow card focus effect border */}
+                      {/* Name & Clean Professional Role Badge Overlay ONLY on active card */}
                       {isActive && (
-                        <div className="absolute inset-0 border-2 border-cyan-400/60 rounded-3xl pointer-events-none z-30" />
+                        <div className="absolute bottom-5 left-3 right-3 z-20 text-center select-none space-y-1.5">
+                          <h4 className="text-base sm:text-lg font-bold tracking-wide text-white drop-shadow-[0_2px_6px_rgba(0,0,0,0.9)] truncate px-1">
+                            {member.name}
+                          </h4>
+                          <div className="flex justify-center">
+                            <span className="inline-block px-3 py-1 rounded-lg text-[11px] font-bold uppercase tracking-wider text-cyan-300 bg-[#0c192c]/90 border border-cyan-500/30 backdrop-blur-md shadow-sm">
+                              {member.role}
+                            </span>
+                          </div>
+                        </div>
                       )}
                     </motion.div>
                   );
                 })}
               </div>
+
+              {/* Prev / Next Controls & Dots */}
+              <div className="flex items-center gap-4 mt-3 z-20">
+                <button
+                  onClick={() => setActiveCoreIdx((prev) => (prev - 1 + coreTeam.length) % coreTeam.length)}
+                  className="w-9 h-9 rounded-full bg-slate-900/90 border border-slate-800 hover:border-cyan-500/50 hover:text-[#00f0ff] hover:bg-[#00f0ff]/10 hover:shadow-[0_0_15px_rgba(0,240,255,0.3)] text-slate-300 flex items-center justify-center transition-all active:scale-95"
+                  title="Previous Member"
+                >
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M15 19l-7-7 7-7" />
+                  </svg>
+                </button>
+
+                <div className="flex items-center gap-1.5">
+                  {coreTeam.map((_, i) => (
+                    <button
+                      key={i}
+                      onClick={() => setActiveCoreIdx(i)}
+                      className={`h-2 rounded-full transition-all duration-300 ${
+                        activeCoreIdx === i
+                          ? "w-6 bg-[#00f0ff] shadow-[0_0_10px_rgba(0,240,255,0.6)]"
+                          : "w-2 bg-slate-800 hover:bg-slate-700"
+                      }`}
+                    />
+                  ))}
+                </div>
+
+                <button
+                  onClick={() => setActiveCoreIdx((prev) => (prev + 1) % coreTeam.length)}
+                  className="w-9 h-9 rounded-full bg-slate-900/90 border border-slate-800 hover:border-cyan-500/50 hover:text-[#00f0ff] hover:bg-[#00f0ff]/10 hover:shadow-[0_0_15px_rgba(0,240,255,0.3)] text-slate-300 flex items-center justify-center transition-all active:scale-95"
+                  title="Next Member"
+                >
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M9 5l7 7-7 7" />
+                  </svg>
+                </button>
+              </div>
             </div>
 
-            {/* Right Side: About Us Panel */}
-            <div className="w-full lg:w-1/2">
-              <AnimatePresence mode="wait">
+            {/* Right Side: Spotlight Profile Panel */}
+            <div className="w-full lg:w-1/2 flex items-center">
+              <AnimatePresence>
                 <motion.div
                   key={activeCoreIdx}
-                  initial={{ opacity: 0, x: 20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: -20 }}
-                  transition={{ duration: 0.3 }}
-                  className="glass-panel text-white rounded-3xl p-6 sm:p-8 border border-cyan-500/10 shadow-[0_0_40px_rgba(0,240,255,0.08)] bg-[#070712]/90 space-y-6"
+                  initial={{ opacity: 0, y: 4 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -4 }}
+                  transition={{ duration: 0.15, ease: "easeOut" }}
+                  className="glass-panel text-white rounded-3xl p-6 sm:p-8 border border-cyan-500/15 shadow-[0_0_40px_rgba(0,240,255,0.08)] bg-[#070b16]/90 space-y-6 w-full h-full flex flex-col justify-between"
                 >
                   <div>
                     <span className="inline-block px-2.5 py-0.5 rounded bg-cyan-950/40 border border-cyan-500/15 text-cyan-400 text-[10px] font-bold uppercase tracking-widest">
@@ -534,11 +541,11 @@ export default function Organizers() {
                       {coreTeam[activeCoreIdx].name}
                     </h3>
                     <div className="flex flex-wrap items-center gap-2 mt-1">
-                      <p className="text-xs sm:text-sm font-semibold text-cyan-400 uppercase tracking-wider text-glow leading-none">
+                      <p className="text-xs sm:text-sm font-semibold text-[#00f0ff] uppercase tracking-wider leading-none">
                         {coreTeam[activeCoreIdx].role}
                       </p>
                       <span className="text-slate-600 text-xs">•</span>
-                      <p className="text-[10px] sm:text-xs text-slate-500 font-bold uppercase tracking-widest leading-none">
+                      <p className="text-[10px] sm:text-xs text-slate-400 font-bold uppercase tracking-widest leading-none">
                         {coreTeam[activeCoreIdx].department}
                       </p>
                     </div>
@@ -546,7 +553,7 @@ export default function Organizers() {
 
                   <div className="space-y-4">
                     <div>
-                      <h5 className="text-[9px] sm:text-[10px] text-[#00f0ff]/65 font-bold uppercase tracking-wider mb-1">
+                      <h5 className="text-[9px] sm:text-[10px] text-[#00f0ff]/70 font-bold uppercase tracking-wider mb-1">
                         Biography & Leadership
                       </h5>
                       <p className="text-xs sm:text-sm text-slate-300 leading-relaxed font-medium">
@@ -555,13 +562,13 @@ export default function Organizers() {
                     </div>
 
                     <div>
-                      <h5 className="text-[9px] sm:text-[10px] text-[#00f0ff]/65 font-bold uppercase tracking-wider mb-2">
+                      <h5 className="text-[9px] sm:text-[10px] text-[#00f0ff]/70 font-bold uppercase tracking-wider mb-2">
                         Key Responsibilities & Focus
                       </h5>
                       <ul className="grid grid-cols-1 gap-2">
                         {coreTeam[activeCoreIdx].responsibilities.map((resp, i) => (
                           <li key={i} className="flex items-center gap-3 text-slate-300 text-xs sm:text-sm font-medium">
-                            <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse flex-shrink-0" />
+                            <span className="w-2 h-2 rounded-full bg-[#00f0ff] animate-pulse flex-shrink-0" />
                             <span>{resp}</span>
                           </li>
                         ))}
@@ -569,32 +576,17 @@ export default function Organizers() {
                     </div>
                   </div>
 
-                  {/* Social links */}
-                  <div className="flex items-center gap-3 pt-4 border-t border-slate-800/80">
+                  {/* Action links */}
+                  <div className="flex items-center gap-2.5 pt-4 border-t border-slate-800/80 flex-wrap">
                     <a
                       href={coreTeam[activeCoreIdx].linkedin}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="w-10 h-10 rounded-full bg-slate-950 border border-slate-800 flex items-center justify-center text-slate-400 hover:text-[#00f0ff] hover:border-[#00f0ff]/50 hover:bg-[#00f0ff]/10 transition-all active:scale-95 cursor-pointer"
+                      className="flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-cyan-500/10 border border-cyan-500/30 text-[#00f0ff] hover:bg-[#00f0ff] hover:text-black hover:shadow-[0_0_15px_rgba(0,240,255,0.4)] transition-all font-semibold text-xs group"
                       title="LinkedIn Profile"
                     >
-                      <LinkedinIcon size={16} />
-                    </a>
-                    <a
-                      href={coreTeam[activeCoreIdx].github}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="w-10 h-10 rounded-full bg-slate-950 border border-slate-800 flex items-center justify-center text-slate-400 hover:text-white hover:border-white/50 hover:bg-white/10 transition-all active:scale-95 cursor-pointer"
-                      title="GitHub Profile"
-                    >
-                      <GithubIcon size={16} />
-                    </a>
-                    <a
-                      href={`mailto:${coreTeam[activeCoreIdx].email}`}
-                      className="w-10 h-10 rounded-full bg-slate-950 border border-slate-800 flex items-center justify-center text-slate-400 hover:text-[#ea4335] hover:border-[#ea4335]/50 hover:bg-[#ea4335]/10 transition-all active:scale-95 cursor-pointer"
-                      title="Email"
-                    >
-                      <MailIcon size={16} />
+                      <LinkedinIcon size={14} className="group-hover:scale-110 transition-transform" />
+                      <span>Connect on LinkedIn</span>
                     </a>
                   </div>
                 </motion.div>
@@ -603,144 +595,143 @@ export default function Organizers() {
           </div>
         </div>
 
-        {/* 3. Event Crew Section */}
-        <div className="space-y-6">
-          <div className="text-center space-y-2">
-            <h3 className="text-xl font-bold text-[#00f0ff] flex items-center justify-center gap-2">
-              <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse" />
-              Event Crew
-            </h3>
-            <p className="text-slate-400 text-xs max-w-md mx-auto">
-              Our hard-working student crew members supporting logistics, technical operations, design, and venue management. Click any crew member to view full profiles.
-            </p>
-          </div>
+      </div>
 
-          {/* Infinite Overlapping Stack Slider moving Left-to-Right */}
-          <div className="marquee-container relative w-full overflow-hidden py-10">
-            {/* Soft Edge Blending Gradients */}
-            <div className="absolute top-0 left-0 h-full w-24 bg-gradient-to-r from-[#020205] to-transparent z-20 pointer-events-none" />
-            <div className="absolute top-0 right-0 h-full w-24 bg-gradient-to-l from-[#020205] to-transparent z-20 pointer-events-none" />
-
-            <div className="animate-marquee-ltr flex gap-4 pl-10">
-              {[...crewTeam, ...crewTeam].map((member, idx) => (
-                <div
-                  key={idx}
-                  onClick={() => setSelectedCrew(member)}
-                  className="crew-card-stacked group relative flex-shrink-0 w-44 sm:w-52 glass-panel rounded-[24px] border border-cyan-500/10 bg-[#070712]/90 overflow-hidden flex flex-col p-4 cursor-pointer"
-                >
-                  {/* Card Glow Highlight Effect */}
-                  <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/0 via-transparent to-cyan-500/5 opacity-0 hover:opacity-100 transition-opacity duration-300" />
-
-                  {/* Image Container - Medium-sized circle/square */}
-                  <div className="relative w-full aspect-square rounded-2xl overflow-hidden bg-slate-900 border border-slate-800">
-                    <Image
-                      src={member.image}
-                      alt={member.name}
-                      fill
-                      sizes="(max-width: 640px) 150px, 200px"
-                      className="object-cover object-top transition-transform duration-500 group-hover:scale-105"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/10 to-transparent" />
-                  </div>
-
-                  {/* Text details */}
-                  <div className="mt-3.5 space-y-1 text-left relative z-10">
-                    <h4 className="text-sm sm:text-base font-bold text-white tracking-wide truncate">
-                      {member.name}
-                    </h4>
-                    <p className="text-[10px] font-semibold text-cyan-400 uppercase tracking-widest leading-none text-glow">
-                      {member.role}
-                    </p>
-                    <p className="text-[9px] text-slate-500 font-bold uppercase tracking-wider">
-                      {member.department}
-                    </p>
-                  </div>
-
-                  {/* Hover details overlay */}
-                  <div className="absolute inset-0 bg-[#070712]/95 backdrop-blur-sm p-4 flex flex-col justify-between translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out z-30 rounded-[24px] border border-cyan-500/30">
-                    <div className="space-y-3 overflow-hidden">
-                      <div>
-                        <h4 className="text-xs sm:text-sm font-extrabold text-white truncate">{member.name}</h4>
-                        <p className="text-[9px] font-semibold text-cyan-400 uppercase tracking-widest truncate">{member.role}</p>
-                      </div>
-
-                      <div className="space-y-2">
-                        <div>
-                          <span className="text-[8px] text-slate-500 font-bold uppercase tracking-wider block mb-0.5">Bio</span>
-                          <p className="text-[10px] text-slate-300 leading-normal line-clamp-3 font-medium">
-                            {member.bio}
-                          </p>
-                        </div>
-
-                        <div>
-                          <span className="text-[8px] text-slate-500 font-bold uppercase tracking-wider block mb-1">Focus</span>
-                          <div className="flex flex-wrap gap-1">
-                            {member.responsibilities.slice(0, 2).map((resp, i) => (
-                              <span key={i} className="text-[8px] bg-cyan-950/40 border border-cyan-500/20 text-cyan-300 px-1.5 py-0.5 rounded font-medium">
-                                {resp}
-                              </span>
-                            ))}
-                            {member.responsibilities.length > 2 && (
-                              <span className="text-[8px] text-slate-500 px-1 py-0.5 font-bold">
-                                +{member.responsibilities.length - 2} more
-                              </span>
-                            )}
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="flex items-center justify-between pt-2 border-t border-slate-800/80">
-                      <div className="flex items-center gap-2" onClick={(e) => e.stopPropagation()}>
-                        <a
-                          href={member.linkedin}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="w-6 h-6 rounded-full bg-slate-900 border border-slate-800 flex items-center justify-center text-slate-400 hover:text-[#00f0ff] hover:border-[#00f0ff]/50 hover:bg-[#00f0ff]/10 transition-all active:scale-90"
-                          title="LinkedIn"
-                        >
-                          <LinkedinIcon size={10} />
-                        </a>
-                        <a
-                          href={member.github}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="w-6 h-6 rounded-full bg-slate-900 border border-slate-800 flex items-center justify-center text-slate-400 hover:text-white hover:border-white/50 hover:bg-white/10 transition-all active:scale-90"
-                          title="GitHub"
-                        >
-                          <GithubIcon size={10} />
-                        </a>
-                        <a
-                          href={`mailto:${member.email}`}
-                          className="w-6 h-6 rounded-full bg-slate-900 border border-slate-800 flex items-center justify-center text-slate-400 hover:text-[#ea4335] hover:border-[#ea4335]/50 hover:bg-[#ea4335]/10 transition-all active:scale-90"
-                          title="Email"
-                        >
-                          <MailIcon size={10} />
-                        </a>
-                      </div>
-                      <span className="text-[8px] text-[#00f0ff]/70 font-bold uppercase tracking-wider">
-                        More ➔
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
+      {/* 3. Event Crew Section - Full Width Edge-to-Edge */}
+      <div className="w-full relative z-10 mt-16 space-y-6">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-2">
+          <h3 className="text-xl font-bold text-[#00f0ff] flex items-center justify-center gap-2">
+            <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse" />
+            Event Crew
+          </h3>
+          <p className="text-slate-400 text-xs max-w-md mx-auto">
+            Our hard-working student crew members supporting logistics, technical operations, design, and venue management. Click any crew member to view full profiles.
+          </p>
         </div>
 
-        {/* Detailed Crew Member Modal */}
-        <AnimatePresence>
-          {selectedCrew && (
-            <CrewMemberModalPortal
-              mounted={mounted}
-              selectedCrew={selectedCrew}
-              onClose={() => setSelectedCrew(null)}
-            />
-          )}
-        </AnimatePresence>
+        {/* Full Viewport Marquee Slider (No Left/Right Outer Gaps) */}
+        <div className="marquee-container relative w-full overflow-hidden py-8">
+          {/* Edge Blending Gradients */}
+          <div className="absolute top-0 left-0 h-full w-24 bg-gradient-to-r from-[#020205] via-[#020205]/60 to-transparent z-20 pointer-events-none" />
+          <div className="absolute top-0 right-0 h-full w-24 bg-gradient-to-l from-[#020205] via-[#020205]/60 to-transparent z-20 pointer-events-none" />
 
+          <div className="animate-marquee-rtl flex gap-5 px-2">
+            {[...crewTeam, ...crewTeam, ...crewTeam].map((member, idx) => (
+              <div
+                key={idx}
+                onClick={() => setSelectedCrew(member)}
+                className="crew-card-stacked group relative flex-shrink-0 w-48 sm:w-56 glass-panel rounded-2xl border border-slate-800/80 bg-[#070b16]/90 hover:border-cyan-500/40 hover:shadow-[0_0_25px_rgba(0,240,255,0.18)] transition-all duration-300 overflow-hidden flex flex-col p-3.5 cursor-pointer"
+              >
+                {/* Subtle Card Glow Highlight */}
+                <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/0 via-transparent to-cyan-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+
+                {/* Image Container */}
+                <div className="relative w-full aspect-square rounded-xl overflow-hidden bg-slate-950 border border-slate-800">
+                  <Image
+                    src={member.image}
+                    alt={member.name}
+                    fill
+                    sizes="(max-width: 640px) 180px, 220px"
+                    className="object-cover object-top transition-transform duration-500 group-hover:scale-105"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent" />
+                </div>
+
+                {/* Text details */}
+                <div className="mt-3 space-y-1 text-left relative z-10">
+                  <h4 className="text-sm font-bold text-white tracking-wide truncate">
+                    {member.name}
+                  </h4>
+                  <div className="flex items-center gap-1.5 flex-wrap">
+                    <span className="inline-block px-1.5 py-0.5 rounded text-[9px] font-extrabold uppercase tracking-wider bg-cyan-500/10 border border-cyan-500/25 text-[#00f0ff]">
+                      {member.role}
+                    </span>
+                  </div>
+                  <p className="text-[9px] text-slate-500 font-bold uppercase tracking-wider truncate pt-0.5">
+                    {member.department}
+                  </p>
+                </div>
+
+                {/* Hover details overlay */}
+                <div className="absolute inset-0 bg-[#070b16]/95 backdrop-blur-md p-4 flex flex-col justify-between translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out z-30 rounded-2xl border border-cyan-500/40">
+                  <div className="space-y-2.5 overflow-hidden">
+                    <div>
+                      <h4 className="text-xs sm:text-sm font-extrabold text-white truncate">{member.name}</h4>
+                      <span className="inline-block mt-1 px-1.5 py-0.5 rounded text-[9px] font-extrabold uppercase tracking-wider bg-cyan-500/10 border border-cyan-500/25 text-[#00f0ff]">
+                        {member.role}
+                      </span>
+                    </div>
+
+                    <div className="space-y-2">
+                      <div>
+                        <span className="text-[8px] text-slate-500 font-bold uppercase tracking-wider block mb-0.5">Bio</span>
+                        <p className="text-[10px] text-slate-300 leading-normal line-clamp-3 font-medium">
+                          {member.bio}
+                        </p>
+                      </div>
+
+                      <div>
+                        <span className="text-[8px] text-slate-500 font-bold uppercase tracking-wider block mb-1">Focus</span>
+                        <div className="flex flex-wrap gap-1">
+                          {member.responsibilities.slice(0, 2).map((resp, i) => (
+                            <span key={i} className="text-[8px] bg-cyan-950/40 border border-cyan-500/20 text-cyan-300 px-1.5 py-0.5 rounded font-medium">
+                              {resp}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center justify-between pt-2 border-t border-slate-800/80">
+                    <div className="flex items-center gap-2" onClick={(e) => e.stopPropagation()}>
+                      <a
+                        href={member.linkedin}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="w-6 h-6 rounded-full bg-slate-900 border border-slate-800 flex items-center justify-center text-slate-400 hover:text-[#00f0ff] hover:border-[#00f0ff]/50 hover:bg-[#00f0ff]/10 transition-all active:scale-90"
+                        title="LinkedIn"
+                      >
+                        <LinkedinIcon size={10} />
+                      </a>
+                      <a
+                        href={member.github}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="w-6 h-6 rounded-full bg-slate-900 border border-slate-800 flex items-center justify-center text-slate-400 hover:text-white hover:border-white/50 hover:bg-white/10 transition-all active:scale-90"
+                        title="GitHub"
+                      >
+                        <GithubIcon size={10} />
+                      </a>
+                      <a
+                        href={`mailto:${member.email}`}
+                        className="w-6 h-6 rounded-full bg-slate-900 border border-slate-800 flex items-center justify-center text-slate-400 hover:text-[#ea4335] hover:border-[#ea4335]/50 hover:bg-[#ea4335]/10 transition-all active:scale-90"
+                        title="Email"
+                      >
+                        <MailIcon size={10} />
+                      </a>
+                    </div>
+                    <span className="text-[8px] text-[#00f0ff]/80 font-bold uppercase tracking-wider flex items-center gap-1">
+                      Profile ➔
+                    </span>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
+
+      {/* Detailed Crew Member Modal */}
+      <AnimatePresence>
+        {selectedCrew && (
+          <CrewMemberModalPortal
+            mounted={mounted}
+            selectedCrew={selectedCrew}
+            onClose={() => setSelectedCrew(null)}
+          />
+        )}
+      </AnimatePresence>
     </section>
   );
 }
@@ -749,166 +740,98 @@ export default function Organizers() {
 // 3. Featured Coordinator Card Component (Mr. B. Bhuvaneshwaran)
 
 function FeaturedCoordinatorCard({ member }: { member: Advisor }) {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
-  const [isMobile, setIsMobile] = useState(false);
-  const [isExpanded, setIsExpanded] = useState(false);
-
-  useEffect(() => {
-    const handleResize = () => setIsMobile(window.innerWidth < 1024);
-    handleResize();
-    window.addEventListener("resize", handleResize);
-    return () => {
-      window.removeEventListener("resize", handleResize);
-      if (timeoutRef.current) clearTimeout(timeoutRef.current);
-    };
-  }, []);
-
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start 85%", "end 15%"]
-  });
-
-  // Automatically collapse when user scrolls past or away
-  useMotionValueEvent(scrollYProgress, "change", (latest) => {
-    if (latest < 0.1 || latest > 0.9) {
-      setIsExpanded(false);
-    }
-  });
-
-  const handleMouseEnter = () => {
-    if (isMobile) return;
-    if (timeoutRef.current) clearTimeout(timeoutRef.current);
-    setIsExpanded(true);
-  };
-
-  const handleMouseLeave = () => {
-    if (isMobile) return;
-    timeoutRef.current = setTimeout(() => {
-      setIsExpanded(false);
-    }, 150);
-  };
-
-  // Transform values based on click state
-  const imageX = isExpanded && !isMobile ? "-226px" : "0px";
-  const imageWidth = isExpanded && !isMobile ? "420px" : (isMobile ? "260px" : "320px");
-  const textOpacity = isExpanded ? 1 : 0;
-  const textX = isExpanded && !isMobile ? "226px" : (isMobile ? "0px" : "40px");
-  const pointerEvents = isExpanded ? ("auto" as const) : ("none" as const);
-
   return (
-    <div
-      ref={containerRef}
-      className="relative w-full min-h-[500px] flex items-center justify-center py-16 overflow-hidden"
-    >
-      <div className="relative w-full max-w-5xl flex flex-col lg:flex-row items-center justify-center gap-8 lg:gap-16">
-
-        {/* Animated Coordinator Square Photo (moves left & expands wider on click) */}
-        <motion.div
-          onClick={() => setIsExpanded(!isExpanded)}
-          onMouseEnter={handleMouseEnter}
-          onMouseLeave={handleMouseLeave}
-          animate={{
-            x: imageX,
-            width: imageWidth,
-          }}
-          transition={{ type: "spring", stiffness: 200, damping: 25 }}
-          className="relative aspect-square h-[260px] sm:h-[320px] rounded-3xl overflow-hidden bg-gradient-to-br from-[#0c1a30] to-[#050b14] border border-cyan-500/20 shadow-[0_0_35px_rgba(0,240,255,0.15)] hover:border-cyan-500/40 hover:shadow-[0_0_40px_rgba(0,240,255,0.25)] flex-shrink-0 z-20 cursor-pointer group/spotlight"
-        >
+    <div className="relative w-full py-4">
+      <div className="w-full max-w-5xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-stretch">
+        
+        {/* Left Column: Faculty Coordinator Photo Card */}
+        <div className="lg:col-span-5 relative w-full min-h-[380px] sm:min-h-[440px] rounded-3xl overflow-hidden glass-panel border border-cyan-500/20 shadow-[0_0_35px_rgba(0,240,255,0.12)] bg-[#070c18] flex flex-col justify-end p-6 group">
           <Image
-            src="/bhuvaneshwaran.png"
+            src="/images/faculty_bhuvaneswaran.jpg"
             alt={member.name}
             fill
             priority
-            className="object-cover object-top"
+            className="object-cover object-top transition-transform duration-700 group-hover:scale-105"
           />
-          {/* Dark gradient overlay */}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent pointer-events-none z-10" />
+          {/* Subtle gradient overlay */}
+          <div className="absolute inset-0 bg-gradient-to-t from-[#050914] via-[#050914]/40 to-transparent pointer-events-none z-10" />
 
-          {/* Subtle click indicator hint */}
-          <div className="absolute top-4 right-4 z-20 bg-slate-950/80 backdrop-blur-sm border border-cyan-500/20 rounded-full px-3 py-1 text-[9px] font-bold text-cyan-300 uppercase tracking-wider pointer-events-none group-hover/spotlight:border-cyan-400 group-hover/spotlight:text-cyan-200 transition-colors">
-            {isMobile
-              ? (isExpanded ? "Tap to collapse" : "Tap to view bio")
-              : (isExpanded ? "Click to lock open" : "Hover to view bio")}
-          </div>
-
-          {/* Floating name badge overlay inside card */}
-          <div className="absolute bottom-5 left-5 right-5 z-20 text-white select-none">
-            <h5 className="text-lg sm:text-xl font-bold tracking-wide drop-shadow-md">{member.name}</h5>
-            <p className="text-xs text-cyan-300 font-semibold uppercase tracking-wider mt-0.5">{member.role}</p>
-          </div>
-        </motion.div>
-
-        {/* Animated Professional Description Panel (slides/fades in on the right on click) */}
-        <motion.div
-          onMouseEnter={handleMouseEnter}
-          onMouseLeave={handleMouseLeave}
-          animate={{
-            opacity: textOpacity,
-            x: textX,
-            scale: isExpanded ? 1 : 0.95
-          }}
-          transition={{ duration: 0.4, ease: "easeInOut" }}
-          style={{ pointerEvents }}
-          className="w-full lg:w-[420px] text-left space-y-5 z-10 p-6 rounded-2xl glass-panel border border-cyan-500/10 text-white lg:absolute lg:left-[calc(50%-210px)]"
-        >
-          <div>
-            <span className="inline-block px-2.5 py-0.5 rounded bg-cyan-950/40 border border-cyan-500/15 text-cyan-400 text-[10px] font-bold uppercase tracking-widest">
-              Spotlight Organizer
+          {/* Badge & Name overlay */}
+          <div className="relative z-20 space-y-1">
+            <span className="inline-block px-2.5 py-0.5 rounded-lg bg-cyan-950/80 border border-cyan-500/30 text-cyan-300 text-[10px] font-bold uppercase tracking-wider backdrop-blur-md">
+              Faculty Mentor
             </span>
-            <h3 className="text-2xl font-black mt-2 text-white leading-tight">
+            <h4 className="text-xl sm:text-2xl font-black text-white tracking-wide drop-shadow-md">
               {member.name}
-            </h3>
-            <p className="text-sm font-semibold text-cyan-400 uppercase tracking-wider mt-0.5 text-glow animate-pulse">
+            </h4>
+            <p className="text-xs text-cyan-400 font-bold uppercase tracking-wider">
               {member.role}
             </p>
-            <p className="text-[10px] text-slate-500 font-bold uppercase tracking-widest leading-none mt-1">
-              {member.department}
-            </p>
           </div>
+        </div>
 
-          <div className="space-y-3.5">
+        {/* Right Column: Spotlight Info & Bio Panel */}
+        <div className="lg:col-span-7 w-full glass-panel rounded-3xl border border-cyan-500/20 bg-[#070c18]/90 backdrop-blur-xl p-6 sm:p-8 flex flex-col justify-between space-y-6 shadow-[0_0_40px_rgba(0,240,255,0.08)]">
+          <div className="space-y-5">
+            {/* Header info */}
             <div>
-              <h5 className="text-[9px] text-[#00f0ff]/65 font-bold uppercase tracking-wider mb-1">
+              <div className="flex items-center gap-2 mb-2">
+                <span className="inline-block px-3 py-1 rounded-lg bg-cyan-500/10 border border-cyan-500/25 text-[#00f0ff] text-[10px] font-extrabold uppercase tracking-widest">
+                  Spotlight Organizer
+                </span>
+              </div>
+              <h3 className="text-2xl sm:text-3xl font-black text-white tracking-tight leading-tight">
+                {member.name}
+              </h3>
+              <p className="text-xs sm:text-sm font-bold text-[#00f0ff] uppercase tracking-wider mt-1">
+                {member.role}
+              </p>
+              <p className="text-[10px] text-slate-400 font-semibold uppercase tracking-widest mt-0.5">
+                {member.department}
+              </p>
+            </div>
+
+            {/* Biography */}
+            <div className="space-y-1.5">
+              <h5 className="text-[10px] text-slate-400 font-extrabold uppercase tracking-wider">
                 Faculty Biography
               </h5>
-              <p className="text-xs text-slate-300 leading-relaxed font-medium">
+              <p className="text-xs sm:text-sm text-slate-300 leading-relaxed font-medium">
                 {member.bio}
               </p>
             </div>
 
+            {/* Key Focus Areas */}
             {member.focusAreas && (
-              <div>
-                <h5 className="text-[9px] text-[#00f0ff]/65 font-bold uppercase tracking-wider mb-1.5">
+              <div className="space-y-2">
+                <h5 className="text-[10px] text-slate-400 font-extrabold uppercase tracking-wider">
                   Key Focus Areas
                 </h5>
-                <ul className="grid grid-cols-1 gap-1.5">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                   {member.focusAreas.map((area, i) => (
-                    <li key={i} className="flex items-center gap-2 text-slate-300 text-xs font-medium">
+                    <div key={i} className="flex items-center gap-2 text-slate-300 text-xs font-medium bg-slate-950/60 border border-slate-800/80 px-3 py-2 rounded-xl">
                       <span className="w-1.5 h-1.5 rounded-full bg-[#00f0ff] animate-pulse flex-shrink-0" />
-                      <span>{area}</span>
-                    </li>
+                      <span className="truncate">{area}</span>
+                    </div>
                   ))}
-                </ul>
+                </div>
               </div>
             )}
           </div>
 
-          <div className="pt-4 border-t border-slate-800 flex items-center justify-between">
+          {/* Social CTA */}
+          <div className="pt-4 border-t border-slate-800/80 flex items-center justify-between">
             <a
               href={member.linkedin}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 text-cyan-400 hover:text-[#00f0ff] font-bold uppercase text-xs tracking-wider transition-colors"
+              className="inline-flex items-center gap-2 text-[#00f0ff] hover:text-cyan-300 font-bold uppercase text-xs tracking-wider transition-all hover:translate-x-1"
             >
-              <LinkedinIcon size={16} /> Connect on LinkedIn
+              <LinkedinIcon size={16} />
+              <span>Connect on LinkedIn</span>
             </a>
-            <span className="text-[10px] text-slate-500 font-bold uppercase tracking-widest">
-              AWS SBG REC
-            </span>
           </div>
-        </motion.div>
-
+        </div>
       </div>
     </div>
   );
@@ -980,7 +903,7 @@ function CrewMemberModalPortal({ mounted, selectedCrew, onClose }: CrewMemberMod
               <h3 className="text-xl sm:text-2xl font-bold mt-2 text-white leading-tight">
                 {selectedCrew.name}
               </h3>
-              <p className="text-xs font-semibold text-cyan-400 uppercase tracking-wider mt-0.5 text-glow">
+              <p className="text-xs font-semibold text-cyan-400 uppercase tracking-wider mt-0.5">
                 {selectedCrew.role}
               </p>
               <p className="text-[9px] text-slate-500 font-bold uppercase tracking-widest mt-1">
@@ -1019,26 +942,11 @@ function CrewMemberModalPortal({ mounted, selectedCrew, onClose }: CrewMemberMod
                 href={selectedCrew.linkedin}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-8 h-8 rounded-full bg-slate-900 border border-slate-800 flex items-center justify-center text-slate-400 hover:text-[#00f0ff] hover:border-[#00f0ff]/50 hover:bg-[#00f0ff]/10 transition-all active:scale-95 cursor-pointer"
+                className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-cyan-500/10 border border-cyan-500/30 text-[#00f0ff] hover:bg-[#00f0ff] hover:text-black hover:shadow-[0_0_15px_rgba(0,240,255,0.4)] transition-all font-semibold text-xs group cursor-pointer"
                 title="LinkedIn Profile"
               >
-                <LinkedinIcon size={14} />
-              </a>
-              <a
-                href={selectedCrew.github}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-8 h-8 rounded-full bg-slate-900 border border-slate-800 flex items-center justify-center text-slate-400 hover:text-white hover:border-white/50 hover:bg-white/10 transition-all active:scale-95 cursor-pointer"
-                title="GitHub Profile"
-              >
-                <GithubIcon size={14} />
-              </a>
-              <a
-                href={`mailto:${selectedCrew.email}`}
-                className="w-8 h-8 rounded-full bg-slate-900 border border-slate-800 flex items-center justify-center text-slate-400 hover:text-[#ea4335] hover:border-[#ea4335]/50 hover:bg-[#ea4335]/10 transition-all active:scale-95 cursor-pointer"
-                title="Email"
-              >
-                <MailIcon size={14} />
+                <LinkedinIcon size={14} className="group-hover:scale-110 transition-transform" />
+                <span>Connect on LinkedIn</span>
               </a>
             </div>
           </div>

@@ -20,7 +20,7 @@ export const metadata: Metadata = {
   title: "AWS Student Community Day 2026 | AWS Student Builder Groups REC",
   description: "Join us for the premier AWS Student Community Day on September 12, 2026, hosted by the AWS Student Builder Groups at REC College. Discover cloud intelligence, GenAI, serverless computing, and more.",
   icons: {
-    icon: "/aws_sbg_logo.png",
+    icon: "/aws_sbg_logo.svg",
   },
 };
 
@@ -32,14 +32,15 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased scroll-smooth`}
+      data-scroll-behavior="smooth"
+      className={`${geistSans.variable} ${geistMono.variable} antialiased scroll-smooth`}
     >
-      <body className="h-full flex flex-col bg-[#020205] text-slate-100 selection:bg-cyan-500/30 selection:text-cyan-200">
+      <body className="min-h-screen bg-[#020205] text-slate-100 selection:bg-cyan-500/30 selection:text-cyan-200">
         <AdminAuthProvider>
           <EventDataProvider>
             <RegistrationProvider>
               <CustomCursor />
-              <div className="flex flex-col flex-1 min-h-screen">
+              <div className="w-full">
                 {children}
               </div>
             </RegistrationProvider>
