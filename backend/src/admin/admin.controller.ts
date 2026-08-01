@@ -1,4 +1,4 @@
-﻿import { Controller, Get, Post, Patch, Delete, Body, Param, Query, HttpStatus, HttpCode } from '@nestjs/common';
+import { Controller, Get, Post, Patch, Delete, Body, Param, Query, HttpStatus, HttpCode } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 
 @Controller('admin')
@@ -53,12 +53,14 @@ export class AdminController {
     const item = await this.prisma.speakerProposal.create({
       data: {
         name: data.name,
-        email: data.email,
+        email: data.email || 'speaker@rec.edu',
         phone: data.phone || null,
         company: data.company || null,
         role: data.role || null,
         topic: data.topic,
-        abstract: data.abstract || 'Added by admin',
+        abstract: data.abstract || data.bio || 'Added by admin',
+        photoUrl: data.photoUrl || data.image || null,
+        linkedin: data.linkedin || null,
         status: data.status || 'APPROVED',
         confirmed: data.confirmed || false,
       },
@@ -77,7 +79,10 @@ export class AdminController {
         ...(data.company !== undefined && { company: data.company }),
         ...(data.role !== undefined && { role: data.role }),
         ...(data.topic && { topic: data.topic }),
-        ...(data.abstract && { abstract: data.abstract }),
+        ...(data.abstract !== undefined && { abstract: data.abstract }),
+        ...(data.bio !== undefined && { abstract: data.bio }),
+        ...((data.photoUrl !== undefined || data.image !== undefined) && { photoUrl: data.photoUrl || data.image }),
+        ...(data.linkedin !== undefined && { linkedin: data.linkedin }),
         ...(data.status && { status: data.status }),
         ...(data.confirmed !== undefined && { confirmed: data.confirmed }),
       },
@@ -111,6 +116,7 @@ export class AdminController {
         email: data.email,
         tier: data.tier || 'COMMUNITY',
         message: data.message || null,
+        logoUrl: data.logoUrl || data.logo || null,
         status: data.status || 'APPROVED',
         confirmed: data.confirmed || false,
       },
@@ -129,6 +135,7 @@ export class AdminController {
         ...(data.email && { email: data.email }),
         ...(data.tier && { tier: data.tier }),
         ...(data.message !== undefined && { message: data.message }),
+        ...((data.logoUrl !== undefined || data.logo !== undefined) && { logoUrl: data.logoUrl || data.logo }),
         ...(data.status && { status: data.status }),
         ...(data.confirmed !== undefined && { confirmed: data.confirmed }),
       },

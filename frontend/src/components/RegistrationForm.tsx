@@ -19,6 +19,7 @@ import {
 import { useRegistration } from "@/context/RegistrationContext";
 import SuccessBadge from "./SuccessBadge";
 import { motion, AnimatePresence, type Variants } from "framer-motion";
+import { getApiUrl } from "@/lib/api";
 
 interface FormData {
   fullName: string;
@@ -94,7 +95,7 @@ export default function RegistrationForm() {
     setResending(true);
     setResendStatus("");
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/registrations/resend-qr`, {
+      const response = await fetch(`${getApiUrl()}/registrations/resend-qr`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email: targetEmail }),
@@ -119,7 +120,7 @@ export default function RegistrationForm() {
     setIsAlreadyRegistered(false);
 
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/registrations`, {
+      const response = await fetch(`${getApiUrl()}/registrations`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

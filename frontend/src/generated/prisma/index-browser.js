@@ -214,6 +214,7 @@ exports.Prisma.SpeakerProposalScalarFieldEnum = {
   topic: 'topic',
   abstract: 'abstract',
   photoUrl: 'photoUrl',
+  linkedin: 'linkedin',
   bio: 'bio',
   confirmed: 'confirmed',
   status: 'status',
@@ -229,6 +230,7 @@ exports.Prisma.ConfirmedSpeakerScalarFieldEnum = {
   topic: 'topic',
   bio: 'bio',
   image: 'image',
+  linkedin: 'linkedin',
   order: 'order',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'

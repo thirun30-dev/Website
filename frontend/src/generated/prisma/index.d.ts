@@ -8358,6 +8358,7 @@ export namespace Prisma {
     topic: string | null
     abstract: string | null
     photoUrl: string | null
+    linkedin: string | null
     bio: string | null
     confirmed: boolean | null
     status: string | null
@@ -8375,6 +8376,7 @@ export namespace Prisma {
     topic: string | null
     abstract: string | null
     photoUrl: string | null
+    linkedin: string | null
     bio: string | null
     confirmed: boolean | null
     status: string | null
@@ -8392,6 +8394,7 @@ export namespace Prisma {
     topic: number
     abstract: number
     photoUrl: number
+    linkedin: number
     bio: number
     confirmed: number
     status: number
@@ -8411,6 +8414,7 @@ export namespace Prisma {
     topic?: true
     abstract?: true
     photoUrl?: true
+    linkedin?: true
     bio?: true
     confirmed?: true
     status?: true
@@ -8428,6 +8432,7 @@ export namespace Prisma {
     topic?: true
     abstract?: true
     photoUrl?: true
+    linkedin?: true
     bio?: true
     confirmed?: true
     status?: true
@@ -8445,6 +8450,7 @@ export namespace Prisma {
     topic?: true
     abstract?: true
     photoUrl?: true
+    linkedin?: true
     bio?: true
     confirmed?: true
     status?: true
@@ -8535,6 +8541,7 @@ export namespace Prisma {
     topic: string
     abstract: string
     photoUrl: string | null
+    linkedin: string | null
     bio: string | null
     confirmed: boolean
     status: string
@@ -8569,6 +8576,7 @@ export namespace Prisma {
     topic?: boolean
     abstract?: boolean
     photoUrl?: boolean
+    linkedin?: boolean
     bio?: boolean
     confirmed?: boolean
     status?: boolean
@@ -8586,6 +8594,7 @@ export namespace Prisma {
     topic?: boolean
     abstract?: boolean
     photoUrl?: boolean
+    linkedin?: boolean
     bio?: boolean
     confirmed?: boolean
     status?: boolean
@@ -8603,6 +8612,7 @@ export namespace Prisma {
     topic?: boolean
     abstract?: boolean
     photoUrl?: boolean
+    linkedin?: boolean
     bio?: boolean
     confirmed?: boolean
     status?: boolean
@@ -8620,6 +8630,7 @@ export namespace Prisma {
     topic?: boolean
     abstract?: boolean
     photoUrl?: boolean
+    linkedin?: boolean
     bio?: boolean
     confirmed?: boolean
     status?: boolean
@@ -8627,7 +8638,7 @@ export namespace Prisma {
     updatedAt?: boolean
   }
 
-  export type SpeakerProposalOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "email" | "phone" | "role" | "company" | "topic" | "abstract" | "photoUrl" | "bio" | "confirmed" | "status" | "createdAt" | "updatedAt", ExtArgs["result"]["speakerProposal"]>
+  export type SpeakerProposalOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "email" | "phone" | "role" | "company" | "topic" | "abstract" | "photoUrl" | "linkedin" | "bio" | "confirmed" | "status" | "createdAt" | "updatedAt", ExtArgs["result"]["speakerProposal"]>
 
   export type $SpeakerProposalPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "SpeakerProposal"
@@ -8642,6 +8653,7 @@ export namespace Prisma {
       topic: string
       abstract: string
       photoUrl: string | null
+      linkedin: string | null
       bio: string | null
       confirmed: boolean
       status: string
@@ -9079,6 +9091,7 @@ export namespace Prisma {
     readonly topic: FieldRef<"SpeakerProposal", 'String'>
     readonly abstract: FieldRef<"SpeakerProposal", 'String'>
     readonly photoUrl: FieldRef<"SpeakerProposal", 'String'>
+    readonly linkedin: FieldRef<"SpeakerProposal", 'String'>
     readonly bio: FieldRef<"SpeakerProposal", 'String'>
     readonly confirmed: FieldRef<"SpeakerProposal", 'Boolean'>
     readonly status: FieldRef<"SpeakerProposal", 'String'>
@@ -9478,6 +9491,7 @@ export namespace Prisma {
     topic: string | null
     bio: string | null
     image: string | null
+    linkedin: string | null
     order: number | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -9491,6 +9505,7 @@ export namespace Prisma {
     topic: string | null
     bio: string | null
     image: string | null
+    linkedin: string | null
     order: number | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -9504,6 +9519,7 @@ export namespace Prisma {
     topic: number
     bio: number
     image: number
+    linkedin: number
     order: number
     createdAt: number
     updatedAt: number
@@ -9527,6 +9543,7 @@ export namespace Prisma {
     topic?: true
     bio?: true
     image?: true
+    linkedin?: true
     order?: true
     createdAt?: true
     updatedAt?: true
@@ -9540,6 +9557,7 @@ export namespace Prisma {
     topic?: true
     bio?: true
     image?: true
+    linkedin?: true
     order?: true
     createdAt?: true
     updatedAt?: true
@@ -9553,6 +9571,7 @@ export namespace Prisma {
     topic?: true
     bio?: true
     image?: true
+    linkedin?: true
     order?: true
     createdAt?: true
     updatedAt?: true
@@ -9653,6 +9672,7 @@ export namespace Prisma {
     topic: string
     bio: string | null
     image: string | null
+    linkedin: string | null
     order: number
     createdAt: Date
     updatedAt: Date
@@ -9685,6 +9705,7 @@ export namespace Prisma {
     topic?: boolean
     bio?: boolean
     image?: boolean
+    linkedin?: boolean
     order?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -9698,6 +9719,7 @@ export namespace Prisma {
     topic?: boolean
     bio?: boolean
     image?: boolean
+    linkedin?: boolean
     order?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -9711,6 +9733,7 @@ export namespace Prisma {
     topic?: boolean
     bio?: boolean
     image?: boolean
+    linkedin?: boolean
     order?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -9724,12 +9747,13 @@ export namespace Prisma {
     topic?: boolean
     bio?: boolean
     image?: boolean
+    linkedin?: boolean
     order?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type ConfirmedSpeakerOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "role" | "company" | "topic" | "bio" | "image" | "order" | "createdAt" | "updatedAt", ExtArgs["result"]["confirmedSpeaker"]>
+  export type ConfirmedSpeakerOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "role" | "company" | "topic" | "bio" | "image" | "linkedin" | "order" | "createdAt" | "updatedAt", ExtArgs["result"]["confirmedSpeaker"]>
 
   export type $ConfirmedSpeakerPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "ConfirmedSpeaker"
@@ -9742,6 +9766,7 @@ export namespace Prisma {
       topic: string
       bio: string | null
       image: string | null
+      linkedin: string | null
       order: number
       createdAt: Date
       updatedAt: Date
@@ -10175,6 +10200,7 @@ export namespace Prisma {
     readonly topic: FieldRef<"ConfirmedSpeaker", 'String'>
     readonly bio: FieldRef<"ConfirmedSpeaker", 'String'>
     readonly image: FieldRef<"ConfirmedSpeaker", 'String'>
+    readonly linkedin: FieldRef<"ConfirmedSpeaker", 'String'>
     readonly order: FieldRef<"ConfirmedSpeaker", 'Int'>
     readonly createdAt: FieldRef<"ConfirmedSpeaker", 'DateTime'>
     readonly updatedAt: FieldRef<"ConfirmedSpeaker", 'DateTime'>
@@ -11737,6 +11763,7 @@ export namespace Prisma {
     topic: 'topic',
     abstract: 'abstract',
     photoUrl: 'photoUrl',
+    linkedin: 'linkedin',
     bio: 'bio',
     confirmed: 'confirmed',
     status: 'status',
@@ -11755,6 +11782,7 @@ export namespace Prisma {
     topic: 'topic',
     bio: 'bio',
     image: 'image',
+    linkedin: 'linkedin',
     order: 'order',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
@@ -12457,6 +12485,7 @@ export namespace Prisma {
     topic?: StringFilter<"SpeakerProposal"> | string
     abstract?: StringFilter<"SpeakerProposal"> | string
     photoUrl?: StringNullableFilter<"SpeakerProposal"> | string | null
+    linkedin?: StringNullableFilter<"SpeakerProposal"> | string | null
     bio?: StringNullableFilter<"SpeakerProposal"> | string | null
     confirmed?: BoolFilter<"SpeakerProposal"> | boolean
     status?: StringFilter<"SpeakerProposal"> | string
@@ -12474,6 +12503,7 @@ export namespace Prisma {
     topic?: SortOrder
     abstract?: SortOrder
     photoUrl?: SortOrderInput | SortOrder
+    linkedin?: SortOrderInput | SortOrder
     bio?: SortOrderInput | SortOrder
     confirmed?: SortOrder
     status?: SortOrder
@@ -12494,6 +12524,7 @@ export namespace Prisma {
     topic?: StringFilter<"SpeakerProposal"> | string
     abstract?: StringFilter<"SpeakerProposal"> | string
     photoUrl?: StringNullableFilter<"SpeakerProposal"> | string | null
+    linkedin?: StringNullableFilter<"SpeakerProposal"> | string | null
     bio?: StringNullableFilter<"SpeakerProposal"> | string | null
     confirmed?: BoolFilter<"SpeakerProposal"> | boolean
     status?: StringFilter<"SpeakerProposal"> | string
@@ -12511,6 +12542,7 @@ export namespace Prisma {
     topic?: SortOrder
     abstract?: SortOrder
     photoUrl?: SortOrderInput | SortOrder
+    linkedin?: SortOrderInput | SortOrder
     bio?: SortOrderInput | SortOrder
     confirmed?: SortOrder
     status?: SortOrder
@@ -12534,6 +12566,7 @@ export namespace Prisma {
     topic?: StringWithAggregatesFilter<"SpeakerProposal"> | string
     abstract?: StringWithAggregatesFilter<"SpeakerProposal"> | string
     photoUrl?: StringNullableWithAggregatesFilter<"SpeakerProposal"> | string | null
+    linkedin?: StringNullableWithAggregatesFilter<"SpeakerProposal"> | string | null
     bio?: StringNullableWithAggregatesFilter<"SpeakerProposal"> | string | null
     confirmed?: BoolWithAggregatesFilter<"SpeakerProposal"> | boolean
     status?: StringWithAggregatesFilter<"SpeakerProposal"> | string
@@ -12552,6 +12585,7 @@ export namespace Prisma {
     topic?: StringFilter<"ConfirmedSpeaker"> | string
     bio?: StringNullableFilter<"ConfirmedSpeaker"> | string | null
     image?: StringNullableFilter<"ConfirmedSpeaker"> | string | null
+    linkedin?: StringNullableFilter<"ConfirmedSpeaker"> | string | null
     order?: IntFilter<"ConfirmedSpeaker"> | number
     createdAt?: DateTimeFilter<"ConfirmedSpeaker"> | Date | string
     updatedAt?: DateTimeFilter<"ConfirmedSpeaker"> | Date | string
@@ -12565,6 +12599,7 @@ export namespace Prisma {
     topic?: SortOrder
     bio?: SortOrderInput | SortOrder
     image?: SortOrderInput | SortOrder
+    linkedin?: SortOrderInput | SortOrder
     order?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -12581,6 +12616,7 @@ export namespace Prisma {
     topic?: StringFilter<"ConfirmedSpeaker"> | string
     bio?: StringNullableFilter<"ConfirmedSpeaker"> | string | null
     image?: StringNullableFilter<"ConfirmedSpeaker"> | string | null
+    linkedin?: StringNullableFilter<"ConfirmedSpeaker"> | string | null
     order?: IntFilter<"ConfirmedSpeaker"> | number
     createdAt?: DateTimeFilter<"ConfirmedSpeaker"> | Date | string
     updatedAt?: DateTimeFilter<"ConfirmedSpeaker"> | Date | string
@@ -12594,6 +12630,7 @@ export namespace Prisma {
     topic?: SortOrder
     bio?: SortOrderInput | SortOrder
     image?: SortOrderInput | SortOrder
+    linkedin?: SortOrderInput | SortOrder
     order?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -12615,6 +12652,7 @@ export namespace Prisma {
     topic?: StringWithAggregatesFilter<"ConfirmedSpeaker"> | string
     bio?: StringNullableWithAggregatesFilter<"ConfirmedSpeaker"> | string | null
     image?: StringNullableWithAggregatesFilter<"ConfirmedSpeaker"> | string | null
+    linkedin?: StringNullableWithAggregatesFilter<"ConfirmedSpeaker"> | string | null
     order?: IntWithAggregatesFilter<"ConfirmedSpeaker"> | number
     createdAt?: DateTimeWithAggregatesFilter<"ConfirmedSpeaker"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"ConfirmedSpeaker"> | Date | string
@@ -13286,6 +13324,7 @@ export namespace Prisma {
     topic: string
     abstract: string
     photoUrl?: string | null
+    linkedin?: string | null
     bio?: string | null
     confirmed?: boolean
     status?: string
@@ -13303,6 +13342,7 @@ export namespace Prisma {
     topic: string
     abstract: string
     photoUrl?: string | null
+    linkedin?: string | null
     bio?: string | null
     confirmed?: boolean
     status?: string
@@ -13320,6 +13360,7 @@ export namespace Prisma {
     topic?: StringFieldUpdateOperationsInput | string
     abstract?: StringFieldUpdateOperationsInput | string
     photoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    linkedin?: NullableStringFieldUpdateOperationsInput | string | null
     bio?: NullableStringFieldUpdateOperationsInput | string | null
     confirmed?: BoolFieldUpdateOperationsInput | boolean
     status?: StringFieldUpdateOperationsInput | string
@@ -13337,6 +13378,7 @@ export namespace Prisma {
     topic?: StringFieldUpdateOperationsInput | string
     abstract?: StringFieldUpdateOperationsInput | string
     photoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    linkedin?: NullableStringFieldUpdateOperationsInput | string | null
     bio?: NullableStringFieldUpdateOperationsInput | string | null
     confirmed?: BoolFieldUpdateOperationsInput | boolean
     status?: StringFieldUpdateOperationsInput | string
@@ -13354,6 +13396,7 @@ export namespace Prisma {
     topic: string
     abstract: string
     photoUrl?: string | null
+    linkedin?: string | null
     bio?: string | null
     confirmed?: boolean
     status?: string
@@ -13371,6 +13414,7 @@ export namespace Prisma {
     topic?: StringFieldUpdateOperationsInput | string
     abstract?: StringFieldUpdateOperationsInput | string
     photoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    linkedin?: NullableStringFieldUpdateOperationsInput | string | null
     bio?: NullableStringFieldUpdateOperationsInput | string | null
     confirmed?: BoolFieldUpdateOperationsInput | boolean
     status?: StringFieldUpdateOperationsInput | string
@@ -13388,6 +13432,7 @@ export namespace Prisma {
     topic?: StringFieldUpdateOperationsInput | string
     abstract?: StringFieldUpdateOperationsInput | string
     photoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    linkedin?: NullableStringFieldUpdateOperationsInput | string | null
     bio?: NullableStringFieldUpdateOperationsInput | string | null
     confirmed?: BoolFieldUpdateOperationsInput | boolean
     status?: StringFieldUpdateOperationsInput | string
@@ -13403,6 +13448,7 @@ export namespace Prisma {
     topic: string
     bio?: string | null
     image?: string | null
+    linkedin?: string | null
     order?: number
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -13416,6 +13462,7 @@ export namespace Prisma {
     topic: string
     bio?: string | null
     image?: string | null
+    linkedin?: string | null
     order?: number
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -13429,6 +13476,7 @@ export namespace Prisma {
     topic?: StringFieldUpdateOperationsInput | string
     bio?: NullableStringFieldUpdateOperationsInput | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
+    linkedin?: NullableStringFieldUpdateOperationsInput | string | null
     order?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -13442,6 +13490,7 @@ export namespace Prisma {
     topic?: StringFieldUpdateOperationsInput | string
     bio?: NullableStringFieldUpdateOperationsInput | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
+    linkedin?: NullableStringFieldUpdateOperationsInput | string | null
     order?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -13455,6 +13504,7 @@ export namespace Prisma {
     topic: string
     bio?: string | null
     image?: string | null
+    linkedin?: string | null
     order?: number
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -13468,6 +13518,7 @@ export namespace Prisma {
     topic?: StringFieldUpdateOperationsInput | string
     bio?: NullableStringFieldUpdateOperationsInput | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
+    linkedin?: NullableStringFieldUpdateOperationsInput | string | null
     order?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -13481,6 +13532,7 @@ export namespace Prisma {
     topic?: StringFieldUpdateOperationsInput | string
     bio?: NullableStringFieldUpdateOperationsInput | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
+    linkedin?: NullableStringFieldUpdateOperationsInput | string | null
     order?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -14079,6 +14131,7 @@ export namespace Prisma {
     topic?: SortOrder
     abstract?: SortOrder
     photoUrl?: SortOrder
+    linkedin?: SortOrder
     bio?: SortOrder
     confirmed?: SortOrder
     status?: SortOrder
@@ -14096,6 +14149,7 @@ export namespace Prisma {
     topic?: SortOrder
     abstract?: SortOrder
     photoUrl?: SortOrder
+    linkedin?: SortOrder
     bio?: SortOrder
     confirmed?: SortOrder
     status?: SortOrder
@@ -14113,6 +14167,7 @@ export namespace Prisma {
     topic?: SortOrder
     abstract?: SortOrder
     photoUrl?: SortOrder
+    linkedin?: SortOrder
     bio?: SortOrder
     confirmed?: SortOrder
     status?: SortOrder
@@ -14139,6 +14194,7 @@ export namespace Prisma {
     topic?: SortOrder
     bio?: SortOrder
     image?: SortOrder
+    linkedin?: SortOrder
     order?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -14156,6 +14212,7 @@ export namespace Prisma {
     topic?: SortOrder
     bio?: SortOrder
     image?: SortOrder
+    linkedin?: SortOrder
     order?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -14169,6 +14226,7 @@ export namespace Prisma {
     topic?: SortOrder
     bio?: SortOrder
     image?: SortOrder
+    linkedin?: SortOrder
     order?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder

@@ -6,11 +6,12 @@ import {
   Users, CheckCircle2, Gift, Mail, Calendar, 
   Search, ArrowUpDown, Trash2, Download, LogOut, 
   ExternalLink, ChevronLeft, ChevronRight, AlertTriangle, Layers, ShieldAlert,
-  Loader2, ShieldCheck, XCircle, Mic, Building2, Plus
+  Loader2, ShieldCheck, XCircle, Mic, Building2, Plus, Edit, Upload, Camera
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useAdminAuth } from "@/context/AdminAuthContext";
 import { useEventData } from "@/context/EventDataContext";
+import { getApiUrl } from "@/lib/api";
 
 interface Participant {
   id: string;
@@ -79,7 +80,9 @@ export default function OrganizerDashboard() {
     speakers,
     sponsors,
     createSpeakerByAdmin,
+    updateSpeakerByAdmin,
     createSponsorByAdmin,
+    updateSponsorByAdmin,
     toggleSpeakerConfirmation,
     toggleSponsorConfirmation,
     deleteSpeaker,
@@ -90,6 +93,10 @@ export default function OrganizerDashboard() {
   // Admin Entry Modals
   const [showAddSpeaker, setShowAddSpeaker] = useState(false);
   const [showAddSponsor, setShowAddSponsor] = useState(false);
+  const [showEditSpeaker, setShowEditSpeaker] = useState(false);
+  const [editingSpeaker, setEditingSpeaker] = useState<any>(null);
+  const [showEditSponsor, setShowEditSponsor] = useState(false);
+  const [editingSponsor, setEditingSponsor] = useState<any>(null);
 
   // New Speaker Form
   const [newSpeaker, setNewSpeaker] = useState({
@@ -98,7 +105,7 @@ export default function OrganizerDashboard() {
 
   // New Sponsor Form
   const [newSponsor, setNewSponsor] = useState({
-    name: "", category: "Gold Sponsor", desc: "", logo: "mongodb"
+    name: "", category: "Gold Sponsor", desc: "", logo: ""
   });
 
   // Metrics and Logs states
@@ -132,7 +139,7 @@ export default function OrganizerDashboard() {
   // Fetch Dashboard Stats and Activities
   const fetchDashboardData = async () => {
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/organizer/dashboard`, {
+      const res = await fetch(`${getApiUrl()}/organizer/dashboard`, {
         headers: { "Content-Type": "application/json" },
         credentials: "include",
       });
@@ -205,7 +212,7 @@ export default function OrganizerDashboard() {
       if (emailFilter !== "all") queryParams.append("emailStatus", emailFilter);
 
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/organizer/participants?${queryParams.toString()}`,
+        `${getApiUrl()}/organizer/participants?${queryParams.toString()}`,
         {
           credentials: "include",
         }
@@ -320,7 +327,7 @@ export default function OrganizerDashboard() {
     }
     setDeletingId(id);
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/organizer/participants/${id}`, {
+      const res = await fetch(`${getApiUrl()}/organizer/participants/${id}`, {
         method: "DELETE",
         credentials: "include",
       });
@@ -351,7 +358,7 @@ export default function OrganizerDashboard() {
       if (emailFilter !== "all") queryParams.append("emailStatus", emailFilter);
 
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/organizer/participants/export?${queryParams.toString()}`,
+        `${getApiUrl()}/organizer/participants/export?${queryParams.toString()}`,
         {
           credentials: "include",
         }
@@ -380,7 +387,7 @@ export default function OrganizerDashboard() {
     if (!confirm("Are you sure you want to resend all failed emails? This will process in batches of 25 with a 1.5s delay to prevent throttling.")) return;
     setActionRunning(true);
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/organizer/email/resend-failed`, {
+      const res = await fetch(`${getApiUrl()}/organizer/email/resend-failed`, {
         method: "POST",
         credentials: "include",
       });
@@ -401,7 +408,7 @@ export default function OrganizerDashboard() {
     if (!confirm("Are you sure you want to retry all pending emails? This will process in batches of 25 with a 1.5s delay.")) return;
     setActionRunning(true);
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/organizer/email/retry-pending`, {
+      const res = await fetch(`${getApiUrl()}/organizer/email/retry-pending`, {
         method: "POST",
         credentials: "include",
       });
@@ -420,7 +427,7 @@ export default function OrganizerDashboard() {
   // Export Failed Emails list as CSV
   const handleExportFailedReport = async () => {
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/organizer/email/export-failed`, {
+      const res = await fetch(`${getApiUrl()}/organizer/email/export-failed`, {
         credentials: "include",
       });
       if (!res.ok) throw new Error("Export failed");
@@ -442,7 +449,7 @@ export default function OrganizerDashboard() {
   // Export Delivery Report as CSV
   const handleExportDeliveryReport = async () => {
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/organizer/email/export-delivery-report`, {
+      const res = await fetch(`${getApiUrl()}/organizer/email/export-delivery-report`, {
         credentials: "include",
       });
       if (!res.ok) throw new Error("Export failed");
@@ -465,7 +472,7 @@ export default function OrganizerDashboard() {
   const handleResendSingleEmail = async (userId: string, userEmail: string) => {
     if (!confirm(`Are you sure you want to resend the entry pass email to ${userEmail}?`)) return;
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/organizer/participants/${userId}/resend-email`, {
+      const res = await fetch(`${getApiUrl()}/organizer/participants/${userId}/resend-email`, {
         method: "POST",
         credentials: "include",
       });
@@ -486,7 +493,7 @@ export default function OrganizerDashboard() {
   // Trigger Logout
   const handleLogout = async () => {
     try {
-      await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/auth/logout`, {
+      await fetch(`${getApiUrl()}/auth/logout`, {
         method: "POST",
         credentials: "include",
       });
@@ -691,21 +698,43 @@ export default function OrganizerDashboard() {
                           : "bg-slate-950/60 border-slate-800"
                       }`}
                     >
-                      <div className="space-y-1">
-                        <div className="flex items-center justify-between">
-                          <h4 className="text-sm font-bold text-white truncate">{sp.name}</h4>
+                      <div className="space-y-2">
+                        <div className="flex items-start justify-between gap-2">
+                          <div className="flex items-center gap-2.5 overflow-hidden">
+                            {sp.image && (
+                              <img
+                                src={sp.image}
+                                alt={sp.name}
+                                className="w-9 h-9 rounded-full object-cover border border-cyan-500/30 flex-shrink-0"
+                                onError={(e) => { (e.target as HTMLElement).style.display = 'none'; }}
+                              />
+                            )}
+                            <div className="truncate">
+                              <h4 className="text-sm font-bold text-white truncate">{sp.name}</h4>
+                              <p className="text-[11px] text-cyan-400 font-semibold truncate">{sp.role} &bull; {sp.company}</p>
+                            </div>
+                          </div>
                           <span
-                            className={`text-[9px] font-black uppercase tracking-wider px-2 py-0.5 rounded border ${
+                            className={`text-[9px] font-black uppercase tracking-wider px-2 py-0.5 rounded border flex-shrink-0 ${
                               sp.confirmed
                                 ? "bg-green-500/10 border-green-500/30 text-green-400"
                                 : "bg-yellow-500/10 border-yellow-500/30 text-yellow-400"
                             }`}
                           >
-                            {sp.confirmed ? "Confirmed & Live" : "Pending Confirmation"}
+                            {sp.confirmed ? "Confirmed & Live" : "Pending"}
                           </span>
                         </div>
-                        <p className="text-xs text-cyan-400 font-semibold">{sp.role} &bull; {sp.company}</p>
                         <p className="text-[11px] text-slate-400 line-clamp-2 mt-1">{sp.topic}</p>
+                        {sp.linkedin && (
+                          <a
+                            href={sp.linkedin}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center gap-1 text-[10px] text-cyan-400 hover:underline font-semibold"
+                          >
+                            <ExternalLink size={10} /> LinkedIn Profile
+                          </a>
+                        )}
                       </div>
 
                       <div className="flex items-center gap-2">
@@ -723,9 +752,19 @@ export default function OrganizerDashboard() {
                             </>
                           ) : (
                             <>
-                              <CheckCircle2 size={13} /> Confirm & Publish
+                              <CheckCircle2 size={13} /> Confirm
                             </>
                           )}
+                        </button>
+                        <button
+                          onClick={() => {
+                            setEditingSpeaker({ ...sp });
+                            setShowEditSpeaker(true);
+                          }}
+                          title="Edit Speaker Details"
+                          className="p-2 rounded-lg border border-slate-800 text-slate-400 hover:text-cyan-400 hover:border-cyan-500/30 transition-colors"
+                        >
+                          <Edit size={14} />
                         </button>
                         <button
                           onClick={() => deleteSpeaker(sp.id)}
@@ -803,6 +842,16 @@ export default function OrganizerDashboard() {
                           )}
                         </button>
                         <button
+                          onClick={() => {
+                            setEditingSponsor({ ...spon });
+                            setShowEditSponsor(true);
+                          }}
+                          title="Edit Sponsor Details"
+                          className="p-2 rounded-lg border border-slate-800 text-slate-400 hover:text-amber-400 hover:border-amber-500/30 transition-colors"
+                        >
+                          <Edit size={14} />
+                        </button>
+                        <button
                           onClick={() => deleteSponsor(spon.id)}
                           title="Delete Sponsor"
                           className="p-2 rounded-lg border border-slate-800 text-slate-500 hover:text-red-400 hover:border-red-500/30 transition-colors"
@@ -821,7 +870,7 @@ export default function OrganizerDashboard() {
         {/* Modal: Add Speaker by Admin */}
         {showAddSpeaker && (
           <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md">
-            <div className="w-full max-w-md glass-panel p-6 rounded-2xl border border-cyan-500/30 bg-[#070712] space-y-4">
+            <div className="w-full max-w-md glass-panel p-6 rounded-2xl border border-cyan-500/30 bg-[#070712] space-y-4 max-h-[90vh] overflow-y-auto">
               <div className="flex justify-between items-center border-b border-slate-800 pb-3">
                 <h3 className="text-sm font-bold text-white uppercase tracking-wider">Add New Speaker</h3>
                 <button onClick={() => setShowAddSpeaker(false)} className="text-slate-500 hover:text-white"><XCircle size={18} /></button>
@@ -841,11 +890,11 @@ export default function OrganizerDashboard() {
                 </div>
                 <div className="grid grid-cols-2 gap-2">
                   <div>
-                    <label className="text-slate-400 font-bold block mb-1">Role</label>
-                    <input required type="text" value={newSpeaker.role} onChange={(e) => setNewSpeaker({ ...newSpeaker, role: e.target.value })} placeholder="e.g. Developer Advocate" className="w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-white" />
+                    <label className="text-slate-400 font-bold block mb-1">Role / Designation</label>
+                    <input required type="text" value={newSpeaker.role} onChange={(e) => setNewSpeaker({ ...newSpeaker, role: e.target.value })} placeholder="e.g. Principal Advocate" className="w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-white" />
                   </div>
                   <div>
-                    <label className="text-slate-400 font-bold block mb-1">Company</label>
+                    <label className="text-slate-400 font-bold block mb-1">Company / Organization</label>
                     <input required type="text" value={newSpeaker.company} onChange={(e) => setNewSpeaker({ ...newSpeaker, company: e.target.value })} placeholder="e.g. AWS" className="w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-white" />
                   </div>
                 </div>
@@ -857,7 +906,148 @@ export default function OrganizerDashboard() {
                   <label className="text-slate-400 font-bold block mb-1">Bio / Abstract</label>
                   <textarea required rows={2} value={newSpeaker.bio} onChange={(e) => setNewSpeaker({ ...newSpeaker, bio: e.target.value })} placeholder="Brief speaker bio..." className="w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-white" />
                 </div>
+                <div>
+                  <label className="text-slate-400 font-bold block mb-1">Speaker Photo / Image</label>
+                  <div className="flex items-center gap-3 bg-slate-950 border border-slate-800 rounded-lg p-2.5">
+                    {newSpeaker.image ? (
+                      <img
+                        src={newSpeaker.image}
+                        alt="Preview"
+                        className="w-12 h-12 rounded-full object-cover border border-cyan-500/40 flex-shrink-0"
+                      />
+                    ) : (
+                      <div className="w-12 h-12 rounded-full bg-slate-900 border border-slate-800 flex items-center justify-center text-slate-500 flex-shrink-0">
+                        <Camera size={20} />
+                      </div>
+                    )}
+                    <div className="flex-1 min-w-0">
+                      <label className="cursor-pointer inline-flex items-center gap-1.5 px-3 py-1.5 bg-cyan-500/10 hover:bg-cyan-500/20 border border-cyan-500/30 rounded-md text-cyan-300 font-bold text-[11px] uppercase tracking-wider transition-colors">
+                        <Upload size={12} /> Upload From Device
+                        <input
+                          type="file"
+                          accept="image/*"
+                          className="hidden"
+                          onChange={(e) => {
+                            const file = e.target.files?.[0];
+                            if (file) {
+                              const reader = new FileReader();
+                              reader.onloadend = () => {
+                                setNewSpeaker({ ...newSpeaker, image: reader.result as string });
+                              };
+                              reader.readAsDataURL(file);
+                            }
+                          }}
+                        />
+                      </label>
+                      <input
+                        type="text"
+                        value={newSpeaker.image}
+                        onChange={(e) => setNewSpeaker({ ...newSpeaker, image: e.target.value })}
+                        placeholder="Or paste image URL / path..."
+                        className="w-full bg-transparent border-0 text-[10px] text-slate-400 placeholder-slate-600 focus:outline-none mt-1 truncate"
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div>
+                  <label className="text-slate-400 font-bold block mb-1">LinkedIn Profile URL</label>
+                  <input type="text" value={newSpeaker.linkedin} onChange={(e) => setNewSpeaker({ ...newSpeaker, linkedin: e.target.value })} placeholder="https://linkedin.com/in/username" className="w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-white" />
+                </div>
                 <button type="submit" className="neon-btn w-full py-3 rounded-xl font-bold uppercase tracking-widest text-white mt-2">Publish Speaker to Site</button>
+              </form>
+            </div>
+          </div>
+        )}
+
+        {/* Modal: Edit Speaker by Admin */}
+        {showEditSpeaker && editingSpeaker && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md">
+            <div className="w-full max-w-md glass-panel p-6 rounded-2xl border border-cyan-500/30 bg-[#070712] space-y-4 max-h-[90vh] overflow-y-auto">
+              <div className="flex justify-between items-center border-b border-slate-800 pb-3">
+                <h3 className="text-sm font-bold text-white uppercase tracking-wider">Edit Speaker Details</h3>
+                <button onClick={() => { setShowEditSpeaker(false); setEditingSpeaker(null); }} className="text-slate-500 hover:text-white"><XCircle size={18} /></button>
+              </div>
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  if (editingSpeaker) {
+                    updateSpeakerByAdmin(editingSpeaker.id, editingSpeaker);
+                    setShowEditSpeaker(false);
+                    setEditingSpeaker(null);
+                  }
+                }}
+                className="space-y-3 text-xs"
+              >
+                <div>
+                  <label className="text-slate-400 font-bold block mb-1">Speaker Name</label>
+                  <input required type="text" value={editingSpeaker.name || ""} onChange={(e) => setEditingSpeaker({ ...editingSpeaker, name: e.target.value })} className="w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-white" />
+                </div>
+                <div className="grid grid-cols-2 gap-2">
+                  <div>
+                    <label className="text-slate-400 font-bold block mb-1">Role / Designation</label>
+                    <input required type="text" value={editingSpeaker.role || ""} onChange={(e) => setEditingSpeaker({ ...editingSpeaker, role: e.target.value })} className="w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-white" />
+                  </div>
+                  <div>
+                    <label className="text-slate-400 font-bold block mb-1">Company / Organization</label>
+                    <input required type="text" value={editingSpeaker.company || ""} onChange={(e) => setEditingSpeaker({ ...editingSpeaker, company: e.target.value })} className="w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-white" />
+                  </div>
+                </div>
+                <div>
+                  <label className="text-slate-400 font-bold block mb-1">Session Topic</label>
+                  <input required type="text" value={editingSpeaker.topic || ""} onChange={(e) => setEditingSpeaker({ ...editingSpeaker, topic: e.target.value })} className="w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-white" />
+                </div>
+                <div>
+                  <label className="text-slate-400 font-bold block mb-1">Bio / Abstract</label>
+                  <textarea required rows={2} value={editingSpeaker.bio || ""} onChange={(e) => setEditingSpeaker({ ...editingSpeaker, bio: e.target.value })} className="w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-white" />
+                </div>
+                <div>
+                  <label className="text-slate-400 font-bold block mb-1">Speaker Photo / Image</label>
+                  <div className="flex items-center gap-3 bg-slate-950 border border-slate-800 rounded-lg p-2.5">
+                    {editingSpeaker.image ? (
+                      <img
+                        src={editingSpeaker.image}
+                        alt="Preview"
+                        className="w-12 h-12 rounded-full object-cover border border-cyan-500/40 flex-shrink-0"
+                      />
+                    ) : (
+                      <div className="w-12 h-12 rounded-full bg-slate-900 border border-slate-800 flex items-center justify-center text-slate-500 flex-shrink-0">
+                        <Camera size={20} />
+                      </div>
+                    )}
+                    <div className="flex-1 min-w-0">
+                      <label className="cursor-pointer inline-flex items-center gap-1.5 px-3 py-1.5 bg-cyan-500/10 hover:bg-cyan-500/20 border border-cyan-500/30 rounded-md text-cyan-300 font-bold text-[11px] uppercase tracking-wider transition-colors">
+                        <Upload size={12} /> Upload From Device
+                        <input
+                          type="file"
+                          accept="image/*"
+                          className="hidden"
+                          onChange={(e) => {
+                            const file = e.target.files?.[0];
+                            if (file) {
+                              const reader = new FileReader();
+                              reader.onloadend = () => {
+                                setEditingSpeaker({ ...editingSpeaker, image: reader.result as string });
+                              };
+                              reader.readAsDataURL(file);
+                            }
+                          }}
+                        />
+                      </label>
+                      <input
+                        type="text"
+                        value={editingSpeaker.image || ""}
+                        onChange={(e) => setEditingSpeaker({ ...editingSpeaker, image: e.target.value })}
+                        placeholder="Or paste image URL / path..."
+                        className="w-full bg-transparent border-0 text-[10px] text-slate-400 placeholder-slate-600 focus:outline-none mt-1 truncate"
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div>
+                  <label className="text-slate-400 font-bold block mb-1">LinkedIn Profile URL</label>
+                  <input type="text" value={editingSpeaker.linkedin || ""} onChange={(e) => setEditingSpeaker({ ...editingSpeaker, linkedin: e.target.value })} placeholder="https://linkedin.com/in/username" className="w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-white" />
+                </div>
+                <button type="submit" className="neon-btn w-full py-3 rounded-xl font-bold uppercase tracking-widest text-white mt-2">Save Speaker Changes</button>
               </form>
             </div>
           </div>
@@ -866,7 +1056,7 @@ export default function OrganizerDashboard() {
         {/* Modal: Add Sponsor by Admin */}
         {showAddSponsor && (
           <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md">
-            <div className="w-full max-w-md glass-panel p-6 rounded-2xl border border-amber-500/30 bg-[#070712] space-y-4">
+            <div className="w-full max-w-md glass-panel p-6 rounded-2xl border border-amber-500/30 bg-[#070712] space-y-4 max-h-[90vh] overflow-y-auto">
               <div className="flex justify-between items-center border-b border-slate-800 pb-3">
                 <h3 className="text-sm font-bold text-white uppercase tracking-wider">Add New Sponsor</h3>
                 <button onClick={() => setShowAddSponsor(false)} className="text-slate-500 hover:text-white"><XCircle size={18} /></button>
@@ -876,7 +1066,7 @@ export default function OrganizerDashboard() {
                   e.preventDefault();
                   createSponsorByAdmin({ ...newSponsor, confirmed: true });
                   setShowAddSponsor(false);
-                  setNewSponsor({ name: "", category: "Gold Sponsor", desc: "", logo: "mongodb" });
+                  setNewSponsor({ name: "", category: "Gold Sponsor", desc: "", logo: "" });
                 }}
                 className="space-y-3 text-xs"
               >
@@ -900,15 +1090,162 @@ export default function OrganizerDashboard() {
                   <input required type="text" value={newSponsor.desc} onChange={(e) => setNewSponsor({ ...newSponsor, desc: e.target.value })} placeholder="Developer Data Platform..." className="w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-white" />
                 </div>
                 <div>
-                  <label className="text-slate-400 font-bold block mb-1">Logo Type / Icon</label>
-                  <select value={newSponsor.logo} onChange={(e) => setNewSponsor({ ...newSponsor, logo: e.target.value })} className="w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-white">
-                    <option value="mongodb">MongoDB Logo</option>
-                    <option value="hashicorp">HashiCorp Logo</option>
-                    <option value="datadog">Datadog Logo</option>
-                    <option value="/aws_sbg_logo.png">AWS Logo</option>
-                  </select>
+                  <label className="text-slate-400 font-bold block mb-1">Sponsor Logo / Image</label>
+                  <div className="flex items-center gap-3 bg-slate-950 border border-slate-800 rounded-lg p-2.5">
+                    {newSponsor.logo ? (
+                      <div className="w-12 h-12 rounded-lg bg-slate-900 border border-amber-500/40 p-1 flex items-center justify-center flex-shrink-0 overflow-hidden">
+                        {newSponsor.logo === 'mongodb' || newSponsor.logo === 'hashicorp' || newSponsor.logo === 'datadog' ? (
+                          <span className="text-[10px] font-bold text-amber-400 uppercase">{newSponsor.logo}</span>
+                        ) : (
+                          <img
+                            src={newSponsor.logo}
+                            alt="Preview"
+                            className="max-w-full max-h-full object-contain"
+                            onError={(e) => { (e.target as HTMLElement).style.display = 'none'; }}
+                          />
+                        )}
+                      </div>
+                    ) : (
+                      <div className="w-12 h-12 rounded-lg bg-slate-900 border border-slate-800 flex items-center justify-center text-slate-500 flex-shrink-0">
+                        <Building2 size={20} />
+                      </div>
+                    )}
+                    <div className="flex-1 min-w-0">
+                      <label className="cursor-pointer inline-flex items-center gap-1.5 px-3 py-1.5 bg-amber-500/10 hover:bg-amber-500/20 border border-amber-500/30 rounded-md text-amber-300 font-bold text-[11px] uppercase tracking-wider transition-colors">
+                        <Upload size={12} /> Upload From Device
+                        <input
+                          type="file"
+                          accept="image/*"
+                          className="hidden"
+                          onChange={(e) => {
+                            const file = e.target.files?.[0];
+                            if (file) {
+                              const reader = new FileReader();
+                              reader.onloadend = () => {
+                                setNewSponsor({ ...newSponsor, logo: reader.result as string });
+                              };
+                              reader.readAsDataURL(file);
+                            }
+                          }}
+                        />
+                      </label>
+                      <input
+                        type="text"
+                        value={newSponsor.logo}
+                        onChange={(e) => setNewSponsor({ ...newSponsor, logo: e.target.value })}
+                        placeholder="Or select preset below / paste logo URL..."
+                        className="w-full bg-transparent border-0 text-[10px] text-slate-400 placeholder-slate-600 focus:outline-none mt-1 truncate"
+                      />
+                    </div>
+                  </div>
+                  <div className="mt-2 flex items-center gap-2">
+                    <span className="text-[10px] text-slate-500 font-bold">Presets:</span>
+                    <button type="button" onClick={() => setNewSponsor({ ...newSponsor, logo: "mongodb" })} className="text-[10px] px-2 py-0.5 rounded bg-slate-900 border border-slate-800 text-slate-300 hover:text-white">MongoDB</button>
+                    <button type="button" onClick={() => setNewSponsor({ ...newSponsor, logo: "hashicorp" })} className="text-[10px] px-2 py-0.5 rounded bg-slate-900 border border-slate-800 text-slate-300 hover:text-white">HashiCorp</button>
+                    <button type="button" onClick={() => setNewSponsor({ ...newSponsor, logo: "datadog" })} className="text-[10px] px-2 py-0.5 rounded bg-slate-900 border border-slate-800 text-slate-300 hover:text-white">Datadog</button>
+                  </div>
                 </div>
                 <button type="submit" className="w-full py-3 rounded-xl font-bold uppercase tracking-widest text-black bg-amber-400 hover:bg-amber-300 mt-2">Publish Sponsor Image to Site</button>
+              </form>
+            </div>
+          </div>
+        )}
+
+        {/* Modal: Edit Sponsor by Admin */}
+        {showEditSponsor && editingSponsor && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md">
+            <div className="w-full max-w-md glass-panel p-6 rounded-2xl border border-amber-500/30 bg-[#070712] space-y-4 max-h-[90vh] overflow-y-auto">
+              <div className="flex justify-between items-center border-b border-slate-800 pb-3">
+                <h3 className="text-sm font-bold text-white uppercase tracking-wider">Edit Sponsor Details</h3>
+                <button onClick={() => { setShowEditSponsor(false); setEditingSponsor(null); }} className="text-slate-500 hover:text-white"><XCircle size={18} /></button>
+              </div>
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  if (editingSponsor) {
+                    updateSponsorByAdmin(editingSponsor.id, editingSponsor);
+                    setShowEditSponsor(false);
+                    setEditingSponsor(null);
+                  }
+                }}
+                className="space-y-3 text-xs"
+              >
+                <div>
+                  <label className="text-slate-400 font-bold block mb-1">Company / Sponsor Name</label>
+                  <input required type="text" value={editingSponsor.name || ""} onChange={(e) => setEditingSponsor({ ...editingSponsor, name: e.target.value })} className="w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-white" />
+                </div>
+                <div>
+                  <label className="text-slate-400 font-bold block mb-1">Category / Tier</label>
+                  <select value={editingSponsor.category || "Gold Sponsor"} onChange={(e) => setEditingSponsor({ ...editingSponsor, category: e.target.value })} className="w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-white">
+                    <option value="Title Cloud Partner">Title Cloud Partner</option>
+                    <option value="Gold Sponsor">Gold Sponsor</option>
+                    <option value="Silver Sponsor">Silver Sponsor</option>
+                    <option value="Infrastructure Partner">Infrastructure Partner</option>
+                    <option value="Monitoring Partner">Monitoring Partner</option>
+                    <option value="Community Partner">Community Partner</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="text-slate-400 font-bold block mb-1">Description</label>
+                  <input required type="text" value={editingSponsor.desc || ""} onChange={(e) => setEditingSponsor({ ...editingSponsor, desc: e.target.value })} className="w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-white" />
+                </div>
+                <div>
+                  <label className="text-slate-400 font-bold block mb-1">Sponsor Logo / Image</label>
+                  <div className="flex items-center gap-3 bg-slate-950 border border-slate-800 rounded-lg p-2.5">
+                    {editingSponsor.logo ? (
+                      <div className="w-12 h-12 rounded-lg bg-slate-900 border border-amber-500/40 p-1 flex items-center justify-center flex-shrink-0 overflow-hidden">
+                        {editingSponsor.logo === 'mongodb' || editingSponsor.logo === 'hashicorp' || editingSponsor.logo === 'datadog' ? (
+                          <span className="text-[10px] font-bold text-amber-400 uppercase">{editingSponsor.logo}</span>
+                        ) : (
+                          <img
+                            src={editingSponsor.logo}
+                            alt="Preview"
+                            className="max-w-full max-h-full object-contain"
+                            onError={(e) => { (e.target as HTMLElement).style.display = 'none'; }}
+                          />
+                        )}
+                      </div>
+                    ) : (
+                      <div className="w-12 h-12 rounded-lg bg-slate-900 border border-slate-800 flex items-center justify-center text-slate-500 flex-shrink-0">
+                        <Building2 size={20} />
+                      </div>
+                    )}
+                    <div className="flex-1 min-w-0">
+                      <label className="cursor-pointer inline-flex items-center gap-1.5 px-3 py-1.5 bg-amber-500/10 hover:bg-amber-500/20 border border-amber-500/30 rounded-md text-amber-300 font-bold text-[11px] uppercase tracking-wider transition-colors">
+                        <Upload size={12} /> Upload From Device
+                        <input
+                          type="file"
+                          accept="image/*"
+                          className="hidden"
+                          onChange={(e) => {
+                            const file = e.target.files?.[0];
+                            if (file) {
+                              const reader = new FileReader();
+                              reader.onloadend = () => {
+                                setEditingSponsor({ ...editingSponsor, logo: reader.result as string });
+                              };
+                              reader.readAsDataURL(file);
+                            }
+                          }}
+                        />
+                      </label>
+                      <input
+                        type="text"
+                        value={editingSponsor.logo || ""}
+                        onChange={(e) => setEditingSponsor({ ...editingSponsor, logo: e.target.value })}
+                        placeholder="Or select preset below / paste logo URL..."
+                        className="w-full bg-transparent border-0 text-[10px] text-slate-400 placeholder-slate-600 focus:outline-none mt-1 truncate"
+                      />
+                    </div>
+                  </div>
+                  <div className="mt-2 flex items-center gap-2">
+                    <span className="text-[10px] text-slate-500 font-bold">Presets:</span>
+                    <button type="button" onClick={() => setEditingSponsor({ ...editingSponsor, logo: "mongodb" })} className="text-[10px] px-2 py-0.5 rounded bg-slate-900 border border-slate-800 text-slate-300 hover:text-white">MongoDB</button>
+                    <button type="button" onClick={() => setEditingSponsor({ ...editingSponsor, logo: "hashicorp" })} className="text-[10px] px-2 py-0.5 rounded bg-slate-900 border border-slate-800 text-slate-300 hover:text-white">HashiCorp</button>
+                    <button type="button" onClick={() => setEditingSponsor({ ...editingSponsor, logo: "datadog" })} className="text-[10px] px-2 py-0.5 rounded bg-slate-900 border border-slate-800 text-slate-300 hover:text-white">Datadog</button>
+                  </div>
+                </div>
+                <button type="submit" className="w-full py-3 rounded-xl font-bold uppercase tracking-widest text-black bg-amber-400 hover:bg-amber-300 mt-2">Save Sponsor Changes</button>
               </form>
             </div>
           </div>

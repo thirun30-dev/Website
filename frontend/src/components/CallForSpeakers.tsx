@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import { Mic, Send, Calendar, CheckCircle2, X } from "lucide-react";
+import { getApiUrl } from "@/lib/api";
 
 export default function CallForSpeakers() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -13,9 +14,30 @@ export default function CallForSpeakers() {
     abstract: "",
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const [submitting, setSubmitting] = useState(false);
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setSubmitted(true);
+    setSubmitting(true);
+
+    try {
+      await fetch(`${getApiUrl()}/public/speaker-proposal`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          fullName: formData.name,
+          email: formData.email,
+          sessionTitle: formData.topic,
+          sessionAbstract: formData.abstract,
+        }),
+      });
+    } catch (err) {
+      console.warn('Backend proposal submission fallback:', err);
+    } finally {
+      setSubmitting(false);
+      setSubmitted(true);
+    }
+
     setTimeout(() => {
       setIsModalOpen(false);
       setSubmitted(false);

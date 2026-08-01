@@ -62,6 +62,7 @@ export async function PATCH(request: Request) {
         ...(tier && { tier }),
         ...(message !== undefined && { message }),
         ...(confirmed !== undefined && { confirmed }),
+        ...((body.logoUrl !== undefined || body.logo !== undefined) && { logoUrl: body.logoUrl || body.logo }),
       },
     });
 

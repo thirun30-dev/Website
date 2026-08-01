@@ -42,13 +42,14 @@ export default function Sponsors() {
   };
 
   const getSponsorLogo = (logoKey: string, name: string) => {
+    if (!logoKey || logoKey === "pending") return <Building2 className="text-cyan-400 w-8 h-8" />;
     if (logoKey === "mongodb") return <MongoDBLogo />;
     if (logoKey === "hashicorp") return <HashiCorpLogo />;
     if (logoKey === "datadog") return <DatadogLogo />;
-    if (logoKey.startsWith("/")) {
+    if (logoKey.startsWith("/") || logoKey.startsWith("data:") || logoKey.startsWith("http")) {
       return (
-        <div className="relative w-10 h-10">
-          <Image src={logoKey} alt={name} fill className="object-contain" />
+        <div className="relative w-14 h-14 flex items-center justify-center p-1">
+          <img src={logoKey} alt={name} className="max-w-full max-h-full object-contain" />
         </div>
       );
     }

@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { ArrowLeft, CheckCircle2, AlertTriangle, XCircle, Camera, Loader2, RefreshCw } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Html5Qrcode } from "html5-qrcode";
+import { getApiUrl } from "@/lib/api";
 
 interface ScanResult {
   status: "SUCCESS" | "ALREADY_VERIFIED" | "ERROR";
@@ -102,7 +103,7 @@ export default function EntryScanner() {
       }
 
       // Verify on backend
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/organizer/verify`, {
+      const res = await fetch(`${getApiUrl()}/organizer/verify`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

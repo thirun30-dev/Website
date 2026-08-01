@@ -5,6 +5,7 @@ import { Mic, Building2, Send, CheckCircle2, X, Calendar, Clock, Handshake, Star
 import SuccessBadge from "./SuccessBadge";
 import { useRegistration } from "@/context/RegistrationContext";
 import { useEventData } from "@/context/EventDataContext";
+import { getApiUrl } from "@/lib/api";
 
 /* ─────────────────────────────────────────────
    SHARED TYPES & HELPERS
@@ -19,14 +20,33 @@ const INPUT_BASE =
 ───────────────────────────────────────────── */
 function SpeakerModal({ onClose }: { onClose: () => void }) {
   const [submitted, setSubmitted] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
   const [formData, setFormData] = useState({ name: "", email: "", topic: "", abstract: "" });
 
   const { setBadgeData } = useRegistration();
   const { addSpeakerProposal } = useEventData();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setSubmitted(true);
+    setSubmitting(true);
+
+    try {
+      await fetch(`${getApiUrl()}/public/speaker-proposal`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          fullName: formData.name,
+          email: formData.email,
+          sessionTitle: formData.topic,
+          sessionAbstract: formData.abstract,
+        }),
+      });
+    } catch (err) {
+      console.warn('Backend proposal submission fallback:', err);
+    } finally {
+      setSubmitting(false);
+      setSubmitted(true);
+    }
 
     addSpeakerProposal({
       name: formData.name,
@@ -96,12 +116,12 @@ function SpeakerModal({ onClose }: { onClose: () => void }) {
               </div>
               <button
                 type="submit"
+                disabled={submitting}
                 className="w-full py-3.5 rounded-md text-xs font-extrabold uppercase tracking-widest text-white
                   bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500
-                  shadow-[0_0_20px_rgba(34,211,238,0.2)] hover:shadow-[0_0_30px_rgba(34,211,238,0.35)]
-                  transition-all duration-300 flex items-center justify-center gap-2"
+                  disabled:opacity-50 transition-all flex items-center justify-center gap-2"
               >
-                <Send size={13} /> Submit Proposal
+                {submitting ? "Submitting..." : "Submit Proposal"}
               </button>
             </form>
           )}
@@ -116,6 +136,7 @@ function SpeakerModal({ onClose }: { onClose: () => void }) {
 ───────────────────────────────────────────── */
 function SponsorModal({ onClose }: { onClose: () => void }) {
   const [submitted, setSubmitted] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
   const [formData, setFormData] = useState({
     company: "", contact: "", email: "", tier: "", message: "",
   });
@@ -123,9 +144,28 @@ function SponsorModal({ onClose }: { onClose: () => void }) {
   const { setBadgeData } = useRegistration();
   const { addSponsorEnquiry } = useEventData();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setSubmitted(true);
+    setSubmitting(true);
+
+    try {
+      await fetch(`${getApiUrl()}/public/sponsor-enquiry`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          companyName: formData.company,
+          contactPerson: formData.contact,
+          email: formData.email,
+          sponsorshipTier: formData.tier || 'COMMUNITY',
+          comments: formData.message,
+        }),
+      });
+    } catch (err) {
+      console.warn('Backend sponsor enquiry submission fallback:', err);
+    } finally {
+      setSubmitting(false);
+      setSubmitted(true);
+    }
 
     addSponsorEnquiry({
       name: formData.company,

@@ -24,8 +24,8 @@ async function main() {
   }
 
   // 2. Seed Default Admin / Organizer (idempotent)
-  const organizerEmail = 'awsscd@rajalakshmi.edu.in';
-  const organizerPassword = 'SCD@2026';
+  const organizerEmail = process.env.ADMIN_EMAIL || 'awsscd@rajalakshmi.edu.in';
+  const organizerPassword = process.env.ADMIN_PASSWORD || 'SCD@2026';
   const passwordHash = await bcrypt.hash(organizerPassword, 10);
 
   const organizer = await prisma.user.upsert({
@@ -35,13 +35,13 @@ async function main() {
     },
     create: {
       email: organizerEmail,
-      name: 'AWS SCD Admin',
-      phone: '+919999988888',
+      name: process.env.ADMIN_NAME || 'AWS SCD Admin',
+      phone: process.env.ADMIN_PHONE || '+919999988888',
       passwordHash,
       role: UserRole.ORGANIZER,
-      organization: 'AWS Student Builder Groups REC',
-      designation: 'Admin Lead',
-      city: 'Chennai',
+      organization: process.env.ADMIN_ORGANIZATION || 'AWS Student Builder Groups REC',
+      designation: process.env.ADMIN_DESIGNATION || 'Admin Lead',
+      city: process.env.ADMIN_CITY || 'Chennai',
       avatar: 'man',
       isActive: true,
       mustChangePassword: false,

@@ -9,6 +9,7 @@ import {
 } from "lucide-react";
 import SuccessBadge from "./SuccessBadge";
 import { useRegistration } from "@/context/RegistrationContext";
+import { getApiUrl } from "@/lib/api";
 
 /* ─────────────────────────────────────────────
    DATA
@@ -244,23 +245,46 @@ function HackathonModal({
   const [formData, setFormData] = useState({
     name: "",
     email: "",
+    phone: "",
     college: "",
     team: "",
     domain: "",
     size: "",
   });
   const [submitted, setSubmitted] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
   const { setBadgeData } = useRegistration();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!formData.name || !formData.email) return;
-    setBadgeData({
-      name: formData.name,
-      email: formData.email,
-      role: "Hackathon Builder"
-    });
-    setSubmitted(true);
+    setSubmitting(true);
+
+    try {
+      await fetch(`${getApiUrl()}/public/hackathon-registration`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          leaderName: formData.name,
+          email: formData.email,
+          phone: formData.phone,
+          institution: formData.college,
+          teamName: formData.team,
+          track: formData.domain || 'GenAI & Serverless',
+          teamSize: formData.size || '4',
+        }),
+      });
+    } catch (err) {
+      console.warn('Backend hackathon registration fallback:', err);
+    } finally {
+      setSubmitting(false);
+      setBadgeData({
+        name: formData.name,
+        email: formData.email,
+        role: "Hackathon Builder"
+      });
+      setSubmitted(true);
+    }
   };
 
   const isFirst = hack.id === 1;

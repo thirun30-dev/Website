@@ -32,10 +32,7 @@ export default function OrganizerLogin() {
     setError("");
 
     try {
-      // Set auth token cookie for Next.js middleware proxy
-      document.cookie = "token=admin_token; path=/; max-age=28800";
-      
-      const success = login(email, password);
+      const success = await login(email, password);
       if (success) {
         window.location.href = "/organizer/dashboard";
       } else {
